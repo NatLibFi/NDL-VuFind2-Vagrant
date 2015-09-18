@@ -9,7 +9,7 @@ Requirements
 
 Set-up
 ------
-Put the files in a directory parallel to the NDL-VuFind2 working directory e.g. <path-to>/vufind2 & <same-path-to>/vagrant_vufind2.
+Put the files in a directory parallel to the NDL-VuFind2 working directory e.g. path-to/vufind2 & same-path-to/vagrant_vufind2.
 
 Use
 ---
