@@ -8,10 +8,6 @@ PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
-#PROJECTFOLDER='myproject'
-
-# create project folder
-#sudo mkdir "/var/www/html/${PROJECTFOLDER}"
 
 # update / upgrade
 sudo apt-get update
@@ -43,28 +39,6 @@ sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql 
 # install Java JDK
 sudo apt-get -y install default-jdk
 
-# install phpmyadmin and give password(s) to installer
-# for simplicity I'm using the same password for mysql and phpmyadmin
-#sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
-#sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PASSWORD"
-#sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password $PASSWORD"
-#sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $PASSWORD"
-#sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2"
-#sudo apt-get -y install phpmyadmin
-
-# setup hosts file
-#VHOST=$(cat <<EOF
-#<VirtualHost *:80>
-#    DocumentRoot "/var/www/html/${PROJECTFOLDER}"
-#    <Directory "/var/www/html/${PROJECTFOLDER}">
-#        AllowOverride All
-#        Require all granted
-#    </Directory>
-#</VirtualHost>
-#EOF
-#)
-#echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
-
 # enable mod_rewrite
 sudo a2enmod rewrite
 
@@ -74,6 +48,24 @@ sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabl
 
 # restart apache
 service apache2 restart
+
+# copy sample configs to ini files (prefered to do this manually once)
+# cd $INSTALL_PATH/local/config/finna
+# for x in *.ini.sample; do 
+#  t=${x%.ini.sample}.ini
+#  if [ ! -f $t ]; then
+#     cp $x $t
+#  fi
+# done
+#
+# cd $INSTALL_PATH/local/config/vufind
+# for x in *ini.sample; do 
+#   t=${x%.ini.sample}.ini
+#   if [ ! -f $t ]; then
+#     cp $x $t
+#   fi
+# done
+# cp searchspecs.yaml.sample searchspecs.yaml
 
 # copy local dir inside virtual machine
 sudo mkdir /usr/local/vufind2_local
@@ -85,9 +77,3 @@ sudo chown -R www-data:www-data /usr/local/vufind2_local/cache
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
-# install git
-#sudo apt-get -y install git
-
-# install Composer
-#curl -s https://getcomposer.org/installer | php
-#mv composer.phar /usr/local/bin/composer
