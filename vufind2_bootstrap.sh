@@ -13,7 +13,7 @@ USER_PW='vufind'
 sudo apt-get update
 sudo apt-get -y upgrade
 
-# install apache 2.5 and php 5.5
+# install apache 2.5
 sudo apt-get install -y apache2
 
 # install mysql and give password to installer
@@ -34,6 +34,10 @@ $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
 # install php 5.5
 sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql php5-xsl php5-intl php5-gd
+
+# change php.ini: display_errors = On, opcache.enable=0
+sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php5/apache2/php.ini
+sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php5/apache2/php.ini
 
 # install Java JDK
 sudo apt-get -y install default-jdk
