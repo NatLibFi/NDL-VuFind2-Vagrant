@@ -46,13 +46,11 @@ sudo apt-get -y install default-jdk
 sudo a2enmod rewrite
 
 # link VuFind to Apache
-sudo cp /vagrant/httpd-vufind.conf /etc/apache2/conf-available/httpd-vufind.conf
+sudo cp -f $INSTALL_PATH/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
+sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$INSTALL_PATH"',' /etc/apache2/conf-available/httpd-vufind.conf
 if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
-
-# restart apache
-service apache2 restart
 
 # copy sample configs to ini files
 cd $INSTALL_PATH/local/config/finna
@@ -75,8 +73,12 @@ cp searchspecs.yaml.sample searchspecs.yaml
 # copy local dir inside virtual machine
 sudo mkdir -p /usr/local/vufind2_local
 sudo cp -rf $INSTALL_PATH/local/* /usr/local/vufind2_local/
+sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$INSTALL_PATH"'/local,VUFIND_LOCAL_DIR /usr/local/vufind2_local,' /etc/apache2/conf-available/httpd-vufind.conf
 sudo chown -R vagrant:vagrant /usr/local/vufind2_local
 sudo chown -R www-data:www-data /usr/local/vufind2_local/cache
+
+# restart apache
+service apache2 restart
 
 # create log file and change owner
 sudo touch /var/log/vufind2.log
