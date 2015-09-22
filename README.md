@@ -5,7 +5,7 @@ Requirements
 ------------
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
-- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (with a working configuration)
+- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (with a working configuration - for the minimum, change the config to use the NDL development index URL)
 
 Set-up
 ------
@@ -17,13 +17,16 @@ Use
 
 Point your browser to http://localhost:8081
 
+(Blank page or errors, adjust the config(s) & run 'vagrant provision' again, reload browser page.)
+
 Other useful commands:
 * 'vagrant reload' - reloads the configuration changes made to Vagrantfile.
 * 'vagrant halt' - shuts down the virtual machine, restart with 'vagrant up'
 * 'vagrant destroy'  - deletes the virtual machine along with any cached box files etc.
+* 'vagrant ssh' - login to the running virtual machine (vagrant:vagrant) or e.g. restarting Apache ('sudo service apache2 restart') or checking Apache logs in /var/log/apache2/ (needs root, use 'su')
 
 Known Issues
 ------------
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile.
 - Copying the vufind2/local directory inside the virtual machine is a dirty hack to get the virtual machine to access local/cache. Any changes under local/config/ in the host need to be either copied to the virtual machine manually or running the provisioning with 'vagrant provision' (or building the virtual machine again with 'vagrant destroy' & 'vagrant up'). 
-- Running Solr requires adjusting the the v.memory (2048 should work).
+- If running Solr, v.memory needs to be adjusted (2048 should work).
