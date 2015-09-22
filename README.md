@@ -24,7 +24,7 @@ Useful commands
 * 'vagrant reload' - reloads the configuration changes made to Vagrantfile.
 * 'vagrant halt' - shuts down the virtual machine, restart with 'vagrant up'
 * 'vagrant destroy'  - deletes the virtual machine along with any cached box files etc.
-* 'vagrant ssh' - login to the running virtual machine (vagrant:vagrant) or e.g. restarting Apache ('sudo service apache2 restart') or checking Apache logs in /var/log/apache2/ (needs root, use 'su')
+* 'vagrant ssh' - login to the running virtual machine (vagrant:vagrant) to e.g. restart Apache ('sudo service apache2 restart') or check Apache logs in /var/log/apache2/ (needs root, use 'su')
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
