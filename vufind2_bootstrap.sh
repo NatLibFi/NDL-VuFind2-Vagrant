@@ -49,23 +49,23 @@ sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabl
 # restart apache
 service apache2 restart
 
-# copy sample configs to ini files (prefered to do this manually once)
-# cd $INSTALL_PATH/local/config/finna
-# for x in *.ini.sample; do 
-#  t=${x%.ini.sample}.ini
-#  if [ ! -f $t ]; then
-#     cp $x $t
-#  fi
-# done
-#
-# cd $INSTALL_PATH/local/config/vufind
-# for x in *ini.sample; do 
-#   t=${x%.ini.sample}.ini
-#   if [ ! -f $t ]; then
-#     cp $x $t
-#   fi
-# done
-# cp searchspecs.yaml.sample searchspecs.yaml
+# copy sample configs to ini files
+cd $INSTALL_PATH/local/config/finna
+for x in *.ini.sample; do 
+ t=${x%.ini.sample}.ini
+ if [ ! -f $t ]; then
+    cp $x $t
+ fi
+done
+
+cd $INSTALL_PATH/local/config/vufind
+for x in *ini.sample; do 
+  t=${x%.ini.sample}.ini
+  if [ ! -f $t ]; then
+    cp $x $t
+  fi
+done
+cp searchspecs.yaml.sample searchspecs.yaml
 
 # copy local dir inside virtual machine
 sudo mkdir /usr/local/vufind2_local
