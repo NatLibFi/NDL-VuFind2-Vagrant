@@ -17,7 +17,7 @@ Use
 
 Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
 
-(Blank page or errors, adjust the config(s) & run 'vagrant provision', reload browser page.)
+(Blank page or errors: adjust the config(s) & run 'vagrant provision', reload browser page.)
 
 Useful commands
 ---------------
