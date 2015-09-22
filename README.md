@@ -25,6 +25,7 @@ Useful commands
 * 'vagrant halt' - shuts down the virtual machine, restart with 'vagrant up'
 * 'vagrant destroy'  - deletes the virtual machine along with any cached box files etc.
 * 'vagrant ssh' - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache ('sudo service apache2 restart') or to check Apache logs in /var/log/apache2/ ('sudo tail -f /var/log/apache2/error.log', 'sudo tail -f /var/log/apache2/access.log')
+* ( 'vagrant package --output ubuntu_vufind2.box' if for some reason the virtual machine needs to be packaged as a new base box, roughly 700MB or more. The Vagrantfile needs to be edited to use the created box file. )
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
