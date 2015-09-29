@@ -21,10 +21,12 @@ Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
 
 Useful commands
 ---------------
-* 'vagrant reload' - reloads the configuration changes made to Vagrantfile.
+* 'vagrant reload' - reloads the configuration changes made to Vagrantfile
+* 'vagrant suspend' - freezes the virtual machine, continue with 'vagrant resume'
 * 'vagrant halt' - shuts down the virtual machine, restart with 'vagrant up'
 * 'vagrant destroy'  - deletes the virtual machine along with any cached box files etc.
 * 'vagrant ssh' - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache ('sudo service apache2 restart') or to check Apache logs in /var/log/apache2/ ('sudo tail -f /var/log/apache2/error.log', 'sudo tail -f /var/log/apache2/access.log')
+* 'vagrant plugin install vagrant-vbguest' - for prolonged use, installs <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( 'vagrant package --output ubuntu_vufind2.box' if for some reason the virtual machine needs to be packaged as a new base box, roughly 700MB or more. The Vagrantfile needs to be edited to use the created box file. )
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
