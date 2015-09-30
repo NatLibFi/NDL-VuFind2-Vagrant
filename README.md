@@ -22,17 +22,19 @@ Put the files in a directory parallel to the NDL-VuFind2 working directory e.g. 
 
 _centos_:
 
-If only using _centos_ any directory with sufficent user permissions will do. If using both, the _ubuntu_ directory is fine.
+If only using _centos_, any directory with sufficent user permissions will do. If using both, the _ubuntu_ directory is fine.
 
 #### Use
 
 _ubuntu_:
-- 'vagrant up' (this will take a few minutes so enjoy your beverage of choice)
+- 'vagrant up'
+  - This will take a few minutes, so enjoy your beverage of choice!
 - Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
   - Blank page or errors: adjust the config(s) & run 'vagrant provision', reload browser page.
 
 _centos_:
 - 'vagrant up centos'
+  - Again, this will take a few minutes...
 - 'vagrant ssh centos'
 - '/usr/bin/mysql_secure_installation' to add MySQL root password and remove anonymous user & test databases
 - Manually add a working index URL to the _INSTALLATION_PATH/local/config/vufind/config.ini_ file
@@ -58,7 +60,7 @@ Both machines can be running simultaneously provided the host has enough oomph.
 * ( 'vagrant package --output ubuntu_vufind2.box'
   - if for some reason the virtual machine needs to be packaged as a new base box, roughly 700MB or more. The Vagrantfile needs to be edited to use the created box file. )
 
-When addressing the centos machine, just add ' centos' at the end of each command.
+When addressing the _centos_ machine, just add ' centos' at the end of each command.
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
