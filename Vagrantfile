@@ -26,8 +26,7 @@ Vagrant.configure(2) do |config|
 
     # Rsync the vufind2/local directory inside the virtual machine for proper cache access
     ubuntu.vm.synced_folder "/usr/local/vufind2/local/config", "/usr/local/vufind2_local/config", type: "rsync",
-      rsync__exclude: ".git/"
-      rsync__exclude: ".DS_Store/"
+      rsync__exclude: [".git/", ".DS_Store/"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     ubuntu.vm.provision :shell, path: "vufind2_bootstrap_ubuntu.sh"
