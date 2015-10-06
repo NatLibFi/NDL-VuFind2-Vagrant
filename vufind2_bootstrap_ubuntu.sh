@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# VuFind2 'install path' ie. mount path of the host's shared folder
+# VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
 INSTALL_PATH='/usr/local/vufind2'
+SOLR_URL=''
 
 # Use single quotes instead of double quotes to make it work with special-character passwords
 PASSWORD='root' # change this to your liking
@@ -69,6 +70,11 @@ for x in *ini.sample; do
   fi
 done
 cp searchspecs.yaml.sample searchspecs.yaml
+cd
+# modify Solr URL if set
+if [ ! -z "$SOLR_URL" ]; then
+  sudo sed -i -e 's,;url *=,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
+fi
 
 # copy local dir inside virtual machine
 sudo mkdir -p /usr/local/vufind2_local
