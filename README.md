@@ -66,5 +66,5 @@ When addressing the _centos_ machine, just add ' centos' at the end of each comm
 
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
-- Copying the vufind2/local directory inside the virtual machine is a dirty hack to get the virtual machine to access local/cache. Any changes under local/config/ in the host need to be relayed to the virtual machine by running the provisioning with 'vagrant provision' (or building the virtual machine again with 'vagrant destroy' & 'vagrant up'). 
+- Copying the vufind2/local directory inside the virtual machine is a ~~dirty~~ hack to get the virtual machine to access local/cache. However, the changes in the host under local/config/ are now rsynced automatically to the virtual machine. If for some reason they are not, run 'vagrant rsync'. The rsyncing comes with the slight caveat for Windows users who need to download <a href="http://www.rsync.net/resources/binaries/cwRsync_5.4.1_x86_Free.zip">rsync</a> and install it with the default options
 - If running Solr, v.memory needs to be adjusted (2048 should work).
