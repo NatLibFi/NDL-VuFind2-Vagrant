@@ -2,13 +2,18 @@
 
 # VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
 INSTALL_PATH='/usr/local/vufind2'
-SOLR_URL=''
+SOLR_URL='http://localhost:8080/solr'
+#SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
 # Use single quotes instead of double quotes to make it work with special-character passwords
 PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
+TIMEZONE='Europe/Helsinki'
+
+# set timezone
+sudo timedatectl set-timezone $TIMEZONE
 
 # update / upgrade
 sudo apt-get update
@@ -73,7 +78,7 @@ cp searchspecs.yaml.sample searchspecs.yaml
 cd
 # modify Solr URL if set
 if [ ! -z "$SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *=,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
+  sudo sed -i -e 's,;url *= *\n,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
 fi
 
 # copy local dir inside virtual machine
@@ -89,4 +94,12 @@ service apache2 restart
 # create log file and change owner
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
+
+# run local Solr?
+if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
+  sudo $INSTALL_PATH/vufind.sh start
+#  if [ -z "$SAMPLE_DATA_PATH" ]; then
+#    sudo $INSTALL_PATH/import-marc.sh $SAMPLE_DATA_PATH
+#  fi
+fi
 

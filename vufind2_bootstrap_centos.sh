@@ -2,16 +2,22 @@
 
 # VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
 INSTALL_PATH='/usr/local/vufind2'
-SOLR_URL=''
+SOLR_URL='http://localhost:8080/solr'
+#SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
 # use single quotes instead of double quotes to make it work with special-character passwords
 GITHUB_USER='NatLibFi'
 DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
+TIMEZONE='Europe/Helsinki'
 
 # turn SELinux on
 sudo setenforce 1
+
+# set timezone
+sudo rm /etc/localtime
+sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 # update system
 sudo yum -y update
@@ -45,7 +51,7 @@ cp searchspecs.yaml.sample searchspecs.yaml
 cd
 # modify Solr URL if set
 if [ ! -z "$SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *=,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
+  sudo sed -i -e 's,;url *= *\n,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
 fi
 
 # install apache & php
@@ -124,6 +130,14 @@ sudo chkconfig mysqld on
 # turn on SELinux at boot
 sudo sed -i -e 's/SELINUX=permissive/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
+
+# run local Solr?
+if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
+  sudo $INSTALL_PATH/vufind.sh start
+#  if [ -z "$SAMPLE_DATA_PATH" ]; then
+#    sudo $INSTALL_PATH/import-marc.sh $SAMPLE_DATA_PATH
+#  fi
+fi
 
 # secure MySQL
 echo
