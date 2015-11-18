@@ -2,7 +2,7 @@
 
 # VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
 INSTALL_PATH='/usr/local/vufind2'
-SOLR_URL='http://localhost:8080/solr'
+#SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
 # Use single quotes instead of double quotes to make it work with special-character passwords
@@ -103,3 +103,42 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 #  fi
 fi
 
+# Oracle PHP OCI driver
+sudo pear upgrade pear
+mkdir -p /opt/oracle
+cd /opt/oracle
+sudo apt-get install -y unzip
+sudo unzip -o '/vagrant/*.zip' -d ./
+sudo ln -s instantclient_* instantclient
+cd /opt/oracle/instantclient
+sudo ln -s libclntsh.so.* libclntsh.so
+sudo ln -s libocci.so.* libocci.so
+sudo sh -c 'echo /opt/oracle/instantclient > /etc/ld.so.conf.d/oracle-instantclient'
+sudo sh -c 'echo instantclient,/opt/oracle/instantclient > sudo pecl install oci8' 
+sudo sh -c 'echo extension=oci8.so > /etc/php5/mods-available/oci8.ini'
+sudo php5enmod oci8
+sudo service apache2 reload
+
+# PDO_OCI
+#sudo apt-get install -y make build-essential libaio1
+sudo mkdir -p /tmp/pear/download/
+cd /tmp/pear/download/
+sudo pecl download pdo_oci
+sudo tar xvf PDO_OCI-*.tgz
+cd PDO_OCI-*
+sudo curl -o config.m4 http://pastebin.com/raw.php?i=20T49aHg
+sudo chmod +x config.m4
+sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
+
+sudo phpize
+sudo mkdir -p /opt/oracle/instantclient/lib/oracle/12.1
+sudo ln -s /opt/oracle/instantclient/sdk /opt/oracle/instantclient/lib/oracle/12.1/client
+sudo ln -s /opt/oracle/instantclient /opt/oracle/instantclient/lib/oracle/12.1/client/lib
+sudo ln -s /usr/include/php5 /usr/include/php
+sudo ./configure --with-pdo-oci=instantclient,/opt/oracle/instantclient,12.1
+sudo make
+sudo make install
+
+sudo sh -c 'echo extension=pdo_oci.so > /etc/php5/mods-available/pdo_oci.ini'
+sudo php5enmod pdo_oci
+sudo service apache2 reload
