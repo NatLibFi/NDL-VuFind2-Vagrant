@@ -1,16 +1,32 @@
 #!/usr/bin/env bash
 
-# VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
+#########################  C O N F I G U R A T I O N  #########################
+# Use single quotes instead of double to work with special-character passwords
+
+# VuFind2 'install path' ie. mount path of the host's shared folder
 INSTALL_PATH='/usr/local/vufind2'
 #SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
-# Use single quotes instead of double quotes to make it work with special-character passwords
+# MySQL
 PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
+
+# Timezone
 TIMEZONE='Europe/Helsinki'
+
+# Oracle PHP OCI Instant Client (Voyager)
+INSTALL_ORACLE=true
+INSTALLER_PATH='/vagrant'
+# version info
+VERSION='12_1'
+DOT_VERSION='12.1'
+# versions above 12.1 need a new config file to be created
+OCI_CONFIG_URL='http://pastebin.com/raw.php?i=20T49aHg'  # 20T49aHg <= v12.1  
+
+###############################################################################
 
 # set timezone
 sudo timedatectl set-timezone $TIMEZONE
@@ -19,7 +35,7 @@ sudo timedatectl set-timezone $TIMEZONE
 sudo apt-get update
 sudo apt-get -y upgrade
 
-# install apache 2.5
+# install apache 2
 sudo apt-get install -y apache2
 
 # install mysql and give password to installer
@@ -38,7 +54,7 @@ Q6="SOURCE $INSTALL_PATH/module/Finna/sql/mysql.sql;"
 SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
 $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
-# install php 5.5
+# install php 5
 sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql php5-xsl php5-intl php5-gd
 
 # change php.ini: display_errors = On, opcache.enable=0
@@ -104,41 +120,40 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 fi
 
 # Oracle PHP OCI driver
-sudo pear upgrade pear
-mkdir -p /opt/oracle
-cd /opt/oracle
-sudo apt-get install -y unzip
-sudo unzip -o '/vagrant/*.zip' -d ./
-sudo ln -s instantclient_* instantclient
-cd /opt/oracle/instantclient
-sudo ln -s libclntsh.so.* libclntsh.so
-sudo ln -s libocci.so.* libocci.so
-sudo sh -c 'echo /opt/oracle/instantclient > /etc/ld.so.conf.d/oracle-instantclient'
-sudo sh -c 'echo instantclient,/opt/oracle/instantclient > sudo pecl install oci8' 
-sudo sh -c 'echo extension=oci8.so > /etc/php5/mods-available/oci8.ini'
-sudo php5enmod oci8
-sudo service apache2 reload
+if [ "$INSTALL_ORACLE" = true ] ; then
+  sudo pear upgrade pear
+  mkdir -p /opt/oracle
+  cd /opt/oracle
+  sudo apt-get install -y unzip
+  sudo unzip -o "$INSTALLER_PATH/*.zip" -d ./
+  sudo ln -s /opt/oracle/instantclient_$VERSION/libclntsh.so.* /opt/oracle/instantclient_$VERSION/libclntsh.so
+  sudo ln -s /opt/oracle/instantclient_$VERSION/libocci.so.* /opt/oracle/instantclient_$VERSION/libocci.so
+  sudo sh -c "echo /opt/oracle/instantclient_$VERSION > /etc/ld.so.conf.d/oracle-instantclient"
+  sudo sh -c "echo instantclient,/opt/oracle/instantclient_$VERSION | sudo pecl install oci8" 
+  sudo sh -c 'echo extension=oci8.so > /etc/php5/mods-available/oci8.ini'
+  sudo ln -s /usr/include/php5 /usr/include/php
+  sudo php5enmod oci8
+  sudo service apache2 reload
 
-# PDO_OCI
-#sudo apt-get install -y make build-essential libaio1
-sudo mkdir -p /tmp/pear/download/
-cd /tmp/pear/download/
-sudo pecl download pdo_oci
-sudo tar xvf PDO_OCI-*.tgz
-cd PDO_OCI-*
-sudo curl -o config.m4 http://pastebin.com/raw.php?i=20T49aHg
-sudo chmod +x config.m4
-sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
-
-sudo phpize
-sudo mkdir -p /opt/oracle/instantclient/lib/oracle/12.1
-sudo ln -s /opt/oracle/instantclient/sdk /opt/oracle/instantclient/lib/oracle/12.1/client
-sudo ln -s /opt/oracle/instantclient /opt/oracle/instantclient/lib/oracle/12.1/client/lib
-sudo ln -s /usr/include/php5 /usr/include/php
-sudo ./configure --with-pdo-oci=instantclient,/opt/oracle/instantclient,12.1
-sudo make
-sudo make install
-
-sudo sh -c 'echo extension=pdo_oci.so > /etc/php5/mods-available/pdo_oci.ini'
-sudo php5enmod pdo_oci
-sudo service apache2 reload
+  # PDO_OCI
+  sudo pecl channel-update pear.php.net
+  sudo mkdir -p /tmp/pear/download/
+  cd /tmp/pear/download/
+  sudo pecl download pdo_oci
+  sudo tar xvf PDO_OCI-*.tgz
+  cd PDO_OCI-*
+  sudo curl -o config.m4 $OCI_CONFIG_URL
+  sudo chmod +x config.m4
+  sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
+  sudo phpize
+  sudo mkdir -p /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION
+  sudo ln -s /opt/oracle/instantclient_$VERSION/sdk /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION/client
+  sudo ln -s /opt/oracle/instantclient_$VERSION /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION/client/lib
+  sudo ln -s /usr/include/php5 /usr/include/php
+  sudo ./configure --with-pdo-oci=instantclient,/opt/oracle/instantclient_$VERSION,$DOT_VERSION
+  sudo make
+  sudo make install
+  sudo sh -c 'echo extension=pdo_oci.so > /etc/php5/mods-available/pdo_oci.ini'
+  sudo php5enmod pdo_oci
+  sudo service apache2 reload
+fi
