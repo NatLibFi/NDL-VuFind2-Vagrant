@@ -2,7 +2,7 @@
 
 # VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
 INSTALL_PATH='/usr/local/vufind2'
-SOLR_URL='http://localhost:8080/solr'
+#SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
 # use single quotes instead of double quotes to make it work with special-character passwords
@@ -65,6 +65,9 @@ if php --version | grep -q "PHP 5.3"; then
   sudo rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
   sudo yum -y install yum-plugin-replace
   sudo yum -y replace php-common --replace-with=php56w-common
+  sudo yum -y remove php-pear
+  sudo rm -rf /usr/share/pear 
+  sudo yum -y install php56w-pear
 fi
 
 # configure php
@@ -139,8 +142,46 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 #  fi
 fi
 
+# Oracle PHP OCI driver
+#sudo pear upgrade pear
+sudo yum -y install libaio
+mkdir -p /tmp/oracle
+cd /tmp/oracle
+sudo cp /vagrant/*.rpm ./
+sudo rpm -Uvh oracle-instantclient*-basic-*.x86_64.rpm
+sudo rpm -Uvh oracle-instantclient*-devel-*.x86_64.rpm
+sudo chcon -t textrel_shlib_t /usr/lib/oracle/12.1/client64/lib/*.so
+#sudo execstack -c /usr/lib/oracle/12.1/client64/lib/*.so.*
+sudo setsebool -P httpd_execmem 1
+sudo yum -y install gcc
+sudo sh -c 'echo /usr/lib/oracle/12.1/client64 > /etc/ld.so.conf.d/oracle-instantclient'
+sudo sh -c 'echo instantclient,/usr/lib/oracle/12.1/client64/lib | pecl install oci8'
+sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/oci8.so
+sudo chmod +x /usr/lib64/php/modules/oci8.so
+sudo sh -c 'echo extension=oci8.so > /etc/php.d/oci8.ini'
+sudo apachectl restart
+
+# PDO_OCI
+sudo mkdir -p /tmp/pear/download/
+cd /tmp/pear/download/
+sudo pecl download pdo_oci
+sudo tar xvf PDO_OCI-*.tgz
+cd PDO_OCI-*
+sudo curl -o config.m4 http://pastebin.com/raw.php?i=20T49aHg
+sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
+sudo ln -s /usr/include/oracle/12.1/client64 /usr/include/oracle/12.1/client
+sudo ln -s /usr/lib/oracle/12.1/client64 /usr/lib/oracle/12.1/client
+sudo phpize
+sudo ./configure --with-pdo-oci=instantclient,/usr,12.1
+sudo make
+sudo make install
+sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/pdo_oci.so
+sudo sh -c 'echo extension=pdo_oci.so > /etc/php.d/pdo_oci.ini'
+sudo apachectl restart
+sudo setsebool -P httpd_can_network_relay=1
+
 # secure MySQL
-echo
+echo ------------------------------------------------------------
 echo "PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER!"
 echo "It is also recommended to remove anonymous user and test databases. Please run:"
 echo "/usr/bin/mysql_secure_installation"
