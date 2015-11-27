@@ -3,7 +3,7 @@
 #########################  C O N F I G U R A T I O N  #########################
 # Use single quotes instead of double to work with special-character passwords
 
-# VuFind2 'install path' ie. mount path of the host's shared folder
+# VuFind2 install path in the guest machine
 INSTALL_PATH='/usr/local/vufind2'
 #SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
@@ -17,14 +17,15 @@ DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
 
-# Timezone
+# timezone
 TIMEZONE='Europe/Helsinki'
 
 # Oracle PHP OCI Instant Client (Voyager)
-INSTALL_ORACLE=true
-INSTALLER_PATH='/vagrant'
+INSTALL_ORACLE_CLIENT=true         # make sure you have the installer ZIP files
+ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
+ORACLE_FILES_EXIST=false           # this must be set to false
 # version info
-VERSION='12.1'
+OCI_VERSION='12.1'
 # versions above 12.1 need a new config file to be created
 OCI_CONFIG_URL='http://pastebin.com/raw.php?i=20T49aHg'  # 20T49aHg <= v12.1  
 
@@ -161,20 +162,24 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 fi
 
 # Oracle PHP OCI driver
-if [ "$INSTALL_ORACLE" = true ] ; then
+for f in $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm; do
+  [ -e "$f" ] && ORACLE_FILES_EXIST=true || echo "No Oracle installer RPM files found!"
+  break
+done
+if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   #sudo pear upgrade pear
   sudo yum -y install libaio
   mkdir -p /tmp/oracle
   cd /tmp/oracle
-  sudo cp $INSTALLER_PATH/*.rpm ./
-  sudo rpm -Uvh oracle-instantclient*-basic-*.x86_64.rpm
-  sudo rpm -Uvh oracle-instantclient*-devel-*.x86_64.rpm
-  sudo chcon -t textrel_shlib_t /usr/lib/oracle/$VERSION/client64/lib/*.so
+  sudo cp $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm ./
+  sudo rpm -Uvh oracle-instantclient$OCI_VERSION*-basic-*.x86_64.rpm
+  sudo rpm -Uvh oracle-instantclient$OCI_VERSION*-devel-*.x86_64.rpm
+  sudo chcon -t textrel_shlib_t /usr/lib/oracle/$OCI_VERSION/client64/lib/*.so
   #sudo execstack -c /usr/lib/oracle/$VERSION/client64/lib/*.so.*
   sudo setsebool -P httpd_execmem 1
   sudo yum -y install gcc
-  sudo sh -c "echo /usr/lib/oracle/$VERSION/client64 > /etc/ld.so.conf.d/oracle-instantclient"
-  sudo sh -c "echo instantclient,/usr/lib/oracle/$VERSION/client64/lib | pecl install oci8"
+  sudo sh -c "echo /usr/lib/oracle/$OCI_VERSION/client64 > /etc/ld.so.conf.d/oracle-instantclient"
+  sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8"
   sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/oci8.so
   sudo chmod +x /usr/lib64/php/modules/oci8.so
   sudo sh -c 'echo extension=oci8.so > /etc/php.d/oci8.ini'
@@ -188,10 +193,10 @@ if [ "$INSTALL_ORACLE" = true ] ; then
   cd PDO_OCI-*
   sudo curl -o config.m4 $OCI_CONFIG_URL
   sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
-  sudo ln -s /usr/include/oracle/$VERSION/client64 /usr/include/oracle/$VERSION/client
-  sudo ln -s /usr/lib/oracle/$VERSION/client64 /usr/lib/oracle/$VERSION/client
+  sudo ln -s /usr/include/oracle/$OCI_VERSION/client64 /usr/include/oracle/$OCI_VERSION/client
+  sudo ln -s /usr/lib/oracle/$OCI_VERSION/client64 /usr/lib/oracle/$OCI_VERSION/client
   sudo phpize
-  sudo ./configure --with-pdo-oci=instantclient,/usr,$VERSION
+  sudo ./configure --with-pdo-oci=instantclient,/usr,$OCI_VERSION
   sudo make
   sudo make install
   sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/pdo_oci.so

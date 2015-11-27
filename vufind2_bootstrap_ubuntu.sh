@@ -14,15 +14,16 @@ DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
 
-# Timezone
+# timezone
 TIMEZONE='Europe/Helsinki'
 
 # Oracle PHP OCI Instant Client (Voyager)
-INSTALL_ORACLE=true
-INSTALLER_PATH='/vagrant'
+INSTALL_ORACLE_CLIENT=true         # make sure you have the installer RPM files
+ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
+ORACLE_FILES_EXIST=false           # this must be set to false
 # version info
-VERSION='12_1'
-DOT_VERSION='12.1'
+OCI_VERSION='12_1'
+OCI_DOT_VERSION='12.1'
 # versions above 12.1 need a new config file to be created
 OCI_CONFIG_URL='http://pastebin.com/raw.php?i=20T49aHg'  # 20T49aHg <= v12.1  
 
@@ -120,16 +121,20 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 fi
 
 # Oracle PHP OCI driver
-if [ "$INSTALL_ORACLE" = true ] ; then
+for f in $ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip; do
+  [ -e "$f" ] && ORACLE_FILES_EXIST=true || echo "No Oracle installer ZIP files found!"
+  break
+done
+if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   sudo pear upgrade pear
   mkdir -p /opt/oracle
   cd /opt/oracle
   sudo apt-get install -y unzip
-  sudo unzip -o "$INSTALLER_PATH/*.zip" -d ./
-  sudo ln -s /opt/oracle/instantclient_$VERSION/libclntsh.so.* /opt/oracle/instantclient_$VERSION/libclntsh.so
-  sudo ln -s /opt/oracle/instantclient_$VERSION/libocci.so.* /opt/oracle/instantclient_$VERSION/libocci.so
-  sudo sh -c "echo /opt/oracle/instantclient_$VERSION > /etc/ld.so.conf.d/oracle-instantclient"
-  sudo sh -c "echo instantclient,/opt/oracle/instantclient_$VERSION | sudo pecl install oci8" 
+  sudo unzip -o "$ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip" -d ./
+  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
+  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
+  sudo sh -c "echo /opt/oracle/instantclient_$OCI_VERSION > /etc/ld.so.conf.d/oracle-instantclient"
+  sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | sudo pecl install oci8" 
   sudo sh -c 'echo extension=oci8.so > /etc/php5/mods-available/oci8.ini'
   sudo ln -s /usr/include/php5 /usr/include/php
   sudo php5enmod oci8
@@ -146,14 +151,23 @@ if [ "$INSTALL_ORACLE" = true ] ; then
   sudo chmod +x config.m4
   sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
   sudo phpize
-  sudo mkdir -p /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION
-  sudo ln -s /opt/oracle/instantclient_$VERSION/sdk /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION/client
-  sudo ln -s /opt/oracle/instantclient_$VERSION /opt/oracle/instantclient_$VERSION/lib/oracle/$DOT_VERSION/client/lib
+  sudo mkdir -p /opt/oracle/instantclient_$OCI_VERSION/lib/oracle/$OCI_DOT_VERSION
+  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/sdk /opt/oracle/instantclient_$OCI_VERSION/lib/oracle/$OCI_DOT_VERSION/client
+  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION /opt/oracle/instantclient_$OCI_VERSION/lib/oracle/$OCI_DOT_VERSION/client/lib
   sudo ln -s /usr/include/php5 /usr/include/php
-  sudo ./configure --with-pdo-oci=instantclient,/opt/oracle/instantclient_$VERSION,$DOT_VERSION
+  sudo ./configure --with-pdo-oci=instantclient,/opt/oracle/instantclient_$OCI_VERSION,$OCI_DOT_VERSION
   sudo make
   sudo make install
   sudo sh -c 'echo extension=pdo_oci.so > /etc/php5/mods-available/pdo_oci.ini'
   sudo php5enmod pdo_oci
   sudo service apache2 reload
+
+  # sqlplus
+  sudo apt-get install -y rlwrap
+  echo "alias sqlplus='rlwrap sqlplus'" >> /home/vagrant/.bashrc
+  echo "export LD_LIBRARY_PATH=/opt/oracle/instantclient_$OCI_VERSION"  >> /home/vagrant/.bashrc
+  echo "export SQLPATH=~/code/oracle-scripts/scripts:/opt/oracle/instantclient_$OCI_VERSION" >> /home/vagrant/.bashrc
+  echo "PATH=$PATH:/opt/oracle/instantclient_$OCI_VERSION" >> /home/vagrant/.bashrc
+  echo "export TNS_ADMIN=/opt/oracle/instantclient_$OCI_VERSION" >> /home/vagrant/.bashrc
+  source /home/vagrant/.bashrc
 fi
