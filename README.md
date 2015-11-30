@@ -9,6 +9,7 @@ Vagrant setup for NDL VuFind2 with two separate virtual machines:
 
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
+- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/PHP-OCI_Oracle/oracle">README</a> for details.
 
 _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
@@ -16,7 +17,7 @@ _ubuntu_:
 
 #### Set-up
 
-See the bootstrap files for possible config changes prior to running the VMs.
+Put the downloaded Oracle installer files to the _oracle/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
 
 _ubuntu_:
 
