@@ -24,6 +24,7 @@ TIMEZONE='Europe/Helsinki'
 INSTALL_ORACLE_CLIENT=true         # make sure you have the installer ZIP files
 ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
 ORACLE_FILES_EXIST=false           # this must be set to false
+CONFIG_PATH='/vagrant/config'      # Voyager config files
 # version info
 OCI_VERSION='12.1'
 # versions above 12.1 need a new config file to be created
@@ -204,6 +205,19 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   sudo apachectl restart
   sudo setsebool -P httpd_can_network_relay=1
   sudo setsebool -P httpd_can_network_connect 1
+
+  # conf files
+  shopt -s nullglob
+  voyagers=(/vagrant/config/VoyagerRestful_*.ini)
+  shopt -u nullglob
+  if [ ${#voyagers[@]} -gt 0 ]; then
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $INSTALL_PATH/local/config/vufind/
+    for i in "${voyagers[@]}"; do
+      org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
+      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $INSTALL_PATH/local/config/finna/MultiBackend.ini
+    done
+  fi
+
 fi
 
 # secure MySQL

@@ -5,6 +5,8 @@
 
 # VuFind2 'install path' ie. mount path of the host's shared folder
 INSTALL_PATH='/usr/local/vufind2'
+# local directory inside the guest copied from the host
+LOCAL_DIR='/usr/local/vufind2_local'
 #SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
@@ -21,6 +23,7 @@ TIMEZONE='Europe/Helsinki'
 INSTALL_ORACLE_CLIENT=true         # make sure you have the installer RPM files
 ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
 ORACLE_FILES_EXIST=false           # this must be set to false
+CONFIG_PATH='/vagrant/config'      # Voyager config files
 # version info
 OCI_VERSION='12_1'
 OCI_DOT_VERSION='12.1'
@@ -99,11 +102,11 @@ if [ ! -z "$SOLR_URL" ]; then
 fi
 
 # copy local dir inside virtual machine
-sudo mkdir -p /usr/local/vufind2_local
-sudo cp -rf $INSTALL_PATH/local/* /usr/local/vufind2_local/
-sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$INSTALL_PATH"'/local,VUFIND_LOCAL_DIR /usr/local/vufind2_local,' /etc/apache2/conf-available/httpd-vufind.conf
-sudo chown -R vagrant:vagrant /usr/local/vufind2_local
-sudo chown -R www-data:www-data /usr/local/vufind2_local/cache
+sudo mkdir -p $LOCAL_DIR
+sudo cp -rf $INSTALL_PATH/local/* $LOCAL_DIR
+sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$INSTALL_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
+sudo chown -R vagrant:vagrant $LOCAL_DIR
+sudo chown -R www-data:www-data $LOCAL_DIR/cache
 
 # restart apache
 service apache2 restart
@@ -170,4 +173,19 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   echo "PATH=$PATH:/opt/oracle/instantclient_$OCI_VERSION" >> /home/vagrant/.bashrc
   echo "export TNS_ADMIN=/opt/oracle/instantclient_$OCI_VERSION" >> /home/vagrant/.bashrc
   source /home/vagrant/.bashrc
+  if [ -f $ORACLE_PATH/tnsnames.ora ]; then
+    cp -rf $ORACLE_PATH/tnsnames.ora /opt/oracle/instantclient_$OCI_VERSION/
+  fi
+
+  # conf files
+  shopt -s nullglob
+  voyagers=($CONFIG_PATH/VoyagerRestful_*.ini)
+  shopt -u nullglob
+  if [ ${#voyagers[@]} -gt 0 ]; then
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $LOCAL_DIR/config/vufind/
+    for i in "${voyagers[@]}"; do
+      org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
+      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $LOCAL_DIR/config/finna/MultiBackend.ini
+    done
+  fi
 fi
