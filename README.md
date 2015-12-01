@@ -1,9 +1,9 @@
 ### NDL-VuFind2-Vagrant
 Vagrant setup for NDL VuFind2 with two separate virtual machines:
 - **ubuntu** (default)
-  - for development, uses working files from the host's filesystem
+  - for development, uses NDL-VuFind2 files from the host's filesystem
 - **centos**
-  - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows
+  - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
 #### Requirements
 
@@ -13,25 +13,30 @@ Vagrant setup for NDL VuFind2 with two separate virtual machines:
 
 _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
-  - with a working configuration - for the minimum, either import some data to Solr or change the config to use a remote Solr URL (like the NDL development index - for limited users only).
+  - with a working configuration - for the minimum, ~~either import some data to Solr or~~ change the _local/config/vufind/config.ini_ to use a remote Solr URL (like the NDL development index - for limited users only).
 
 #### Set-up
 
-Put the downloaded Oracle installer files to the _oracle/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
-
 _ubuntu_:
 
-Put the files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_. If the working directory is other than _vufind2_, modify the _Vagrantfile_ accordingly.
+Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_. If the working directory is other than _vufind2_, modify the _Vagrantfile_ accordingly.<br/>
+If using sqlplus from Oracle, put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
 _centos_:
 
-If only using _centos_, any directory with sufficent user permissions will do. If using both, the _ubuntu_ directory is fine.
+If only using _centos_, any directory with sufficent user permissions will do. If using both, the same directory with _ubuntu_ is fine.
+
+_both/either_:
+
+Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
 
 #### Use
 
 _ubuntu_:
 - 'vagrant up'
   - This will take a few minutes, so enjoy your beverage of choice!
+- 'vagrant rsync-auto'
+  - Just to make sure rsyncing is really working as sometimes it fails if not run manually. 
 - Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
   - Blank page or errors: adjust the config(s), check that rsync works (run 'vagrant rsync-auto' if not), reload browser page.
 
@@ -46,9 +51,11 @@ _centos_:
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
-**Import data**: put the file(s) (eg. _data.xml_) into the same host directory, ssh into the VM and use an import script in _/usr/local/vufind2_ e.g. '/usr/local/vufind2/import-marc.sh /vagrant/data.xml'
+**Import data**: ~~put the file(s) (e.g. _data.xml_) into the same host directory, ssh into the VM and use an import script in _/usr/local/vufind2_ e.g. '/usr/local/vufind2/import-marc.sh /vagrant/data.xml'~~
 
-**Solr**: '/usr/local/vufind2/vufind.sh start/stop/restart' inside the VM to control the running state (use without attributes to see all options).
+**Solr**: ~~'/usr/local/vufind2/vufind.sh start/stop/restart' inside the VM to control the running state (use without attributes to see all options).~~
+
+The integrated Solr is incompatible with NDL-VuFind2. At the moment, an external index (via working URL in config.ini) is the best/easiest way to use these virtual machines.
 
 #### Useful commands
 * 'vagrant reload'
