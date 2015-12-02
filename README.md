@@ -5,8 +5,6 @@ Vagrant setup for NDL VuFind2 with two separate virtual machines:
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows
 
-If you need the Oracle Instant Client (for eg. Voyager) see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/PHP-OCI_Oracle">PHP-OCI_Oracle</a> branch.
-
 #### Requirements
 
 - <a href="https://www.virtualbox.org">VirtualBox</a>
