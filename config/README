@@ -1,0 +1,11 @@
+If you don't already have the Voyager holdings information configuration files inside the local/config, you can copy the files here and during provisioning the files will be copied to their correct place inside the virtual machine. Also MultiBackend.ini will be modified accorgingly based on the file names.
+
+The files should be named according to the pattern 'VoyagerRestful_orgname.ini'.
+Some examples:
+    - VoyagerResful_jykdok.ini,
+    - VoyagerRestful_helka.ini or
+    - VoyagerRestful_oula.ini
+
+Of course, the files need to contain correct credentials among other settings.
+
+Alternatively you can copy the files manually to vufind2/local/config/vufind/ and adjust the MultiBackend.ini in vufind2/local/config/finna

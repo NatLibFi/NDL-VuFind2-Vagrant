@@ -1,16 +1,36 @@
 #!/bin/bash
 
-# VuFind2 'install path' ie. mount path of the host's shared folder, Solr index URL
+#########################  C O N F I G U R A T I O N  #########################
+# Use single quotes instead of double to work with special-character passwords
+
+# VuFind2 install path in the guest machine
 INSTALL_PATH='/usr/local/vufind2'
-SOLR_URL='http://localhost:8080/solr'
+#SOLR_URL='http://localhost:8080/solr'
 #SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
-# use single quotes instead of double quotes to make it work with special-character passwords
+# GitHub
 GITHUB_USER='NatLibFi'
+
+# MySQL
+PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
+
+# timezone
 TIMEZONE='Europe/Helsinki'
+
+# Oracle PHP OCI Instant Client (Voyager)
+INSTALL_ORACLE_CLIENT=true         # make sure you have the installer ZIP files
+ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
+ORACLE_FILES_EXIST=false           # this must be set to false
+CONFIG_PATH='/vagrant/config'      # Voyager config files
+# version info
+OCI_VERSION='12.1'
+# versions above 12.1 need a new config file to be created
+OCI_CONFIG_URL='http://pastebin.com/raw.php?i=20T49aHg'  # 20T49aHg <= v12.1  
+
+###############################################################################
 
 # turn SELinux on
 sudo setenforce 1
@@ -65,6 +85,9 @@ if php --version | grep -q "PHP 5.3"; then
   sudo rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
   sudo yum -y install yum-plugin-replace
   sudo yum -y replace php-common --replace-with=php56w-common
+  sudo yum -y remove php-pear
+  sudo rm -rf /usr/share/pear 
+  sudo yum -y install php56w-pear
 fi
 
 # configure php
@@ -139,10 +162,69 @@ if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
 #  fi
 fi
 
+# Oracle PHP OCI driver
+for f in $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm; do
+  [ -e "$f" ] && ORACLE_FILES_EXIST=true || echo "No Oracle installer RPM files found!"
+  break
+done
+if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
+  #sudo pear upgrade pear
+  sudo yum -y install libaio
+  mkdir -p /tmp/oracle
+  cd /tmp/oracle
+  sudo cp $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm ./
+  sudo rpm -Uvh oracle-instantclient$OCI_VERSION*-basic-*.x86_64.rpm
+  sudo rpm -Uvh oracle-instantclient$OCI_VERSION*-devel-*.x86_64.rpm
+  sudo chcon -t textrel_shlib_t /usr/lib/oracle/$OCI_VERSION/client64/lib/*.so
+  #sudo execstack -c /usr/lib/oracle/$VERSION/client64/lib/*.so.*
+  sudo setsebool -P httpd_execmem 1
+  sudo yum -y install gcc
+  sudo sh -c "echo /usr/lib/oracle/$OCI_VERSION/client64 > /etc/ld.so.conf.d/oracle-instantclient"
+  sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8"
+  sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/oci8.so
+  sudo chmod +x /usr/lib64/php/modules/oci8.so
+  sudo sh -c 'echo extension=oci8.so > /etc/php.d/oci8.ini'
+  sudo apachectl restart
+
+  # PDO_OCI
+  sudo mkdir -p /tmp/pear/download/
+  cd /tmp/pear/download/
+  sudo pecl download pdo_oci
+  sudo tar xvf PDO_OCI-*.tgz
+  cd PDO_OCI-*
+  sudo curl -o config.m4 $OCI_CONFIG_URL
+  sudo sed -i -e 's/function_entry pdo_oci_functions/zend_function_entry pdo_oci_functions/' pdo_oci.c
+  sudo ln -s /usr/include/oracle/$OCI_VERSION/client64 /usr/include/oracle/$OCI_VERSION/client
+  sudo ln -s /usr/lib/oracle/$OCI_VERSION/client64 /usr/lib/oracle/$OCI_VERSION/client
+  sudo phpize
+  sudo ./configure --with-pdo-oci=instantclient,/usr,$OCI_VERSION
+  sudo make
+  sudo make install
+  sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/pdo_oci.so
+  sudo sh -c 'echo extension=pdo_oci.so > /etc/php.d/pdo_oci.ini'
+  sudo apachectl restart
+  sudo setsebool -P httpd_can_network_relay=1
+  sudo setsebool -P httpd_can_network_connect 1
+
+  # conf files
+  shopt -s nullglob
+  voyagers=(/vagrant/config/VoyagerRestful_*.ini)
+  shopt -u nullglob
+  if [ ${#voyagers[@]} -gt 0 ]; then
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $INSTALL_PATH/local/config/vufind/
+    for i in "${voyagers[@]}"; do
+      org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
+      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $INSTALL_PATH/local/config/finna/MultiBackend.ini
+    done
+  fi
+
+fi
+
 # secure MySQL
-echo
-echo "PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER!"
-echo "It is also recommended to remove anonymous user and test databases. Please run:"
-echo "/usr/bin/mysql_secure_installation"
-echo
+echo ' '
+echo ------------------------------------------------------------
+echo 'PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER!'
+echo 'It is also recommended to remove anonymous user and test databases. Please run:'
+echo '/usr/bin/mysql_secure_installation'
+echo ' '
 
