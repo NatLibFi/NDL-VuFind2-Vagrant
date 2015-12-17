@@ -42,6 +42,7 @@ Vagrant.configure(2) do |config|
 
     # Create a forwarded port mapping
     centos.vm.network "forwarded_port", guest: 80, host: 8082
+    centos.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     centos.vm.provision :shell, path: "vufind2_bootstrap_centos.sh"
