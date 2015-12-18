@@ -39,7 +39,6 @@ EXTERNAL_SOLR_URL=''
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
-MONGODB_INIT_URL='https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d'
 SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
 
 ###############################################################################
@@ -108,10 +107,6 @@ for x in *ini.sample; do
 done
 cp searchspecs.yaml.sample searchspecs.yaml
 cd
-# modify Solr URL if set
-if [ ! -z "$SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *\n,url = '"$SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
-fi
 
 # copy local dir inside virtual machine
 sudo mkdir -p $LOCAL_DIR
@@ -119,6 +114,11 @@ sudo cp -rf $VUFIND2_PATH/local/* $LOCAL_DIR
 sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$VUFIND2_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
 sudo chown -R vagrant:vagrant $LOCAL_DIR
 sudo chown -R www-data:www-data $LOCAL_DIR/cache
+
+# modify Solr URL if set
+if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
+  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $LOCAL_DIR/config/vufind/config.ini
+fi
 
 # restart apache
 service apache2 reload
@@ -248,11 +248,6 @@ if [ "$INSTALL_RM" = true ]; then
   echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
   sudo apt-get update
   sudo apt-get install -y mongodb-org
-#  sudo service mongod start
-  # start at boot
-#  sudo curl -o /etc/init.d/mongodb $MONGODB_INIT_URL
-#  sudo chmod +x /etc/init.d/mongodb
-#  sudo update-rc.d mongodb defaults
 
   # install RM
   sudo mkdir -p $RM_PATH
