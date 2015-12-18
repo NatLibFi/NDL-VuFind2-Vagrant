@@ -4,11 +4,9 @@
 # Use single quotes instead of double to work with special-character passwords
 
 # VuFind2 'install path' ie. mount path of the host's shared folder
-INSTALL_PATH='/usr/local/vufind2'
+VUFIND2_PATH='/usr/local/vufind2'
 # local directory inside the guest copied from the host
 LOCAL_DIR='/usr/local/vufind2_local'
-#SOLR_URL='http://localhost:8080/solr'
-#SAMPLE_DATA_PATH=''  # eg. /vagrant/violasample.xml, use MARC!
 
 # MySQL
 PASSWORD='root' # change this to your liking
@@ -20,15 +18,28 @@ USER_PW='vufind'
 TIMEZONE='Europe/Helsinki'
 
 # Oracle PHP OCI Instant Client (Voyager)
-INSTALL_ORACLE_CLIENT=true         # make sure you have the installer RPM files
-ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads
-ORACLE_FILES_EXIST=false           # this must be set to false
-CONFIG_PATH='/vagrant/config'      # Voyager config files
+INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer ZIP files
+ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
+CONFIG_PATH='/vagrant/config'      # Voyager config files.
 # version info
 OCI_VERSION='12_1'
 OCI_DOT_VERSION='12.1'
 # versions above 12.1 need a new config file to be created
-OCI_CONFIG_URL='http://pastebin.com/raw.php?i=20T49aHg'  # 20T49aHg <= v12.1  
+OCI_CONFIG_URL='http://pastebin.com/raw/20T49aHg'  # 20T49aHg <= v12.1
+
+# Solr
+INSTALL_SOLR=true                  # If true you will also need RecordManager!
+SOLR_PATH='/data/solr'             # Separately installing one without the other
+JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
+JAVA_HEAP_MAX='512m'               # process if errors arise.
+
+# External index URL if not installing Solr + RecordManager locally.
+EXTERNAL_SOLR_URL=''
+
+# RecordManager
+INSTALL_RM=true
+RM_PATH='/usr/local/RecordManager'
+SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
 
 ###############################################################################
 
@@ -53,8 +64,8 @@ Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
 Q2="GRANT ALL ON $DATABASE.* TO '$USER'@'localhost' IDENTIFIED BY '$USER_PW';"
 Q3="FLUSH PRIVILEGES;"
 Q4="USE $DATABASE;"
-Q5="SOURCE $INSTALL_PATH/module/VuFind/sql/mysql.sql;"
-Q6="SOURCE $INSTALL_PATH/module/Finna/sql/mysql.sql;"
+Q5="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"
+Q6="SOURCE $VUFIND2_PATH/module/Finna/sql/mysql.sql;"
 SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
 $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
@@ -72,14 +83,14 @@ sudo apt-get -y install default-jdk
 sudo a2enmod rewrite
 
 # link VuFind to Apache
-sudo cp -f $INSTALL_PATH/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
-sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$INSTALL_PATH"',' /etc/apache2/conf-available/httpd-vufind.conf
+sudo cp -f $VUFIND2_PATH/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
+sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$VUFIND2_PATH"',' /etc/apache2/conf-available/httpd-vufind.conf
 if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
 # copy sample configs to ini files
-cd $INSTALL_PATH/local/config/finna
+cd $VUFIND2_PATH/local/config/finna
 for x in *.ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -87,7 +98,7 @@ for x in *.ini.sample; do
   fi
 done
 
-cd $INSTALL_PATH/local/config/vufind
+cd $VUFIND2_PATH/local/config/vufind
 for x in *ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -96,38 +107,34 @@ for x in *ini.sample; do
 done
 cp searchspecs.yaml.sample searchspecs.yaml
 cd
-# modify Solr URL if set
-if [ ! -z "$SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *\n,url = '"$SOLR_URL"',' $INSTALL_PATH/local/config/vufind/config.ini
-fi
 
 # copy local dir inside virtual machine
 sudo mkdir -p $LOCAL_DIR
-sudo cp -rf $INSTALL_PATH/local/* $LOCAL_DIR
-sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$INSTALL_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
+sudo cp -rf $VUFIND2_PATH/local/* $LOCAL_DIR
+sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$VUFIND2_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
 sudo chown -R vagrant:vagrant $LOCAL_DIR
 sudo chown -R www-data:www-data $LOCAL_DIR/cache
 
+# modify Solr URL if set
+if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
+  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $LOCAL_DIR/config/vufind/config.ini
+fi
+
 # restart apache
-service apache2 restart
+service apache2 reload
 
 # create log file and change owner
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
-# run local Solr?
-if [ "$SOLR_URL" = "http://localhost:8080/solr" ]; then
-  sudo $INSTALL_PATH/vufind.sh start
-#  if [ -z "$SAMPLE_DATA_PATH" ]; then
-#    sudo $INSTALL_PATH/import-marc.sh $SAMPLE_DATA_PATH
-#  fi
-fi
-
 # Oracle PHP OCI driver
-for f in $ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip; do
-  [ -e "$f" ] && ORACLE_FILES_EXIST=true || echo "No Oracle installer ZIP files found!"
-  break
-done
+if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
+  ORACLE_FILES_EXIST=false
+  for f in $ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip; do
+    [ -e "$f" ] && ORACLE_FILES_EXIST=true || echo "No Oracle installer ZIP files found!"
+    break
+  done
+fi
 if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   sudo pear upgrade pear
   mkdir -p /opt/oracle
@@ -137,7 +144,13 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
   sudo sh -c "echo /opt/oracle/instantclient_$OCI_VERSION > /etc/ld.so.conf.d/oracle-instantclient"
-  sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | sudo pecl install oci8" 
+  if php --version | grep -q "PHP 7"; then
+    # oci8 2.1.0 and up needs php7
+    sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | pecl install oci8"
+  else
+    # use older version
+    sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | pecl install oci8-2.0.10"
+  fi
   sudo sh -c 'echo extension=oci8.so > /etc/php5/mods-available/oci8.ini'
   sudo ln -s /usr/include/php5 /usr/include/php
   sudo php5enmod oci8
@@ -189,3 +202,73 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
     done
   fi
 fi
+
+# Solr
+if [ "$INSTALL_SOLR" = true ]; then
+  # libvoikko
+  sudo apt-get install -y libvoikko-dev
+  sudo ldconfig
+  sudo mkdir -p /tmp/libvoikko
+  cd /tmp/libvoikko
+  sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-laaketiede.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
+  sudo unzip -d /etc/voikko '*.zip'
+
+  # install Solr
+  sudo mkdir -p $SOLR_PATH
+  sudo apt-get install -y git
+  sudo git clone https://github.com/NatLibFi/NDL-VuFind-Solr.git $SOLR_PATH
+  sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
+  sudo su -c "useradd solr -m"
+  sudo su -c 'echo solr:rlos | chpasswd'
+  sudo chown -R solr:solr $SOLR_PATH
+  sudo cp $SOLR_PATH/vufind/solr.finna-init-script /etc/init.d/solr
+  sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample $SOLR_PATH/vufind/biblio/core.properties
+  sudo chmod +x /etc/init.d/solr
+  # set java heap min/max
+  sudo sed -i 's/SOLR_JAVA_MEM=/#SOLR_JAVA_MEM=/' $SOLR_PATH/vufind/solr.in.finna.sh
+  sudo sed -i '/#SOLR_JAVA_MEM/a SOLR_JAVA_MEM="-Xms'"$JAVA_HEAP_MIN"' -Xmx'"$JAVA_HEAP_MAX"'"' $SOLR_PATH/vufind/solr.in.finna.sh
+  # fix solr local dir setting in vufind
+  sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $LOCAL_DIR/local/config/vufind/config.ini
+  sudo service solr start
+  # start at boot
+  sudo update-rc.d solr defaults
+fi
+
+# RecordManager
+if [ "$INSTALL_RM" = true ]; then
+#  sudo yum -y install openssl-devel policycoreutils-python
+  sudo sh -c 'echo no | sudo pecl install mongo'
+  sudo sh -c 'echo extension=mongo.so > /etc/php5/mods-available/mongo.ini'
+  sudo php5enmod mongo
+  sudo service apache2 reload
+  sudo pear channel-update pear.php.net
+  sudo pear install HTTP_Request2
+  # MongoDB
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+  echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+  sudo apt-get update
+  sudo apt-get install -y mongodb-org
+
+  # install RM
+  sudo mkdir -p $RM_PATH
+  cd $RM_PATH
+  sudo git clone https://github.com/NatLibFi/RecordManager.git .
+  mongo recman dbscripts/mongo.js
+  sudo cp conf/abbreviations.lst.sample conf/abbreviations.lst
+  sudo cp conf/articles.lst.sample conf/articles.lst
+  sudo cp conf/recordmanager.ini.sample conf/recordmanager.ini
+  sudo sed -i -e 's,http://localhost:8080/solr/biblio/update/json,http://localhost:8983/solr/biblio/update,' conf/recordmanager.ini
+  # just a sample config - for actual use replace this with a proper one
+  sudo cat <<EOF >> conf/datasources.ini
+[sample]
+institution = testituutio
+recordXPath = "//record"
+format = marc
+EOF
+  # import sample data and load records into Solr
+  if [ -f "$SAMPLE_DATA" ]; then
+    sudo php import.php --file=$SAMPLE_DATA --source=sample
+    sudo php manage.php --func=updatesolr 
+  fi
+fi
+
