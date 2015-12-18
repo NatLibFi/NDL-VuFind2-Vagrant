@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
 
     # Create a forwarded port mapping
     ubuntu.vm.network "forwarded_port", guest: 80, host: 8081
+    ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
 
     # Share an additional folder to the guest VM.
     ubuntu.vm.synced_folder "../vufind2", "/usr/local/vufind2"
