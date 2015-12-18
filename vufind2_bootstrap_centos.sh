@@ -174,7 +174,6 @@ if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
   done
 fi
 if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ]; then
-  #sudo pear upgrade pear  # commented out due to breaking something
   sudo yum -y install libaio
   mkdir -p /tmp/oracle
   cd /tmp/oracle
@@ -280,6 +279,7 @@ if [ "$INSTALL_RM" = true ]; then
   sudo sh -c 'echo no | sudo pecl install mongo'
   sudo sh -c 'echo extension=mongo.so > /etc/php.d/mongo.ini'
   sudo service httpd reload
+  sudo pear channel-update pear.php.net
   sudo pear install HTTP_Request2
   # MongoDB
   sudo wget -O /etc/yum.repos.d/mongodb-org.repo https://repo.mongodb.org/yum/redhat/mongodb-org.repo
