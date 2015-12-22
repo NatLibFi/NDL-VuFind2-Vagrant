@@ -3,8 +3,10 @@
 #########################  C O N F I G U R A T I O N  #########################
 # Use single quotes instead of double to work with special-character passwords
 
-# VuFind2 'install path' ie. mount path of the host's shared folder
-VUFIND2_PATH='/usr/local/vufind2'
+# VuFind2 'install path' ie. mount path/point of the host's shared folder
+VUFIND2_PATH='/vufind2'
+VUFIND2_CONFIG="$VUFIND2_PATH/local/config"
+VUFIND2_CONFIG_VAGRANT="$VUFIND2_CONFIG/vagrant"
 # local directory inside the guest copied from the host
 LOCAL_DIR='/usr/local/vufind2_local'
 
@@ -39,7 +41,7 @@ EXTERNAL_SOLR_URL=''
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
-SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
+SAMPLE_DATA='/vagrant/config/jykdok.xml'  # use MARC  
 
 ###############################################################################
 
@@ -89,8 +91,23 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
+# copy local dir inside virtual machine
+sudo mkdir -p $LOCAL_DIR
+sudo cp -rf $VUFIND2_PATH/local/* $LOCAL_DIR
+sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$VUFIND2_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
+sudo chown -R vagrant:vagrant $LOCAL_DIR
+sudo chown -R www-data:www-data $LOCAL_DIR/cache
+
+# copy local/config to local/config/vagrant in the host (for rsyncing later)
+sudo mkdir -p $VUFIND2_CONFIG_VAGRANT 
+sudo cp -rf $VUFIND2_CONFIG/vufind $VUFIND2_CONFIG_VAGRANT/vufind
+sudo cp -rf $VUFIND2_CONFIG/finna $VUFIND2_CONFIG_VAGRANT/finna
+sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/.gitignore"
+sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/vufind/.gitignore"
+sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/finna/.gitignore"
+
 # copy sample configs to ini files
-cd $VUFIND2_PATH/local/config/finna
+cd $VUFIND2_CONFIG_VAGRANT/finna
 for x in *.ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -98,7 +115,7 @@ for x in *.ini.sample; do
   fi
 done
 
-cd $VUFIND2_PATH/local/config/vufind
+cd $VUFIND2_CONFIG_VAGRANT/vufind
 for x in *ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -108,16 +125,9 @@ done
 cp searchspecs.yaml.sample searchspecs.yaml
 cd
 
-# copy local dir inside virtual machine
-sudo mkdir -p $LOCAL_DIR
-sudo cp -rf $VUFIND2_PATH/local/* $LOCAL_DIR
-sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$VUFIND2_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
-sudo chown -R vagrant:vagrant $LOCAL_DIR
-sudo chown -R www-data:www-data $LOCAL_DIR/cache
-
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $LOCAL_DIR/config/vufind/config.ini
+  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_CONFIG_VAGRANT/vufind/config.ini
 fi
 
 # restart apache
@@ -195,10 +205,10 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   voyagers=($CONFIG_PATH/VoyagerRestful_*.ini)
   shopt -u nullglob
   if [ ${#voyagers[@]} -gt 0 ]; then
-    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $LOCAL_DIR/config/vufind/
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_CONFIG_VAGRANT/vufind/
     for i in "${voyagers[@]}"; do
       org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
-      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $LOCAL_DIR/config/finna/MultiBackend.ini
+      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $VUFIND2_CONFIG_VAGRANT/finna/MultiBackend.ini
     done
   fi
 fi
@@ -228,7 +238,7 @@ if [ "$INSTALL_SOLR" = true ]; then
   sudo sed -i 's/SOLR_JAVA_MEM=/#SOLR_JAVA_MEM=/' $SOLR_PATH/vufind/solr.in.finna.sh
   sudo sed -i '/#SOLR_JAVA_MEM/a SOLR_JAVA_MEM="-Xms'"$JAVA_HEAP_MIN"' -Xmx'"$JAVA_HEAP_MAX"'"' $SOLR_PATH/vufind/solr.in.finna.sh
   # fix solr local dir setting in vufind
-  sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $LOCAL_DIR/local/config/vufind/config.ini
+  sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_CONFIG_VAGRANT/vufind/config.ini
   sudo service solr start
   # start at boot
   sudo update-rc.d solr defaults
