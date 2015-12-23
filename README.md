@@ -1,5 +1,5 @@
 ### NDL-VuFind2-Vagrant
-Vagrant setup for NDL VuFind2 with two separate virtual machines:
+Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
   - for development, uses NDL-VuFind2 files from the host's filesystem
 - **centos**
@@ -9,13 +9,14 @@ Vagrant setup for NDL VuFind2 with two separate virtual machines:
 
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
-- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/</a>README for details.
+- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
+  - The files can be skipped if holdings information is not needed. In this case, please set 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files. 
 
 _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
-  - with a working configuration - for the minimum, ~~either import some data to Solr or~~ change the _local/config/vufind/config.ini_ to use a remote Solr URL (like the NDL development index - for limited users only).
+  - For the minimum, either import some data to the local Solr by adding a sample data file to the _config/_ directory (the data can also be imported manually afterwards) or change the _vufind2/local/config/vagrant/vufind/config.ini_ after provisioning/installing to use a remote Solr URL (like the NDL development index - for limited users only). The 'EXTERNAL_SOLR_URL' in the bootstrap files can also be set but note that the Solr and RecordManager won't be installed, then! 
 
-#### Set-up
+#### Set-Up
 
 _ubuntu_:
 
@@ -28,7 +29,7 @@ If only using _centos_, any directory with sufficent user permissions will do. I
 
 _both/either_:
 
-Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
+Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory. An optional sample data file goes also to the _config/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
 
 #### Use
 
@@ -36,7 +37,7 @@ _ubuntu_:
 - 'vagrant up'
   - This will take a few minutes, so enjoy your beverage of choice!
 - 'vagrant rsync-auto'
-  - Just to make sure rsyncing is really working as sometimes it fails if not run manually. 
+  - Needs to be run manually to make sure the config changes are synced to the guest machine. 
 - Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
   - Blank page or errors: adjust the config(s), check that rsync works (run 'vagrant rsync-auto' if not), reload browser page.
 
@@ -51,13 +52,15 @@ _centos_:
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
-**Import data**: ~~put the file(s) (e.g. _data.xml_) into the same host directory, ssh into the VM and use an import script in _/usr/local/vufind2_ e.g. '/usr/local/vufind2/import-marc.sh /vagrant/data.xml'~~
+**Solr**: 'sudo service start|stop|restart|status' inside the VM to control the running state.
+- Solr Admin UI can be accessed at
+  - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
+  - _centos_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
 
-**Solr**: ~~'/usr/local/vufind2/vufind.sh start/stop/restart' inside the VM to control the running state (use without attributes to see all options).~~
+**RecordManager & Importing Data**: If SAMPLE_DATA location is set in the bootstrap files and the corresponding xml file present, the provisioning phase will install a sample dataset to the local index. It is recommended to delete the sample config found in /usr/local/RecordManager/conf/datasources.ini and create your own (see <a href="https://github.com/NatLibFi/RecordManager/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>).
+- <a href="https://github.com/NatLibFi/RecordManager/wiki">RecordManager Wiki</a> for additional information.
 
-The integrated Solr is incompatible with NDL-VuFind2. At the moment, an external index (via working URL in config.ini) is the best/easiest way to use these virtual machines.
-
-#### Useful commands
+#### Useful Commands
 * 'vagrant reload'
   - reload the configuration changes made to _Vagrantfile_
 * 'vagrant suspend'
@@ -83,5 +86,13 @@ When addressing the _centos_ machine, just add ' centos' at the end of each comm
 
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
-- Copying the _vufind2/local_ directory inside the virtual machine is a ~~dirty~~ hack to get the virtual machine to access _local/cache_. However, the changes in the host under _local/config/_ are now rsynced automatically to the virtual machine. If for some reason they are not, run 'vagrant rsync-auto'. The rsyncing comes with the slight caveat for Windows users who need to download <a href="http://www.rsync.net/resources/binaries/cwRsync_5.4.1_x86_Free.zip">rsync</a> and install it with the default options
+- Copying the _vufind2/local_ directory inside the _ubuntu_ virtual machine is a ~~dirty~~ hack to get the virtual machine to access _local/cache_. However, the changes in the host under _local/config/vagrant_ are now rsynced automatically to the virtual machine. If for some reason they are not, run 'vagrant rsync-auto' again. The rsyncing comes with the slight caveat for Windows users who need to download <a href="http://www.rsync.net/resources/binaries/cwRsync_5.4.1_x86_Free.zip">rsync</a> and install it with the default options
 - If running Solr, v.memory needs to be at least around 2048, which should work.
+
+### Resources
+- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
+- <a href="https://github.com/NatLibFi/NDL-VuFind-Solr">NDL-VuFind-Solr</a>
+- <a href="http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html">Oracle Instant Client</a>
+- <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
+- <a href="https://www.vagrantup.com">Vagrant</a>
+- <a href="https://www.virtualbox.org">VirtualBox</a>
