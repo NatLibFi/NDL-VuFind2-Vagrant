@@ -14,7 +14,6 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 
 _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
-  - For the minimum, either import some data to the local Solr by adding a sample data file to the _config/_ directory (the data can also be imported manually afterwards) or change the _vufind2/local/config/vagrant/vufind/config.ini_ after provisioning/installing to use a remote Solr URL (like the NDL development index - for limited users only). The 'EXTERNAL_SOLR_URL' in the bootstrap files can also be set but note that the Solr and RecordManager won't be installed, then! 
 
 #### Set-Up
 
@@ -29,7 +28,16 @@ If only using _centos_, any directory with sufficent user permissions will do. I
 
 _both/either_:
 
-Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory. An optional sample data file goes also to the _config/_ directory. See the bootstrap files for possible config changes prior to running the VMs.
+If using Oracle, put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
+
+For the record data, some options exist:
+* bare minimum (e.g. testing purposes): add a sample data file to the _config/_ directory to import to the local Solr database via RecordManager during install
+* more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
+* without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
+  - either set the 'EXTERNAL_SOLR_URL' in the bootstrap files (but note that the Solr and RecordManager won't be installed at all, then!), or
+  - add the external URL to the _vufind2/local/config/vagrant/vufind/config.ini_ file after install.
+
+See the bootstrap files for possible install configuration changes prior to running the VMs.
 
 #### Use
 
