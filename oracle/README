@@ -1,6 +1,7 @@
-Download the Oracle Instant Client packages for Linux x86-64 from
+To be able to access holdings information from Voyager systems dowload
+the Oracle Instant Client packages for Linux x86-64 from
 http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html
-and put them into this directory before starting the virtual machine.
+and put them into this directory before privisioning the virtual machine.
 
 The files needed are Basic and SDK:
 - Ubuntu
@@ -9,3 +10,5 @@ The files needed are Basic and SDK:
 - CentOS
 	oracle-instantclient12.1-basic-x.x.x.x.x-x.x86_64.rpm
 	oracle-instantclient12.1-devel-x.x.x.x.x-x.x86_64.rpm
+
+See also <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/config">config/README</a>.

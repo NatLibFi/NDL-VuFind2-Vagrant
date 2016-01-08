@@ -7,10 +7,10 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 
 #### Requirements
 
-- <a href="https://www.virtualbox.org">VirtualBox</a>
+Mandatory:<br/>- <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
-- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
-  - The files can be skipped if holdings information is not needed. In this case, please set 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files. 
+Optional:<br/>- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
+  - If the installer files are not found during provisioning, the Oracle installation will be skipped with a warning message. The message can be turned off by setting 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files.
 
 _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
@@ -35,7 +35,7 @@ For the records data, some options exist:
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
   - either set the 'EXTERNAL_SOLR_URL' in the bootstrap files (but note that the Solr and RecordManager won't be installed at all, then!), or
-  - add the external URL to the _vufind2/local/config/vagrant/vufind/config.ini_ file after install.
+  - add the external URL to the _vufind2/local/config(/vagrant)/vufind/config.ini_ file after install.
 
 See the bootstrap files for possible install configuration changes prior to running the VMs.
 
