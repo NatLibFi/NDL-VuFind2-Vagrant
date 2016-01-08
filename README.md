@@ -10,6 +10,7 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 Mandatory:
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
+
 Optional:
 - <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
   - If the installer files are not found during provisioning, the Oracle installation will be skipped with a warning message. The message can be turned off by setting 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files.
