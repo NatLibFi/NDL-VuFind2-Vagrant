@@ -41,7 +41,7 @@ EXTERNAL_SOLR_URL=''
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
-SAMPLE_DATA='/vagrant/config/jykdok.xml'  # use MARC  
+SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
 
 ###############################################################################
 
@@ -268,6 +268,11 @@ if [ "$INSTALL_RM" = true ]; then
   sudo cp conf/articles.lst.sample conf/articles.lst
   sudo cp conf/recordmanager.ini.sample conf/recordmanager.ini
   sudo sed -i -e 's,http://localhost:8080/solr/biblio/update/json,http://localhost:8983/solr/biblio/update,' conf/recordmanager.ini
+  sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = category_str_mv' conf/recordmanager.ini
+  sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sector_str_mv' conf/recordmanager.ini
+  sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
+  sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
+
   # just a sample config - for actual use replace this with a proper one
   sudo cat <<EOF >> conf/datasources.ini
 [sample]
