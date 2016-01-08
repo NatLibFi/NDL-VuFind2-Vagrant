@@ -11,4 +11,4 @@ The files needed are Basic and SDK:
 	oracle-instantclient12.1-basic-x.x.x.x.x-x.x86_64.rpm
 	oracle-instantclient12.1-devel-x.x.x.x.x-x.x86_64.rpm
 
-See also <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/config">config/README</a>.
+See also config/README.
