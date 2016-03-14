@@ -88,7 +88,7 @@ fi
 # install apache & php
 sudo yum -y install httpd
 if [ ! -f /etc/php.ini ]; then
-  sudo yum -y install php php-devel php-intl php-mysql php-xsl php-gd php-mbstring php-mcrypt
+  sudo yum -y install php php-devel php-intl php-mysql php-xsl php-gd php-mbstring php-mcrypt php-curl
 fi
 
 # we need php > 5.3, replace with latest from webtatic
@@ -148,6 +148,13 @@ sudo chown apache:apache /var/log/vufind2.log
 sudo su -c 'echo export VUFIND_HOME="/usr/local/vufind2"  > /etc/profile.d/vufind.sh'
 sudo su -c 'echo export VUFIND_LOCAL_DIR="/usr/local/vufind2/local"  >> /etc/profile.d/vufind.sh'
 sudo su -c 'source /etc/profile.d/vufind.sh'
+
+# install Composer (locally)
+cd /usr/local/vufind2
+sudo curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar composer
+sudo composer install
+cd
 
 # configure firewall
 sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT

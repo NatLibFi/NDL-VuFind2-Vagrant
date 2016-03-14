@@ -72,7 +72,7 @@ SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
 $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
 # install php 5
-sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql php5-xsl php5-intl php5-gd
+sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql php5-xsl php5-intl php5-gd php5-curl
 
 # change php.ini: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php5/apache2/php.ini
@@ -81,8 +81,9 @@ sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php5/apache2/php.ini
 # install Java JDK
 sudo apt-get -y install default-jdk
 
-# enable mod_rewrite
+# enable mod_rewrite & mod_headers
 sudo a2enmod rewrite
+sudo a2enmod headers
 
 # link VuFind to Apache
 sudo cp -f $VUFIND2_PATH/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
@@ -129,6 +130,13 @@ cd
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
   sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_CONFIG_VAGRANT/vufind/config.ini
 fi
+
+# install Composer (globally)
+sudo curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+cd /vufind2
+sudo composer install
+cd
 
 # restart apache
 service apache2 reload
