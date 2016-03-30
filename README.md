@@ -49,7 +49,7 @@ _ubuntu_:
   - This will take a few minutes, so enjoy your beverage of choice!
 - 'vagrant rsync-auto'
   - Needs to be run manually to make sure the config changes are synced to the guest machine. 
-- Point your browser to <a href="http://localhost:8081">http://localhost:8081</a>
+- Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust the config(s), check that rsync works (run 'vagrant rsync-auto' if not), reload browser page.
 
 _centos_:
@@ -58,7 +58,7 @@ _centos_:
 - 'vagrant ssh centos'
 - '/usr/bin/mysql_secure_installation' to add MySQL root password and remove anonymous user & test databases
 - 'exit'
-- <a href="http://localhost:8082">http://localhost:8082</a>
+- <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>
   - Blank page or errors: adjust the config(s) inside the VM, reload browser page.
 
 Both machines can be run simultaneously provided the host has enough oomph.
