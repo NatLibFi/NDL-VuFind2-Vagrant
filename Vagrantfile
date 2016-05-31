@@ -1,12 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# make sure the rsynced folder exists
+# make sure the vufind2 folder exists
 case ARGV[0]
 when "up", "up ubuntu"
-  if File.exists?('../vufind2')
-    Dir.mkdir('../vufind2/local/config/vagrant') unless File.exists?('../vufind2/local/config/vagrant')
-  else
+  if !(File.exists?('../vufind2'))
     puts "vufind2 directory DOES NOT EXIST!"
   end
 else
@@ -37,9 +35,10 @@ Vagrant.configure(2) do |config|
     # Share an additional folder to the guest VM.
     ubuntu.vm.synced_folder "../vufind2", "/vufind2"
 
-    # Rsync the vufind2/local directory inside the virtual machine for proper cache access
-    ubuntu.vm.synced_folder "../vufind2/local/config/vagrant", "/usr/local/vufind2_local/config", type: "rsync",
-      rsync__exclude: [".git/", ".gitignore", ".DS_Store/"]
+    # Share the cache folder and allow guest machine write access
+    ubuntu.vm.synced_folder "../vufind2/local/cache", "/vufind2/local/cache",
+      owner: "vagrant", group: "www-data",
+      :mount_options => ["dmode=777","fmode=666"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     ubuntu.vm.provision :shell, path: "vufind2_bootstrap_ubuntu.sh"

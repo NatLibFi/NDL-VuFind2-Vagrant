@@ -5,10 +5,6 @@
 
 # VuFind2 'install path' ie. mount path/point of the host's shared folder
 VUFIND2_PATH='/vufind2'
-VUFIND2_CONFIG="$VUFIND2_PATH/local/config"
-VUFIND2_CONFIG_VAGRANT="$VUFIND2_CONFIG/vagrant"
-# local directory inside the guest copied from the host
-LOCAL_DIR='/usr/local/vufind2_local'
 
 # MySQL
 PASSWORD='root' # change this to your liking
@@ -16,8 +12,8 @@ DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
 
-# timezone
-TIMEZONE='Europe/Helsinki'
+# External index URL if not installing Solr + RecordManager locally.
+EXTERNAL_SOLR_URL=''
 
 # Oracle PHP OCI Instant Client (Voyager)
 INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer ZIP files
@@ -35,13 +31,13 @@ SOLR_PATH='/data/solr'             # Separately installing one without the other
 JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
 JAVA_HEAP_MAX='512m'               # process if errors arise.
 
-# External index URL if not installing Solr + RecordManager locally.
-EXTERNAL_SOLR_URL=''
-
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
 SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
+
+# timezone
+TIMEZONE='Europe/Helsinki'
 
 ###############################################################################
 
@@ -92,23 +88,8 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
-# copy local dir inside virtual machine
-sudo mkdir -p $LOCAL_DIR
-sudo cp -rf $VUFIND2_PATH/local/* $LOCAL_DIR
-sudo sed -i -e 's,VUFIND_LOCAL_DIR '"$VUFIND2_PATH"'/local,VUFIND_LOCAL_DIR '"$LOCAL_DIR"',' /etc/apache2/conf-available/httpd-vufind.conf
-sudo chown -R vagrant:vagrant $LOCAL_DIR
-sudo chown -R www-data:www-data $LOCAL_DIR/cache
-
-# copy local/config to local/config/vagrant in the host (for rsyncing later)
-sudo mkdir -p $VUFIND2_CONFIG_VAGRANT 
-sudo cp -rf $VUFIND2_CONFIG/vufind $VUFIND2_CONFIG_VAGRANT/vufind
-sudo cp -rf $VUFIND2_CONFIG/finna $VUFIND2_CONFIG_VAGRANT/finna
-sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/.gitignore"
-sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/vufind/.gitignore"
-sudo sh -c "echo * > $VUFIND2_CONFIG_VAGRANT/finna/.gitignore"
-
 # copy sample configs to ini files
-cd $VUFIND2_CONFIG_VAGRANT/finna
+cd $VUFIND2_PATH/local/config/finna
 for x in *.ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -116,7 +97,7 @@ for x in *.ini.sample; do
   fi
 done
 
-cd $VUFIND2_CONFIG_VAGRANT/vufind
+cd $VUFIND2_PATH/local/config/vufind
 for x in *ini.sample; do 
   t=${x%.ini.sample}.ini
   if [ ! -f $t ]; then
@@ -128,7 +109,7 @@ cd
 
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_CONFIG_VAGRANT/vufind/config.ini
+  sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
 fi
 
 # install Composer (globally)
@@ -213,10 +194,10 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   voyagers=($CONFIG_PATH/VoyagerRestful_*.ini)
   shopt -u nullglob
   if [ ${#voyagers[@]} -gt 0 ]; then
-    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_CONFIG_VAGRANT/vufind/
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_PATH/local/config/vufind/
     for i in "${voyagers[@]}"; do
       org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
-      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $VUFIND2_CONFIG_VAGRANT/finna/MultiBackend.ini
+      sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $VUFIND2_PATH/local/config/finna/MultiBackend.ini
     done
   fi
 fi
@@ -246,7 +227,7 @@ if [ "$INSTALL_SOLR" = true ]; then
   sudo sed -i 's/SOLR_JAVA_MEM=/#SOLR_JAVA_MEM=/' $SOLR_PATH/vufind/solr.in.finna.sh
   sudo sed -i '/#SOLR_JAVA_MEM/a SOLR_JAVA_MEM="-Xms'"$JAVA_HEAP_MIN"' -Xmx'"$JAVA_HEAP_MAX"'"' $SOLR_PATH/vufind/solr.in.finna.sh
   # fix solr local dir setting in vufind
-  sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_CONFIG_VAGRANT/vufind/config.ini
+  sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
   sudo service solr start
   # start at boot
   sudo update-rc.d solr defaults

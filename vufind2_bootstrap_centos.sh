@@ -15,8 +15,8 @@ DATABASE='vufind2'
 USER='vufind'
 USER_PW='vufind'
 
-# timezone
-TIMEZONE='Europe/Helsinki'
+# External index URL if not installing Solr + RecordManager locally.
+EXTERNAL_SOLR_URL=''
 
 # Oracle PHP OCI Instant Client (Voyager)
 INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer RPM files
@@ -33,13 +33,13 @@ SOLR_PATH='/data/solr'             # Separately installing one without the other
 JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
 JAVA_HEAP_MAX='512m'               # process if errors arise.
 
-# External index URL if not installing Solr + RecordManager locally.
-EXTERNAL_SOLR_URL=''
-
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
 SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC
+
+# timezone
+TIMEZONE='Europe/Helsinki'
 
 ###############################################################################
 
@@ -82,7 +82,7 @@ cp searchspecs.yaml.sample searchspecs.yaml
 cd
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *\n,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
+  sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
 fi
 
 # install apache & php
