@@ -37,7 +37,7 @@ For the records data, some options exist:
 * bare minimum (e.g. testing purposes): add a sample data file to the _config/_ directory to import to the local Solr database via RecordManager during install
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
-  - either set the 'EXTERNAL_SOLR_URL' in the bootstrap files (but note that the Solr and RecordManager won't be installed at all, then!), or
+  - either set the 'EXTERNAL_SOLR_URL' in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
   - add the external URL to the _vufind2/local/config(/vagrant)/vufind/config.ini_ file after install.
 
 See the bootstrap files for possible install configuration changes prior to running the VMs.
@@ -47,10 +47,8 @@ See the bootstrap files for possible install configuration changes prior to runn
 _ubuntu_:
 - 'vagrant up'
   - This will take a few minutes, so enjoy your beverage of choice!
-- 'vagrant rsync-auto'
-  - Needs to be run manually to make sure the config changes are synced to the guest machine. 
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
-  - Blank page or errors: adjust the config(s), check that rsync works (run 'vagrant rsync-auto' if not), reload browser page.
+  - Blank page or errors: adjust the config(s), reload browser page.
 
 _centos_:
 - 'vagrant up centos'
@@ -97,7 +95,6 @@ When addressing the _centos_ machine, just add ' centos' at the end of each comm
 
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
-- Copying the _vufind2/local_ directory inside the _ubuntu_ virtual machine is a ~~dirty~~ hack to get the virtual machine to access _local/cache_. However, the changes in the host under _local/config/vagrant_ are now rsynced automatically to the virtual machine. If for some reason they are not, run 'vagrant rsync-auto' again. The rsyncing comes with the slight caveat for Windows users who need to download <a href="http://www.rsync.net/resources/binaries/cwRsync_5.4.1_x86_Free.zip">rsync</a> and install it with the default options
 - If running Solr, v.memory needs to be at least around 2048, which should work.
 
 ### Resources
