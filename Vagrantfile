@@ -37,7 +37,7 @@ Vagrant.configure(2) do |config|
 
     # Share the cache folder and allow guest machine write access
     ubuntu.vm.synced_folder "../vufind2/local/cache", "/vufind2/local/cache",
-      owner: "vagrant", group: "www-data",
+      owner: "www-data", group: "www-data",
       :mount_options => ["dmode=777","fmode=666"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "centos", autostart: false do |centos|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    centos.vm.box = "fab10/centos6"
+    centos.vm.box = "geerlingguy/centos6"
     # An example to use instead if you repackage a local custom base box 
     # centos.vm.box = "centos_vufind2 file:./centos_vufind2.box"
 
