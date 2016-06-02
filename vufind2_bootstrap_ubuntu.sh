@@ -44,6 +44,9 @@ TIMEZONE='Europe/Helsinki'
 # set timezone
 sudo timedatectl set-timezone $TIMEZONE
 
+# add Java 8 repository
+sudo apt-add-repository -y ppa:webupd8team/java
+
 # update / upgrade
 sudo apt-get update
 sudo apt-get -y upgrade
@@ -74,8 +77,9 @@ sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql 
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php5/apache2/php.ini
 sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php5/apache2/php.ini
 
-# install Java JDK
-sudo apt-get -y install default-jdk
+# install Java JDK. Solr 6 requires Java 8
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install -y oracle-java8-installer
 
 # enable mod_rewrite & mod_headers
 sudo a2enmod rewrite
