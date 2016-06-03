@@ -1,4 +1,6 @@
 ### NDL-VuFind2-Vagrant
+(NOTE! For even a quicker/simpler development setup, please see <a href="https://github.com/tmikkonen/NDL-VuFind2-Otto">NDL-VuFind2-Otto</a>)
+
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
   - for development, uses NDL-VuFind2 files from the host's filesystem
