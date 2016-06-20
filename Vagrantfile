@@ -63,6 +63,7 @@ Vagrant.configure(2) do |config|
     centos.vm.post_up_message = "
       DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
       Also, please remove 'anonymous' user & test databases.
+
       To do both of the above:
       - Access the virtual machine first: 'vagrant ssh centos'
       - Then run: '/usr/bin/mysql_secure_installation'"
