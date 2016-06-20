@@ -323,12 +323,3 @@ EOF
   fi
 fi
 
-# secure MySQL
-echo ' '
-echo ------------------------------------------------------------
-echo 'PLEASE DO NOT FORGET TO SET A PASSWORD FOR THE MySQL root USER!'
-echo 'It is also recommended to remove anonymous user and test databases.'
-echo 'Please run: /usr/bin/mysql_secure_installation'
-echo ' '
-echo 'Remember to access the virtual machine first: vagrant ssh centos'
-

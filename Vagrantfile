@@ -58,6 +58,14 @@ Vagrant.configure(2) do |config|
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     centos.vm.provision :shell, path: "vufind2_bootstrap_centos.sh"
+
+    # Message to show after provisioning
+    centos.vm.post_up_message = "
+      DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
+      Also, please remove 'anonymous' user & test databases.
+      To do both of the above:
+      - Access the virtual machine first: 'vagrant ssh centos'
+      - Then run: '/usr/bin/mysql_secure_installation'"
   end
 
   # Create a forwarded port mapping which allows access to a specific port
