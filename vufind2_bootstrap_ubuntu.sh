@@ -45,7 +45,7 @@ TIMEZONE='Europe/Helsinki'
 sudo timedatectl set-timezone $TIMEZONE
 
 # supress irrelevant stdin errors
-sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile
+sudo sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile
 sudo ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
 sudo dpkg-reconfigure debconf -f noninteractive -p critical
 
@@ -63,6 +63,9 @@ sudo apt-get install -y apache2
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
 sudo apt-get -y install mysql-server
+# fix mysqld options errors
+sudo sed -i -e '0,/key_buffer\t/s//key_buffer_size\t/' /etc/mysql/my.cnf
+sudo sed -i -e 's/myisam-recover\s\{2,\}/myisam-recover-options\t/' /etc/mysql/my.cnf
 
 # create database and user & modify database
 MYSQL=`which mysql`
