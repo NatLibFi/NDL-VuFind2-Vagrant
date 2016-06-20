@@ -44,6 +44,11 @@ TIMEZONE='Europe/Helsinki'
 # set timezone
 sudo timedatectl set-timezone $TIMEZONE
 
+# supress irrelevant stdin errors
+sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile
+sudo ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
+sudo dpkg-reconfigure debconf -f noninteractive -p critical
+
 # add Java 8 repository
 sudo apt-add-repository -y ppa:webupd8team/java
 
