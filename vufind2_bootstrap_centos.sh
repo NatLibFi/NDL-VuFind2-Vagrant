@@ -85,21 +85,11 @@ if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
   sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
 fi
 
-# install apache & php
+# install apache
 sudo yum -y install httpd
-if [ ! -f /etc/php.ini ]; then
-  sudo yum -y install php php-devel php-intl php-mysql php-xsl php-gd php-mbstring php-mcrypt php-curl
-fi
-
-# we need php > 5.3, replace with latest from webtatic
-if php --version | grep -q "PHP 5.3"; then
-  sudo rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
-  sudo yum -y install yum-plugin-replace
-  sudo yum -y replace php-common --replace-with=php56w-common
-  sudo yum -y remove php-pear
-  sudo rm -rf /usr/share/pear 
-  sudo yum -y install php56w-pear
-fi
+# install php5.6 from Webtatic
+sudo rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+sudo yum -y install php56w php56w-devel php56w-intl php56w-mysql php56w-xsl php56w-gd php56w-mbstring php56w-mcrypt php56w-curl php56w-pear
 
 # configure php
 sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini
