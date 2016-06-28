@@ -100,23 +100,30 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
+# Config file extensions
+CfgExt=( ini yaml json )
+
 # copy sample configs to ini files
 cd $VUFIND2_PATH/local/config/finna
-for x in *.ini.sample; do 
-  t=${x%.ini.sample}.ini
-  if [ ! -f $t ]; then
-    cp $x $t
-  fi
+for i in "${CfgExt[@]}"; do
+  for x in *.$i.sample; do
+    t=${x%.$i.sample}.$i
+    if [[ -f $x ]] && [[ ! -f $t ]]; then
+      cp $x $t
+    fi
+  done
 done
 
 cd $VUFIND2_PATH/local/config/vufind
-for x in *ini.sample; do 
-  t=${x%.ini.sample}.ini
-  if [ ! -f $t ]; then
-    cp $x $t
-  fi
+for i in "${CfgExt[@]}"; do
+  for x in *.$i.sample; do
+    t=${x%.$i.sample}.$i
+    if [[ -f $x ]] && [[ ! -f $t ]]; then
+      cp $x $t
+    fi
+  done
 done
-cp searchspecs.yaml.sample searchspecs.yaml
+
 cd
 
 # modify Solr URL if set

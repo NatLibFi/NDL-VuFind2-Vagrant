@@ -64,21 +64,25 @@ sudo git clone https://github.com/$GITHUB_USER/NDL-VuFind2.git .
 # set-up configuration files
 sudo cp local/httpd-vufind.conf.sample local/httpd-vufind.conf
 sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$VUFIND2_PATH"',' local/httpd-vufind.conf
+CfgExt=( ini yaml json )
 cd $VUFIND2_PATH/local/config/finna
-for x in *.ini.sample; do 
-  t=${x%.ini.sample}.ini
-  if [ ! -f $t ]; then
-    sudo cp $x $t
-  fi
+for i in "${CfgExt[@]}"; do
+  for x in *.$i.sample; do
+    t=${x%.$i.sample}.$i
+    if [[ -f $x ]] && [[ ! -f $t ]]; then
+      cp $x $t
+    fi
+  done
 done
 cd $VUFIND2_PATH/local/config/vufind
-for x in *ini.sample; do 
-  t=${x%.ini.sample}.ini
-  if [ ! -f $t ]; then
-    sudo cp $x $t
-  fi
+for i in "${CfgExt[@]}"; do
+  for x in *.$i.sample; do
+    t=${x%.$i.sample}.$i
+    if [[ -f $x ]] && [[ ! -f $t ]]; then
+      cp $x $t
+    fi
+  done
 done
-cp searchspecs.yaml.sample searchspecs.yaml
 cd
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
