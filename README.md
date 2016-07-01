@@ -82,7 +82,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache (`sudo service apache2 restart`) or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
   - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
 
-    > `vagrant ssh -c "lessc -x /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css"`
+    > vagrant ssh -c "lessc -x /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css"
     
     or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
 * `vagrant box update`
