@@ -145,6 +145,11 @@ service apache2 reload
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
+# install node.js v5 & less 2.4.0 (for -x option)
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install -g less@2.4.0
+
 # Oracle PHP OCI driver
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
   ORACLE_FILES_EXIST=false
