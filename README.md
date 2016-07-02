@@ -79,7 +79,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant destroy`
   - delete the virtual machine
 * `vagrant ssh`
-  - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache (`sudo service apache2 restart`) or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
+  - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache `sudo service apache2 restart` or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
   - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
 
     > vagrant ssh -c "lessc -x /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css"
@@ -88,7 +88,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box update`
   - update the cached boxes if newer versions exist 
 * `vagrant box list`
-  - show the cached box files, delete unnecessary ones with 'vagrant box remove'
+  - show the cached box files, delete unnecessary ones with `vagrant box remove`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
