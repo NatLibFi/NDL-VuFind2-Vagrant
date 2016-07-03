@@ -40,7 +40,7 @@ For the records data, some options exist:
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
   - either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
-  - add the external URL to the _vufind2/local/config(/vagrant)/vufind/config.ini_ file after install.
+  - add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
 See the bootstrap files for possible install configuration changes prior to running the VMs.
 
