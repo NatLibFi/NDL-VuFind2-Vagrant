@@ -56,6 +56,9 @@ sudo apt-add-repository -y ppa:webupd8team/java
 sudo apt-get update
 sudo apt-get -y upgrade
 
+# install unzip; this may come handy later on
+sudo apt-get install -y unzip
+
 # install apache 2
 sudo apt-get install -y apache2
 
@@ -162,7 +165,6 @@ if [ "$INSTALL_ORACLE_CLIENT" = true -a "$ORACLE_FILES_EXIST" = true ] ; then
   sudo pear upgrade pear
   mkdir -p /opt/oracle
   cd /opt/oracle
-  sudo apt-get install -y unzip
   sudo unzip -o "$ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip" -d ./
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
