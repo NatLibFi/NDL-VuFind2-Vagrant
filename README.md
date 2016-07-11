@@ -40,7 +40,7 @@ For the records data, some options exist:
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
   - either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
-  - add the external URL to the _vufind2/local/config(/vagrant)/vufind/config.ini_ file after install.
+  - add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
 See the bootstrap files for possible install configuration changes prior to running the VMs.
 
@@ -79,7 +79,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant destroy`
   - delete the virtual machine
 * `vagrant ssh`
-  - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache (`sudo service apache2 restart`) or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
+  - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache `sudo service apache2 restart` or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
   - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
 
     > vagrant ssh -c "lessc -x /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css"
@@ -88,7 +88,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box update`
   - update the cached boxes if newer versions exist 
 * `vagrant box list`
-  - show the cached box files, delete unnecessary ones with 'vagrant box remove'
+  - show the cached box files, delete unnecessary ones with `vagrant box remove`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
