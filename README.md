@@ -36,7 +36,7 @@ _both/either_:
 If using Oracle, put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
 For the records data, some options exist:
-* bare minimum (e.g. testing purposes): add a sample data file to the _config/_ directory to import to the local Solr database via RecordManager during install
+* bare minimum (e.g. testing purposes): add a sample data file to the _data/_ directory to import to the local Solr database via RecordManager during install
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
   - either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
