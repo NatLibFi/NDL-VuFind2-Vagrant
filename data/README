@@ -1,0 +1,8 @@
+If using local Solr + RecordManager installations and harvesting the data,
+you can put a sample data file 'sample.xml' in MARC format here to be imported
+to the Solr database in the installation phase during the provisioning
+of the virtual machine.
+
+See '/usr/local/RecordManager/conf/datasources.ini' and RecordManager docs
+to create a proper institution configuration for more proper use.
+ 
