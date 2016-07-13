@@ -18,7 +18,7 @@ EXTERNAL_SOLR_URL=''
 # Oracle PHP OCI Instant Client (Voyager)
 INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer ZIP files
 ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
-CONFIG_PATH='/vagrant/config'      # Voyager config files.
+CONFIG_PATH='/vagrant/oracle'      # Voyager config files.
 # version info
 OCI_VERSION='12_1'
 OCI_DOT_VERSION='12.1'
@@ -34,7 +34,7 @@ JAVA_HEAP_MAX='512m'               # process if errors arise.
 # RecordManager
 INSTALL_RM=true
 RM_PATH='/usr/local/RecordManager'
-SAMPLE_DATA='/vagrant/config/sample.xml'  # use MARC  
+SAMPLE_DATA='/vagrant/data/sample.xml'  # use MARC  
 
 # timezone
 TIMEZONE='Europe/Helsinki'
