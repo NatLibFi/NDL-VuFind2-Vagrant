@@ -41,7 +41,11 @@ Vagrant.configure(2) do |config|
       :mount_options => ["dmode=777","fmode=666"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    ubuntu.vm.provision :shell, path: "vufind2_bootstrap_ubuntu.sh"
+    ubuntu.vm.provision :shell, path: "bootstrap_vufind2_ubuntu.sh"
+
+    # Message to show after provisioning
+    ubuntu.vm.post_up_message = "
+NDL-VuFind2 installation FINISHED!"
   end
 
   # CentOS 6 config, 'vagrant up centos'
@@ -57,16 +61,18 @@ Vagrant.configure(2) do |config|
     centos.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    centos.vm.provision :shell, path: "vufind2_bootstrap_centos.sh"
+    centos.vm.provision :shell, path: "bootstrap_vufind2_centos.sh"
 
     # Message to show after provisioning
     centos.vm.post_up_message = "
-      DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
-      Also, please remove 'anonymous' user & test databases.
+NDL-VuFind2 installation FINISHED!
 
-      To do both of the above:
-      - Access the virtual machine first: 'vagrant ssh centos'
-      - Then run: '/usr/bin/mysql_secure_installation'"
+DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
+Also, please remove 'anonymous' user & test databases.
+
+To do both of the above:
+- Access the virtual machine first: 'vagrant ssh centos'
+- Then run: '/usr/bin/mysql_secure_installation'"
   end
 
   # Create a forwarded port mapping which allows access to a specific port
