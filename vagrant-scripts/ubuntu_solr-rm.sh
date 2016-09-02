@@ -3,16 +3,10 @@
 # if not set, then script called from command line and variables need to be set
 [[ $INSTALL_SOLR ]]
 {
+  source /vagrant/ubuntu.conf
+  # make sure these get installed
   INSTALL_SOLR=true
-  SOLR_PATH='/data/solr'
-  JAVA_HEAP_MIN='256m'
-  JAVA_HEAP_MAX='512m'
-}
-[[ $INSTALL_RM ]]
-{
   INSTALL_RM=true
-  RM_PATH='/usr/local/RecordManager'
-  SAMPLE_DATA='/vagrant/data/sample.xml'
 }
 
 # Solr
@@ -79,12 +73,14 @@ echo "Installing RecordManager..."
   sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
 
   # just a sample config - for actual use replace this with a proper one
-  sudo cat <<EOF >> conf/datasources.ini
+#  sudo cat <<EOF >> conf/datasources.ini
+  sudo tee -a conf/datasources.ini >/dev/null <<EOF
 [sample]
 institution = testituutio
 recordXPath = "//record"
 format = marc
 EOF
+
   # import sample data and load records into Solr
   if [ -f "$SAMPLE_DATA" ]; then
     sudo php import.php --file=$SAMPLE_DATA --source=sample

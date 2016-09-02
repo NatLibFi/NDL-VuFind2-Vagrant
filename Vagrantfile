@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
       :mount_options => ["dmode=777","fmode=666"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    ubuntu.vm.provision :shell, path: "bootstrap_vufind2_ubuntu.sh"
+    ubuntu.vm.provision :shell, path: "bootstrap_ubuntu.sh"
 
     # Message to show after provisioning
     ubuntu.vm.post_up_message = "
