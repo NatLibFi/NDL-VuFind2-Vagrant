@@ -1,46 +1,7 @@
 #!/bin/bash
 
 #########################  C O N F I G U R A T I O N  #########################
-# Use single quotes instead of double to work with special-character passwords
-
-# VuFind2 install path in the guest machine
-VUFIND2_PATH='/usr/local/vufind2'
-
-# GitHub
-GITHUB_USER='NatLibFi'
-
-# MySQL
-PASSWORD='root' # change this to your liking
-DATABASE='vufind2'
-USER='vufind'
-USER_PW='vufind'
-
-# External index URL if not installing Solr + RecordManager locally.
-EXTERNAL_SOLR_URL=''
-
-# Oracle PHP OCI Instant Client (Voyager)
-INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer RPM files
-ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
-CONFIG_PATH='/vagrant/oracle'      # Voyager config files.
-# version info
-OCI_VERSION='12.1'
-# versions above 12.1 need a new config file to be created
-OCI_CONFIG_URL='http://pastebin.com/raw/20T49aHg'  # 20T49aHg <= v12.1
-
-# Solr
-INSTALL_SOLR=true                  # If true you will also need RecordManager!
-SOLR_PATH='/data/solr'             # Separately installing one without the other
-JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
-JAVA_HEAP_MAX='512m'               # process if errors arise.
-
-# RecordManager
-INSTALL_RM=true
-RM_PATH='/usr/local/RecordManager'
-SAMPLE_DATA='/vagrant/data/sample.xml'  # use MARC
-
-# timezone
-TIMEZONE='Europe/Helsinki'
-
+source /vagrant/centos.conf
 ###############################################################################
 
 # turn SELinux on

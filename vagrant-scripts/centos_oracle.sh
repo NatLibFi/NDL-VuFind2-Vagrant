@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# if not set, then script called from command line and variables need to be set
+[[ $INSTALL_ORACLE_CLIENT ]]
+{
+  source /vagrant/centos.conf
+}
+
 # Check whether installer files exist
 ORACLE_FILES_EXIST=false
 for f in $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm; do
@@ -11,7 +17,7 @@ done
 if [ "$ORACLE_FILES_EXIST" = true ]; then
   echo "Installing Oracle Instant Client..."
   sudo yum -y install libaio
-  mkdir -p /tmp/oracle
+  sudo mkdir -p /tmp/oracle
   cd /tmp/oracle
   sudo cp $ORACLE_PATH/oracle-instantclient$OCI_VERSION*.x86_64.rpm ./
   sudo rpm -Uvh oracle-instantclient$OCI_VERSION*-basic-*.x86_64.rpm

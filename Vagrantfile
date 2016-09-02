@@ -61,7 +61,7 @@ NDL-VuFind2 installation FINISHED!"
     centos.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    centos.vm.provision :shell, path: "bootstrap_vufind2_centos.sh"
+    centos.vm.provision :shell, path: "bootstrap_centos.sh"
 
     # Message to show after provisioning
     centos.vm.post_up_message = "
