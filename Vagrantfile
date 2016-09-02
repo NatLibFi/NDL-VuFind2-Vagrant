@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
       :mount_options => ["dmode=777","fmode=666"]
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    ubuntu.vm.provision :shell, path: "bootstrap_ubuntu.sh"
+    ubuntu.vm.provision :shell, path: "scripts/ubuntu_bootstrap.sh"
 
     # Message to show after provisioning
     ubuntu.vm.post_up_message = "
@@ -61,7 +61,7 @@ NDL-VuFind2 installation FINISHED!"
     centos.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    centos.vm.provision :shell, path: "bootstrap_centos.sh"
+    centos.vm.provision :shell, path: "scripts/centos_bootstrap.sh"
 
     # Message to show after provisioning
     centos.vm.post_up_message = "

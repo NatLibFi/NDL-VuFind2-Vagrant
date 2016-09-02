@@ -129,8 +129,8 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 
 # additional installs
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/vagrant-scripts/centos_oracle.sh;
+  source /vagrant/scripts/centos_oracle.sh;
 fi
 if [ "$INSTALL_SOLR" = true -o "$INSTALL_RM" = true ]; then
-  source /vagrant/vagrant-scripts/centos_solr-rm.sh;
+  source /vagrant/scripts/centos_solr-rm.sh;
 fi

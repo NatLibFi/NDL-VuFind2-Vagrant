@@ -118,8 +118,8 @@ sudo npm install -g less@2.4.0
 
 # additional installs
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/vagrant-scripts/ubuntu_oracle.sh;
+  source /vagrant/scripts/ubuntu_oracle.sh;
 fi
 if [ "$INSTALL_SOLR" = true -o "$INSTALL_RM" = true ]; then
-  source /vagrant/vagrant-scripts/ubuntu_solr-rm.sh;
+  source /vagrant/scripts/ubuntu_solr-rm.sh;
 fi
