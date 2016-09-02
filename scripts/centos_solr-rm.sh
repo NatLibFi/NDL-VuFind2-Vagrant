@@ -47,6 +47,7 @@ if [ "$INSTALL_SOLR" = true ]; then
   # fix solr local dir setting in vufind
   sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
   sudo service solr start
+  sudo semanage port -a -t http_port_t -p tcp 8983
   # start at boot
   sudo chkconfig --add solr
   sudo chkconfig solr on
