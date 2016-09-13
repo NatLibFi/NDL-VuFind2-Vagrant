@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
 # if not set, then script called from command line and variables need to be set
-[[ $INSTALL_SOLR ]]
-{
+if [ -z "$INSTALL_SOLR" ]; then
   source /vagrant/centos.conf
-  # make sure these get installed
-  INSTALL_SOLR=true
-  INSTALL_RM=true
-}
+fi
 
 # Solr
 if [ "$INSTALL_SOLR" = true ]; then
@@ -47,6 +43,7 @@ if [ "$INSTALL_SOLR" = true ]; then
   # fix solr local dir setting in vufind
   sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
   sudo service solr start
+  sudo yum -y install policycoreutils-python
   sudo semanage port -a -t http_port_t -p tcp 8983
   # start at boot
   sudo chkconfig --add solr
@@ -66,6 +63,14 @@ if [ "$INSTALL_RM" = true ]; then
   # MongoDB
   sudo wget -O /etc/yum.repos.d/mongodb-org.repo https://repo.mongodb.org/yum/redhat/mongodb-org.repo
   sudo yum install -y mongodb-org
+  if yum list installed mongodb-org >/dev/null 2>&1; then
+    echo "mongodb-org was installed properly."
+  else
+    # at the moment the repo path is wrong so let's fix it (this will probably become moot later)
+    sudo sed -i 's/stable/3.2/' /etc/yum.repos.d/mongodb-org.repo    
+    echo "mongodb-org repo path fixed. Re-trying install..."
+    sudo yum install -y mongodb-org
+  fi
   sudo semanage port -a -t mongod_port_t -p tcp 27017
   sudo service mongod start
   # start at boot

@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
 # if not set, then script called from command line and variables need to be set
-[[ $INSTALL_SOLR ]]
-{
-  source /vagrant/ubuntu.conf
-  # make sure these get installed
-  INSTALL_SOLR=true
-  INSTALL_RM=true
-}
+if [ -z "$INSTALL_SOLR" ]; then
+  source /vagrant/centos.conf
+fi
 
 # Solr
 if [ "$INSTALL_SOLR" = true ]; then
@@ -45,7 +41,6 @@ fi
 # RecordManager
 if [ "$INSTALL_RM" = true ]; then
 echo "Installing RecordManager..."
-#  sudo yum -y install openssl-devel policycoreutils-python
   sudo sh -c 'echo no | sudo pecl install mongo'
   sudo sh -c 'echo extension=mongo.so > /etc/php5/mods-available/mongo.ini'
   sudo php5enmod mongo
