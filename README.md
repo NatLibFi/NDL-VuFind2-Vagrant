@@ -1,5 +1,4 @@
 ### NDL-VuFind2-Vagrant
-(NOTE! For even quicker/simpler development setup, please see <a href="https://github.com/tmikkonen/NDL-VuFind2-Otto">NDL-VuFind2-Otto</a>)
 
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
@@ -101,7 +100,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
 - If running Solr, v.memory needs to be at least around 2048, which should work.
-- Vagrant 1.8.7 <a href="https://github.com/mitchellh/vagrant/issues/7969">has problems updating boxes</a> before running `sudo rm /opt/vagrant/embedded/bin/curl` once.
+- Vagrant 1.8.7 <a href="https://github.com/mitchellh/vagrant/issues/7969">has problems updating boxes</a> before running `sudo rm /opt/vagrant/embedded/bin/curl` once. Vagrant 1.8.7 has also some issues with the latest versions of <a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos6">geerlingguy/centos6</a> box - v1.1.1 seems to work for now.
 - VirtualBox 5.0.28 and 5.18 both fail with "zlib_decode(): data error" when using Composer. This has been fixed in newer versions of VirtualBox.
 
 ### Resources
