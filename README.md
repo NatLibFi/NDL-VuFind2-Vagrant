@@ -101,6 +101,8 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
 - If running Solr, v.memory needs to be at least around 2048, which should work.
+- Vagrant 1.8.7 <a href="https://github.com/mitchellh/vagrant/issues/7969">has problems updating boxes</a> before running `sudo rm /opt/vagrant/embedded/bin/curl` once.
+- VirtualBox 5.0.28 and 5.18 both fail with "zlib_decode(): data error" when using Composer. This has been fixed in newer versions of VirtualBox.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
