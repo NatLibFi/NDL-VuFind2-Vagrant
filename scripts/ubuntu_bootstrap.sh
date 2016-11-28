@@ -101,7 +101,7 @@ fi
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 cd /vufind2
-sudo composer install --no-plugins --no-scripts
+/usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # restart apache

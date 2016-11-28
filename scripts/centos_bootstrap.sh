@@ -104,11 +104,11 @@ sudo su -c 'echo export VUFIND_HOME="/usr/local/vufind2"  > /etc/profile.d/vufin
 sudo su -c 'echo export VUFIND_LOCAL_DIR="/usr/local/vufind2/local"  >> /etc/profile.d/vufind.sh'
 sudo su -c 'source /etc/profile.d/vufind.sh'
 
-# install Composer (locally)
+# install Composer (globally)
 cd /usr/local/vufind2
 sudo curl -sS https://getcomposer.org/installer | sudo php
-sudo mv composer.phar composer
-sudo ./composer install --no-plugins --no-scripts
+sudo mv composer.phar /usr/local/bin/composer
+/usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # configure firewall
