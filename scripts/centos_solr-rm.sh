@@ -1,37 +1,37 @@
 #!/usr/bin/env bash
 
 # if not set, then script called from command line and variables need to be set
-[[ $INSTALL_SOLR ]]
-{
-  INSTALL_SOLR=true
-  SOLR_PATH='/data/solr'
-  JAVA_HEAP_MIN='256m'
-  JAVA_HEAP_MAX='512m'
-}
-[[ $INSTALL_RM ]]
-{
-  INSTALL_RM=true
-  RM_PATH='/usr/local/RecordManager'
-  SAMPLE_DATA='/vagrant/data/sample.xml'
-}
+if [ -z "$INSTALL_SOLR" ]; then
+  source /vagrant/centos.conf
+fi
 
 # Solr
 if [ "$INSTALL_SOLR" = true ]; then
   echo "Installing Solr..."
   # libvoikko
-  sudo apt-get install -y libvoikko-dev
-  sudo ldconfig
-  sudo mkdir -p /tmp/libvoikko
+  cd /etc/yum.repos.d
+  sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
+  sudo yum -y install malaga gcc gcc-c++ apache-maven unzip lsof
+  sudo mkdir /tmp/libvoikko
   cd /tmp/libvoikko
+  # maybe check for a new version from time to time and keep this updated?
+  sudo wget http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.8.tar.gz
+  sudo tar -xzf libvoikko-3.8.tar.gz
+  cd libvoikko-3.8
+  sudo ./configure
+  sudo make
+  sudo make install
+  sudo ln -s /usr/local/lib/libvoikko.so.1.* /usr/lib/libvoikko.so.1
+  sudo ldconfig
+  cd ..
   sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-laaketiede.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
   sudo unzip -d /etc/voikko '*.zip'
 
   # install Solr
   sudo mkdir -p $SOLR_PATH
-  sudo apt-get install -y git
   sudo git clone https://github.com/NatLibFi/NDL-VuFind-Solr.git $SOLR_PATH
   sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
-  sudo su -c "useradd solr -m"
+  sudo adduser solr
   sudo su -c 'echo solr:rlos | chpasswd'
   sudo chown -R solr:solr $SOLR_PATH
   sudo cp $SOLR_PATH/vufind/solr.finna-init-script /etc/init.d/solr
@@ -43,26 +43,38 @@ if [ "$INSTALL_SOLR" = true ]; then
   # fix solr local dir setting in vufind
   sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
   sudo service solr start
+  sudo yum -y install policycoreutils-python
+  sudo semanage port -a -t http_port_t -p tcp 8983
   # start at boot
-  sudo update-rc.d solr defaults
+  sudo chkconfig --add solr
+  sudo chkconfig solr on
   echo "...done installing Solr."
 fi
 
 # RecordManager
 if [ "$INSTALL_RM" = true ]; then
-echo "Installing RecordManager..."
-#  sudo yum -y install openssl-devel policycoreutils-python
+  echo "Installing RecordManager..."
+  sudo yum -y install openssl-devel policycoreutils-python
   sudo sh -c 'echo no | sudo pecl install mongo'
-  sudo sh -c 'echo extension=mongo.so > /etc/php5/mods-available/mongo.ini'
-  sudo php5enmod mongo
-  sudo service apache2 reload
+  sudo sh -c 'echo extension=mongo.so > /etc/php.d/mongo.ini'
+  sudo service httpd reload
   sudo pear channel-update pear.php.net
   sudo pear install HTTP_Request2
   # MongoDB
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-  echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-  sudo apt-get update
-  sudo apt-get install -y mongodb-org
+  sudo wget -O /etc/yum.repos.d/mongodb-org.repo https://repo.mongodb.org/yum/redhat/mongodb-org.repo
+  sudo yum install -y mongodb-org
+  if yum list installed mongodb-org >/dev/null 2>&1; then
+    echo "mongodb-org was installed properly."
+  else
+    # at the moment the repo path is wrong so let's fix it (this will probably become moot later)
+    sudo sed -i 's/stable/3.2/' /etc/yum.repos.d/mongodb-org.repo    
+    echo "mongodb-org repo path fixed. Re-trying install..."
+    sudo yum install -y mongodb-org
+  fi
+  sudo semanage port -a -t mongod_port_t -p tcp 27017
+  sudo service mongod start
+  # start at boot
+  sudo chkconfig mongod on
 
   # install RM
   sudo mkdir -p $RM_PATH
@@ -77,9 +89,9 @@ echo "Installing RecordManager..."
   sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sector_str_mv' conf/recordmanager.ini
   sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
   sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
-
   # just a sample config - for actual use replace this with a proper one
-  sudo cat <<EOF >> conf/datasources.ini
+#  sudo cat <<EOF >> conf/datasources.ini
+  sudo tee -a conf/datasources.ini >/dev/null <<EOF
 [sample]
 institution = testituutio
 recordXPath = "//record"

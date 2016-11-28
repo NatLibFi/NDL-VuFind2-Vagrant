@@ -1,46 +1,7 @@
 #!/bin/bash
 
 #########################  C O N F I G U R A T I O N  #########################
-# Use single quotes instead of double to work with special-character passwords
-
-# VuFind2 install path in the guest machine
-VUFIND2_PATH='/usr/local/vufind2'
-
-# GitHub
-GITHUB_USER='NatLibFi'
-
-# MySQL
-PASSWORD='root' # change this to your liking
-DATABASE='vufind2'
-USER='vufind'
-USER_PW='vufind'
-
-# External index URL if not installing Solr + RecordManager locally.
-EXTERNAL_SOLR_URL=''
-
-# Oracle PHP OCI Instant Client (Voyager)
-INSTALL_ORACLE_CLIENT=true         # Make sure you have the installer RPM files
-ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
-CONFIG_PATH='/vagrant/oracle'      # Voyager config files.
-# version info
-OCI_VERSION='12.1'
-# versions above 12.1 need a new config file to be created
-OCI_CONFIG_URL='http://pastebin.com/raw/20T49aHg'  # 20T49aHg <= v12.1
-
-# Solr
-INSTALL_SOLR=true                  # If true you will also need RecordManager!
-SOLR_PATH='/data/solr'             # Separately installing one without the other
-JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
-JAVA_HEAP_MAX='512m'               # process if errors arise.
-
-# RecordManager
-INSTALL_RM=true
-RM_PATH='/usr/local/RecordManager'
-SAMPLE_DATA='/vagrant/data/sample.xml'  # use MARC
-
-# timezone
-TIMEZONE='Europe/Helsinki'
-
+source /vagrant/centos.conf
 ###############################################################################
 
 # turn SELinux on
@@ -143,11 +104,11 @@ sudo su -c 'echo export VUFIND_HOME="/usr/local/vufind2"  > /etc/profile.d/vufin
 sudo su -c 'echo export VUFIND_LOCAL_DIR="/usr/local/vufind2/local"  >> /etc/profile.d/vufind.sh'
 sudo su -c 'source /etc/profile.d/vufind.sh'
 
-# install Composer (locally)
+# install Composer (globally)
 cd /usr/local/vufind2
 sudo curl -sS https://getcomposer.org/installer | sudo php
-sudo mv composer.phar composer
-sudo ./composer install --no-plugins --no-scripts
+sudo mv composer.phar /usr/local/bin/composer
+/usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # configure firewall
@@ -168,8 +129,8 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 
 # additional installs
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/vagrant-scripts/centos_oracle.sh;
+  source /vagrant/scripts/centos_oracle.sh;
 fi
 if [ "$INSTALL_SOLR" = true -o "$INSTALL_RM" = true ]; then
-  source /vagrant/vagrant-scripts/centos_solr-rm.sh;
+  source /vagrant/scripts/centos_solr-rm.sh;
 fi

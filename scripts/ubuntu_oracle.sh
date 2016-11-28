@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# if not set, then script called from command line and variables need to be set
+[[ $INSTALL_ORACLE_CLIENT ]]
+{
+  source /vagrant/ubuntu.conf
+}
+
 # Check whether installer files exist
 ORACLE_FILES_EXIST=false
 for f in $ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip; do
@@ -11,7 +17,7 @@ done
 if [ "$ORACLE_FILES_EXIST" = true ] ; then
   echo "Installing Oracle Instant Client..."
   sudo pear upgrade pear
-  mkdir -p /opt/oracle
+  sudo mkdir -p /opt/oracle
   cd /opt/oracle
   sudo unzip -o "$ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip" -d ./
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
