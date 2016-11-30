@@ -45,7 +45,7 @@ Vagrant.configure(2) do |config|
 
     # Message to show after provisioning
     ubuntu.vm.post_up_message = "
-NDL-VuFind2 installation FINISHED!"
+Virtual machine installation FINISHED!"
   end
 
   # CentOS 6 config, 'vagrant up centos'
@@ -65,7 +65,7 @@ NDL-VuFind2 installation FINISHED!"
 
     # Message to show after provisioning
     centos.vm.post_up_message = "
-NDL-VuFind2 installation FINISHED!
+Virtual machine installation FINISHED!
 
 DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
 Also, please remove 'anonymous' user & test databases.

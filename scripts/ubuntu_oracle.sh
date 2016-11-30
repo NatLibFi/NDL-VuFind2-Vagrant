@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 # if not set, then script called from command line and variables need to be set
-[[ $INSTALL_ORACLE_CLIENT ]]
-{
+if [ -z "$INSTALL_ORACLE_CLIENT" ]; then
   source /vagrant/ubuntu.conf
-}
+fi
 
 # Check whether installer files exist
 ORACLE_FILES_EXIST=false
@@ -16,6 +15,7 @@ done
 # Oracle PHP OCI driver
 if [ "$ORACLE_FILES_EXIST" = true ] ; then
   echo "Installing Oracle Instant Client..."
+  echo "==================================="
   sudo pear upgrade pear
   sudo mkdir -p /opt/oracle
   cd /opt/oracle
@@ -80,6 +80,6 @@ if [ "$ORACLE_FILES_EXIST" = true ] ; then
       sed -i '/\[Drivers\]$/a '"$org"' = VoyagerRestful' $VUFIND2_PATH/local/config/finna/MultiBackend.ini
     done
   fi
-
+  echo "========================================="
   echo "...done installing Oracle Instant Client."
 fi
