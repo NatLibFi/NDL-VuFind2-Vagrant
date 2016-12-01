@@ -16,8 +16,13 @@ cd /tmp/libvoikko
 sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-laaketiede.zip http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
 sudo unzip -d /etc/voikko '*.zip'
 
-# if Java not yet installed, then install (installer checks automatically)
-source /vagrant/scripts/ubuntu_java.sh
+# add Java 8 repository; Solr 6 requires Java 8
+sudo apt-add-repository -y ppa:webupd8team/java
+sudo apt-get -q update
+
+# install Java JDK
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install -y oracle-java8-installer
 
 # install Solr
 sudo mkdir -p $SOLR_PATH

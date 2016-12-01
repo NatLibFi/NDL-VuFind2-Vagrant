@@ -72,13 +72,9 @@ cd /vufind2
 /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
-
 # create log file and change owner
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
-
-# install Java (do we really need Java without Solr?)
-#source /vagrant/scripts/ubuntu_java.sh
 
 # install node.js v5 & less 2.4.0 (for -x option)
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
