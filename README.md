@@ -9,8 +9,8 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 #### Requirements
 
 Mandatory:
-- <a href="https://www.virtualbox.org">VirtualBox</a>
-- <a href="https://www.vagrantup.com">Vagrant</a>
+- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid v5.0.28 & v5.1.8 due to issues with Composer)
+- <a href="https://www.vagrantup.com">Vagrant</a> (avoid v1.8.7 due to issues with curl)
 
 Optional:
 - <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
@@ -100,8 +100,6 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
 - If running Solr, v.memory needs to be at least around 2048, which should work.
-- Vagrant 1.8.7 <a href="https://github.com/mitchellh/vagrant/issues/7969">has problems updating boxes</a> before running `sudo rm /opt/vagrant/embedded/bin/curl` once. Vagrant 1.8.7 has also some issues with the latest versions of <a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos6">geerlingguy/centos6</a> box - v1.1.1 seems to work for now.
-- VirtualBox 5.0.28 and 5.1.8 both fail with "zlib_decode(): data error" when using Composer. This has been fixed in newer versions of VirtualBox.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
