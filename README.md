@@ -9,8 +9,8 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 #### Requirements
 
 Mandatory:
-- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid v5.0.28 & v5.1.8 due to issues with Composer)
-- <a href="https://www.vagrantup.com">Vagrant</a> (avoid v1.8.7 due to issues with curl)
+- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_)
+- <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
 
 Optional:
 - <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
