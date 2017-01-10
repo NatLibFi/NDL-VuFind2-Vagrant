@@ -44,6 +44,9 @@ sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sect
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
 sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
 
+# run Composer
+/usr/local/bin/composer install --no-plugins --no-scripts
+
 # just a sample config - for actual use replace this with a proper one
 #  sudo cat <<EOF >> conf/datasources.ini
 sudo tee -a conf/datasources.ini >/dev/null <<EOF
