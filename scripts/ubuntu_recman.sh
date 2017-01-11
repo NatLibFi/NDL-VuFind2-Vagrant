@@ -8,6 +8,22 @@ fi
 # RecordManager
 echo "Installing RecordManager..."
 echo "==========================="
+sudo apt-get install -y pkg-config libpcre3-dev phpunit
+
+# libgeos with PHP5 bindings, Ubuntu 15.04 would have php5-geos in the repository 
+if [ "$INSTALL_GEOS" = true ]; then
+  cd /tmp
+  wget http://download.osgeo.org/geos/geos-3.4.2.tar.bz2
+  tar -xjvf geos-3.4.2.tar.bz2
+  cd geos-3.4.2/
+  ./configure --enable-php
+  make
+  sudo make install
+  sudo sh -c 'echo extension=geos.so > /etc/php5/mods-available/geos.ini'
+  sudo php5enmod geos
+fi
+
+#MongoDB driver
 sudo sh -c 'echo no | sudo pecl install mongo'
 sudo sh -c 'echo extension=mongo.so > /etc/php5/mods-available/mongo.ini'
 sudo php5enmod mongo

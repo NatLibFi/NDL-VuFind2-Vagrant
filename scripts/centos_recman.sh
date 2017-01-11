@@ -9,6 +9,13 @@ fi
 echo "Installing RecordManager..."
 echo "==========================="
 sudo yum -y install openssl-devel policycoreutils-python
+
+# libgeos; with PHP7 https://git.osgeo.org/gogs/geos/php-geos + geos-devel might be required
+if [ "$INSTALL_GEOS" = true ]; then
+  sudo yum -y install geos geos-php
+fi
+
+#MongoDB driver
 sudo sh -c 'echo no | sudo pecl install mongo'
 sudo sh -c 'echo extension=mongo.so > /etc/php.d/mongo.ini'
 sudo service httpd reload
@@ -30,7 +37,7 @@ sudo service mongod start
 # start at boot
 sudo chkconfig mongod on
 
-# install RM
+# install RecordManager
 sudo mkdir -p $RECMAN_PATH
 cd $RECMAN_PATH
 sudo git clone https://github.com/NatLibFi/RecordManager.git .
