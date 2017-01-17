@@ -98,7 +98,11 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
 ### Known Issues
-- Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile
+- Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile.<br>
+  More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
+  - Mac users, adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but you will be asked for admin password with every `vagrant up`. See the previous link for modifying sudoers to avoid this. 
+  - Linux users, as above but need also to install `nfsd`, please see the previous link.
+  - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - If running Solr, v.memory needs to be at least around 2048, which should work.
 
 ### Resources
