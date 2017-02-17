@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "ubuntu", primary: true do |ubuntu|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    ubuntu.vm.box = "ubuntu/trusty64"
+    ubuntu.vm.box = "ubuntu/xenial64"
     # An example to use instead if you repackage a local custom base box 
     # ubuntu.vm.box = "ubuntu_vufind2 file:./ubuntu_vufind2.box"
 
