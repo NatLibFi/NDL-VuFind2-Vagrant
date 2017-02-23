@@ -101,7 +101,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile.<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
-  - Mac users, ~~adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough~~ (this is now default), but admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
+  - Mac users, ~~adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but~~ (**this is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see the previous link for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - If running Solr, v.memory needs to be at least around 2048, which should work.
