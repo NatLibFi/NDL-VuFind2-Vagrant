@@ -21,12 +21,12 @@ for _ubuntu_:
 
 #### Set-Up
 
-_ubuntu_:
+_ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</a>):
 
 Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_. If the working directory is other than _vufind2_, modify the _Vagrantfile_ accordingly.<br/>
 If using sqlplus from Oracle, put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
-_centos_:
+_centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos6">centos6</a>):
 
 If only using _centos_, any directory with sufficent user permissions will do. If using both, the same directory with _ubuntu_ is fine.
 
@@ -48,15 +48,16 @@ See the bootstrap files for possible install configuration changes prior to runn
 _ubuntu_:
 - `vagrant up`
   - This will take a few minutes, so enjoy your beverage of choice!
+  - Mac only!: NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
-  - Blank page or errors: adjust the config(s), reload browser page.
+  - Blank page or errors: adjust VuFind config(s), reload browser page.
 
 _centos_:
 - `vagrant up centos`
   - Again, this will take a few minutes...
 - `vagrant ssh -c "/usr/bin/mysql_secure_installation" centos` to add MySQL root password and remove anonymous user & test databases
 - <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>
-  - Blank page or errors: adjust the config(s) inside the VM, reload browser page.
+  - Blank page or errors: adjust VuFind config(s) inside the VM, reload browser page.
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
@@ -100,8 +101,8 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile.<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
-  - Mac users, adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but you will be asked for admin password with every `vagrant up`. See the previous link for modifying sudoers to avoid this. 
-  - Linux users, as above but need also to install `nfsd`, please see the previous link.
+  - Mac users, ~~adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but~~ (**this is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
+  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see the previous link for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - If running Solr, v.memory needs to be at least around 2048, which should work.
 

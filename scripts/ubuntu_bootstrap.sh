@@ -26,12 +26,12 @@ sudo apt-get install -y apache2
 sudo a2enmod rewrite
 sudo a2enmod headers
 
-# install PHP 5
-sudo apt-get install -y php5 php5-dev php-pear php5-json php5-mcrypt php5-mysql php5-xsl php5-intl php5-gd php5-curl
+# install PHP 7
+sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mcrypt php-mysql php-xml php-intl php-gd php-curl
 
 # change php.ini: display_errors = On, opcache.enable=0
-sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php5/apache2/php.ini
-sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php5/apache2/php.ini
+sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php/7.?/apache2/php.ini
+sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php/7.?/apache2/php.ini
 
 # install NDL-Vufind2
 if [ "$INSTALL_VUFIND2" = true ]; then
@@ -39,7 +39,7 @@ if [ "$INSTALL_VUFIND2" = true ]; then
 fi
 
 # restart Apache
-service apache2 reload
+sudo service apache2 reload
 
 # additional installs
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then

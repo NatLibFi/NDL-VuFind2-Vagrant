@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "ubuntu", primary: true do |ubuntu|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    ubuntu.vm.box = "ubuntu/trusty64"
+    ubuntu.vm.box = "ubuntu/xenial64"
     # An example to use instead if you repackage a local custom base box 
     # ubuntu.vm.box = "ubuntu_vufind2 file:./ubuntu_vufind2.box"
 
@@ -33,7 +33,12 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
 
     # Share an additional folder to the guest VM.
+  if RUBY_PLATFORM =~ /darwin/
+    ubuntu.vm.network "private_network", type: "dhcp"
+    ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"
+  else
     ubuntu.vm.synced_folder "../vufind2", "/vufind2"
+  end
 
     # Share the cache folder and allow guest machine write access
     ubuntu.vm.synced_folder "../vufind2/local/cache", "/vufind2/local/cache",
