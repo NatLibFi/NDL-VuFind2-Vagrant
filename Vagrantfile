@@ -57,7 +57,7 @@ Virtual machine installation FINISHED!"
   config.vm.define "centos", autostart: false do |centos|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    centos.vm.box = "geerlingguy/centos6"
+    centos.vm.box = "geerlingguy/centos7"
     # An example to use instead if you repackage a local custom base box 
     # centos.vm.box = "centos_vufind2 file:./centos_vufind2.box"
 
@@ -72,7 +72,7 @@ Virtual machine installation FINISHED!"
     centos.vm.post_up_message = "
 Virtual machine installation FINISHED!
 
-DO NOT FORGET to SET A PASSWORD for the MySQL root USER!
+DO NOT FORGET to SET A PASSWORD for the MariaDB root USER!
 Also, please remove 'anonymous' user & test databases.
 
 To do both of the above:
