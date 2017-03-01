@@ -108,7 +108,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
-- <a href="https://github.com/NatLibFi/NDL-VuFind-Solr">NDL-VuFind-Solr</a>
+- <a href="https://github.com/NatLibFi/finna-solr">finna-solr</a>
 - <a href="http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html">Oracle Instant Client</a>
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
