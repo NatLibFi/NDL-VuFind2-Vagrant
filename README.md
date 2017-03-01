@@ -26,7 +26,7 @@ _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</
 Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_. If the working directory is other than _vufind2_, modify the _Vagrantfile_ accordingly.<br/>
 If using sqlplus from Oracle, put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
-_centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos6">centos6</a>):
+_centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos7">centos7</a>):
 
 If only using _centos_, any directory with sufficent user permissions will do. If using both, the same directory with _ubuntu_ is fine.
 
