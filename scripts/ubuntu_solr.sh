@@ -25,7 +25,11 @@ sudo apt-get install -y oracle-java8-installer
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
-sudo git clone $SOLR_GIT --branch $SOLR_BRANCH --single-branch $SOLR_PATH
+if [[ "$SOLR_BRANCH" == "master" ]]; then
+  sudo git clone $SOLR_GIT $SOLR_PATH
+else
+  sudo git clone $SOLR_GIT --branch $SOLR_BRANCH --single-branch $SOLR_PATH
+fi
 sudo su -c "useradd solr -m"
 #sudo su -c 'echo solr:rlos | chpasswd'
 cd $SOLR_PATH

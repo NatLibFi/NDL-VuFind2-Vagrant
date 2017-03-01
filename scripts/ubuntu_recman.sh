@@ -40,7 +40,11 @@ sudo service mongod start
 # install RecordManager
 sudo mkdir -p $RECMAN_PATH
 cd $RECMAN_PATH
-sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
+if [[ "$RECMAN_BRANCH" == "master" ]]; then
+  sudo git clone $RECMAN_GIT $RECMAN_PATH
+else
+  sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
+fi
 # run Composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
 # connect to MongoDB
