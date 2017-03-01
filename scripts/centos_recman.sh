@@ -8,51 +8,65 @@ fi
 # RecordManager
 echo "Installing RecordManager..."
 echo "==========================="
-sudo yum -y install openssl-devel policycoreutils-python
+sudo yum -y install openssl-devel
 
 # libgeos; with PHP7 https://git.osgeo.org/gogs/geos/php-geos + geos-devel might be required
 if [ "$INSTALL_GEOS" = true ]; then
-  sudo yum -y install geos geos-php
+  sudo yum -y install geos geos-php geos-devel
+  cd /tmp
+  sudo git clone https://git.osgeo.org/gogs/geos/php-geos.git
+  cd php-geos
+  sudo ./autogen.sh
+  sudo ./configure
+  sudo make
+  sudo make install
 fi
 
-#MongoDB driver
-sudo sh -c 'echo no | sudo pecl install mongo'
-sudo sh -c 'echo extension=mongo.so > /etc/php.d/mongo.ini'
-sudo service httpd reload
 sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
+
+#MongoDB driver
+sudo yum -y install php70w-pecl-mongodb
+sudo sh -c 'printf "extension=mongodb.so\n" >> /etc/php.d/mongodb.ini'
+sudo systemctl reload httpd
 # MongoDB
-sudo wget -O /etc/yum.repos.d/mongodb-org.repo https://repo.mongodb.org/yum/redhat/mongodb-org.repo
-sudo yum install -y mongodb-org
-if yum list installed mongodb-org >/dev/null 2>&1; then
-  echo "mongodb-org was installed properly."
-else
-  # at the moment the repo path is wrong so let's fix it (this will probably become moot later)
-  sudo sed -i 's/stable/3.2/' /etc/yum.repos.d/mongodb-org.repo    
-  echo "mongodb-org repo path fixed. Re-trying install..."
-  sudo yum install -y mongodb-org
-fi
+sudo tee -a /etc/yum.repos.d/mongodb-org-3.4.repo >/dev/null <<EOF
+[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/3.4/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
+EOF
+sudo yum -y update
+sudo yum -y install mongodb-org
 sudo semanage port -a -t mongod_port_t -p tcp 27017
-sudo service mongod start
+sudo systemctl start mongod
 # start at boot
-sudo chkconfig mongod on
+sudo systemctl enable mongod
 
 # install RecordManager
 sudo mkdir -p $RECMAN_PATH
 cd $RECMAN_PATH
-sudo git clone https://github.com/NatLibFi/RecordManager.git .
+if [[ "$RECMAN_BRANCH" == "master" ]]; then
+  sudo git clone $RECMAN_GIT $RECMAN_PATH
+else
+  sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
+fi
+# run Composer
+sudo /usr/local/bin/composer install --no-plugins --no-scripts
+# create indexes
 mongo recman dbscripts/mongo.js
+# copy some sample configurations
 sudo cp conf/abbreviations.lst.sample conf/abbreviations.lst
 sudo cp conf/articles.lst.sample conf/articles.lst
 sudo cp conf/recordmanager.ini.sample conf/recordmanager.ini
+# modify settings
 sudo sed -i -e 's,http://localhost:8080/solr/biblio/update/json,http://localhost:8983/solr/biblio/update,' conf/recordmanager.ini
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = category_str_mv' conf/recordmanager.ini
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sector_str_mv' conf/recordmanager.ini
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
 sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
-
-# run Composer
-/usr/local/bin/composer install --no-plugins --no-scripts
 
 # just a sample config - for actual use replace this with a proper one
 #  sudo cat <<EOF >> conf/datasources.ini
