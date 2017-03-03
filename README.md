@@ -23,16 +23,27 @@ for _ubuntu_:
 
 _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</a>):
 
-Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_. If the working directory is other than _vufind2_, modify the _Vagrantfile_ accordingly.<br/>
-If using sqlplus from Oracle, put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
+* Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_.
+
+If the working directory is other than _vufind2_:
+* Modify the _Vagrantfile_ accordingly.<br/>
+
+If using sqlplus from Oracle:
+* Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
 _centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos7">centos7</a>):
 
 If only using _centos_, any directory with sufficent user permissions will do. If using both, the same directory with _ubuntu_ is fine.
 
-_both/either_:
+_both_:
 
-If using Oracle, put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
+* Copy the _ubuntu.conf.sample_ and/or _centos.conf.sample_ to _ubuntu.conf_ and/or _centos.conf_
+* See the .conf files for possible install configuration changes prior to running the VMs.
+
+_both/(n)either_:
+
+If using Oracle:
+* Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
 For the records data, some options exist:
 * bare minimum (e.g. testing purposes): add a sample data file to the _data/_ directory to import to the local Solr database via RecordManager during install
@@ -40,8 +51,6 @@ For the records data, some options exist:
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
   - either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
   - add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
-
-See the bootstrap files for possible install configuration changes prior to running the VMs.
 
 #### Use
 
