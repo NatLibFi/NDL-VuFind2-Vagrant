@@ -1,11 +1,21 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# make sure the vufind2 folder exists
+# make sure the vufind2 folder exists + the .sample -> .conf are copied
 case ARGV[0]
 when "up", "up ubuntu"
   if !(File.exists?('../vufind2'))
     puts "vufind2 directory DOES NOT EXIST!"
+    exit
+  end
+  if !(File.exists?('ubuntu.conf'))
+    puts "ubuntu.conf file DOES NOT EXIST!"
+    exit
+  end
+when "up centos"
+  if !(File.exists?('ubuntu.conf'))
+    puts "centos.conf file DOES NOT EXIST!"
+    exit
   end
 else
   # do nothing
