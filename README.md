@@ -70,7 +70,7 @@ _centos_:
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
-**Solr**: `sudo service start|stop|restart|status` inside the VM to control the running state.
+**Solr**: `sudo service solr start|stop|restart|status` inside the VM to control the running state.
 - Solr Admin UI can be accessed at
   - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
   - _centos_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
