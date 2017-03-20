@@ -23,6 +23,8 @@ if [ "$ORACLE_FILES_EXIST" = true ] ; then
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
   sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
   sudo sh -c "echo /opt/oracle/instantclient_$OCI_VERSION > /etc/ld.so.conf.d/oracle-instantclient"
+  # fix pecl - see https://serverfault.com/questions/589877/pecl-command-produces-long-list-of-errors
+  sed -i "$ s|\-n||g" /usr/bin/pecl
   if php --version | grep -q "PHP 7"; then
     # oci8 2.1.0 and up needs php7
     sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | pecl install oci8"
