@@ -27,9 +27,8 @@ sudo a2enmod rewrite
 sudo a2enmod headers
 
 # install PHP 7
-sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mcrypt php-mysql php-xml php-intl php-gd php-curl
-# we need also mbstring
-sudo apt-get install -y php7.0-mbstring
+sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mcrypt php-mysql php-xml php-intl php-gd php-curl php-mbstring
+
 sudo phpenmod mbstring
 
 # change php.ini: display_errors = On, opcache.enable=0
