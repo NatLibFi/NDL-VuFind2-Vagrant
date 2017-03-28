@@ -57,8 +57,10 @@ for i in "${CfgExt[@]}"; do
     fi
   done
 done
-
 cd
+
+# modify MultiBackend default driver
+sudo sed -i -e 's,default_driver = "NoILS",default_driver = "",' $VUFIND2_PATH/local/config/finna/MultiBackend.ini
 
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
