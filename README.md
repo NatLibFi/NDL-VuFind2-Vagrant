@@ -23,17 +23,20 @@ for _ubuntu_:
 
 _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</a>):
 
-* Put the NDL-VuFind2-Vagrant files in a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/vufind2_ & _same-path-to/vagrant_vufind2_.
+* Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
+* Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_.
 
-If the working directory is other than _vufind2_:
-* Modify the _Vagrantfile_ accordingly.<br/>
+If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_:
+* Modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there.<br/>
 
 If using sqlplus from Oracle:
 * Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
 _centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos7">centos7</a>):
 
-If only using _centos_, any directory with sufficent user permissions will do. If using both, the same directory with _ubuntu_ is fine.
+* Clone the NDL-VuFind2-Vagrant files to the host computer unless this is already done. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
+
+* Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_ unless this is already done. There should be no need for any changes.
 
 _both_:
 
@@ -108,7 +111,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
 ### Known Issues
-- Slower than native LAMP/MAMP. You can try adding more v.memory/v.cpus in Vagrantfile.<br>
+- Slower than native LAMP/MAMP. You can try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Mac users, ~~adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but~~ (**this is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see the previous link for details.
