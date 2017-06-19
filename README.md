@@ -24,6 +24,7 @@ for _ubuntu_:
 _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</a>):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
+
 * Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_.
 
 If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_:
