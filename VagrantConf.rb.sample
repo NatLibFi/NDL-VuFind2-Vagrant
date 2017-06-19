@@ -1,0 +1,18 @@
+module VagrantConf 
+
+  # relative path to the cloned directory of NDL-VuFind2 files from Github
+  VufindPath = '../NDL-VuFind2'
+
+  # Make this match the VUFIND2_PATH in ubuntu.conf
+  MountPath = '/vufind2'
+
+  # Ubuntu Vagrant box. See https://atlas.hashicorp.com/search
+  UbuntuBox = 'ubuntu/xenial64'
+
+  # CentOS Vagrant box. See https://atlas.hashicorp.com/search
+  CentosBox = 'geerlingguy/centos7'
+
+  # The amount of memory in megabytes used by each virtual machine
+  VirtualMemory = '2048'
+
+end

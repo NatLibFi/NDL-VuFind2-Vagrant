@@ -1,11 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# make sure the vufind2 folder exists + the .sample -> .conf are copied
+# make sure the VagrantConf.rb exists
+if !(File.exists?('VagrantConf.rb'))
+  puts "VagrantConf.rb file DOES NOT EXIST!"
+  exit
+else
+  require_relative './VagrantConf.rb'
+  include VagrantConf
+end
+
+# make sure the forked NDL-VuFind2 folder exists + the .sample -> .conf have been copied
 case ARGV[0]
 when "up", "up ubuntu"
-  if !(File.exists?('../vufind2'))
-    puts "vufind2 directory DOES NOT EXIST!"
+  if !(File.exists?(VufindPath))
+    puts VufindPath + " directory DOES NOT EXIST!"
     exit
   end
   if !(File.exists?('ubuntu.conf'))
@@ -34,7 +43,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "ubuntu", primary: true do |ubuntu|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    ubuntu.vm.box = "ubuntu/xenial64"
+    ubuntu.vm.box = UbuntuBox
     # An example to use instead if you repackage a local custom base box 
     # ubuntu.vm.box = "ubuntu_vufind2 file:./ubuntu_vufind2.box"
 
@@ -45,13 +54,13 @@ Vagrant.configure(2) do |config|
     # Share an additional folder to the guest VM.
   if RUBY_PLATFORM =~ /darwin/
     ubuntu.vm.network "private_network", type: "dhcp"
-    ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"
+    ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
   else
-    ubuntu.vm.synced_folder "../vufind2", "/vufind2"
+    ubuntu.vm.synced_folder VufindPath, MountPath
   end
 
     # Share the cache folder and allow guest machine write access
-    ubuntu.vm.synced_folder "../vufind2/local/cache", "/vufind2/local/cache",
+    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
       owner: "www-data", group: "www-data",
       :mount_options => ["dmode=777","fmode=666"]
 
@@ -67,7 +76,7 @@ Virtual machine installation FINISHED!"
   config.vm.define "centos", autostart: false do |centos|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    centos.vm.box = "geerlingguy/centos7"
+    centos.vm.box = CentosBox
     # An example to use instead if you repackage a local custom base box 
     # centos.vm.box = "centos_vufind2 file:./centos_vufind2.box"
 
@@ -113,7 +122,7 @@ To do both of the above:
     # vb.gui = true
   
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = VirtualMemory
     # vb.cpus = 2
   end
   #
