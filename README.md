@@ -2,7 +2,7 @@
 
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem
+  - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development.
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -26,9 +26,9 @@ _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
 
 * Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_.
+  * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there.<br/>
 
-If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_:
-* Modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there.<br/>
+* Copy the _ubuntu.conf.sample_ to _ubuntu.conf_ and see the .conf file for possible install configuration changes (e.g. enabling Sizzy etc.) prior to running the VM.
 
 If using sqlplus from Oracle:
 * Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
@@ -39,17 +39,14 @@ _centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos7">centos
 
 * Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_ unless this is already done. There should be no need for any changes.
 
+* Copy the _centos.conf.sample_ to _centos.conf_ and see the .conf file for possible install configuration changes prior to running the VM.
+
 _both_:
-
-* Copy the _ubuntu.conf.sample_ and/or _centos.conf.sample_ to _ubuntu.conf_ and/or _centos.conf_
-* See the .conf files for possible install configuration changes prior to running the VMs.
-
-_both/(n)either_:
 
 If using Oracle:
 * Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
-For the records data, some options exist:
+If using local RecordManager/Solr, some options exist for the records data:
 * bare minimum (e.g. testing purposes): add a sample data file to the _data/_ directory to import to the local Solr database via RecordManager during install
 * more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
 * without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
@@ -64,6 +61,7 @@ _ubuntu_:
   - Mac only!: NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page.
+- When using Sizzy, point the browser to <a href="http://localhost:3033/?url=http://localhost:8081/vufind2">http://localhost:3033/?url=http://localhost:8081/vufind2</a>
 
 _centos_:
 - `vagrant up centos`
@@ -126,3 +124,4 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
+- <a href="https://www.sizzy.co">Sizzy</a>
