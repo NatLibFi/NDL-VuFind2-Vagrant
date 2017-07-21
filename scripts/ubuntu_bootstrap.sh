@@ -45,11 +45,14 @@ sudo service apache2 reload
 
 # additional installs
 if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/scripts/ubuntu_oracle.sh;
+  source /vagrant/scripts/ubuntu_oracle.sh
 fi
 if [ "$INSTALL_SOLR" = true ]; then
-  source /vagrant/scripts/ubuntu_solr.sh;
+  source /vagrant/scripts/ubuntu_solr.sh
 fi
 if [ "$INSTALL_RECMAN" = true ]; then
-  source /vagrant/scripts/ubuntu_recman.sh;
+  source /vagrant/scripts/ubuntu_recman.sh
+fi
+if [ "$INSTALL_SIZZY" = true ]; then
+  source /vagrant/scripts/ubuntu_sizzy.sh
 fi

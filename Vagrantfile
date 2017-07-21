@@ -50,6 +50,7 @@ Vagrant.configure(2) do |config|
     # Create a forwarded port mapping
     ubuntu.vm.network "forwarded_port", guest: 80, host: 8081
     ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
+    ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033
 
     # Share an additional folder to the guest VM.
   if RUBY_PLATFORM =~ /darwin/
