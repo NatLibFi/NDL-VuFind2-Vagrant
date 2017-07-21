@@ -62,6 +62,7 @@ _ubuntu_:
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page.
 - When using Sizzy, point the browser to <a href="http://localhost:3033/?url=http://localhost:8081/vufind2">http://localhost:3033/?url=http://localhost:8081/vufind2</a>
+  - If you forgot to enable Sizzy in ubuntu.conf just run<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_sizzy.sh"`
 
 _centos_:
 - `vagrant up centos`
