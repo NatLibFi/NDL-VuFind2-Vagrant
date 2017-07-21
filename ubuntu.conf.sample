@@ -11,6 +11,12 @@ INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false                # Geocoding (only with RecordManager)
 
+# dev tools
+INSTALL_SIZZY=false
+SIZZY_DOCKER='detroitenglish/sizzy:latest'
+# See: http://sizzy.co & https://hub.docker.com/r/detroitenglish/docker-sizzy/
+# Use: http://localhost:3033/?url=localhost:8081/vufind2
+
 # MySQL
 PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
