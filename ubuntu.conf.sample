@@ -13,7 +13,7 @@ INSTALL_RECMAN=true                # RecordManager
 
 # dev tools
 INSTALL_SIZZY=false
-SIZZY_DOCKER='detroitenglish/sizzy:latest'
+SIZZY_DOCKER='detroitenglish/docker-sizzy:latest'
 # See: http://sizzy.co & https://hub.docker.com/r/detroitenglish/docker-sizzy/
 # Use: http://localhost:3033/?url=localhost:8081/vufind2
 
