@@ -10,7 +10,7 @@ module VagrantConf
   UbuntuBox = 'ubuntu/xenial64'
 
   # CentOS Vagrant box. See https://atlas.hashicorp.com/search
-  CentosBox = 'geerlingguy/centos7'
+  CentosBox = 'centos/7'
 
   # The amount of memory in megabytes used by each virtual machine
   VirtualMemory = '2048'
