@@ -100,7 +100,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box update`
   - update the cached boxes if newer versions exist 
 * `vagrant box list`
-  - show the cached box files, delete unnecessary ones with `vagrant box remove`
+  - show the cached box files, delete unnecessary ones with `vagrant box remove` or `vagrant box prune`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
