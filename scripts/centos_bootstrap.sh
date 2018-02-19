@@ -14,15 +14,18 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
-# Add Webstatic repo & update yum
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+# Add Epel & Webtatic repos for php7 & update yum
+sudo rpm --import http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm --import https://mirror.webtatic.com/yum/RPM-GPG-KEY-webtatic-el7
+sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 sudo yum history new
 sudo yum -y update
 
 # install apache
 sudo yum -y install httpd
 # install php7
-sudo yum -y install php70w php70w-devel php70w-intl php70w-mysql php70w-xml php70w-gd php70w-mbstring php70w-mcrypt php70w-curl php70w-pear
+sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear
 
 # configure php
 sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini

@@ -26,8 +26,8 @@ sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
 
 #MongoDB driver
-sudo yum -y install php70w-pecl-mongodb
-sudo sh -c 'printf "extension=mongodb.so\n" >> /etc/php.d/mongodb.ini'
+sudo yum -y install php71w-pecl-mongodb
+#sudo sh -c 'printf "extension=mongodb.so\n" >> /etc/php.d/mongodb.ini'
 sudo systemctl reload httpd
 # MongoDB
 sudo tee -a /etc/yum.repos.d/mongodb-org-3.4.repo >/dev/null <<EOF
@@ -38,6 +38,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
 EOF
+sudo rpm --import https://www.mongodb.org/static/pgp/server-3.4.asc
 sudo yum -y update
 sudo yum -y install mongodb-org
 sudo semanage port -a -t mongod_port_t -p tcp 27017
@@ -67,13 +68,14 @@ sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = cate
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sector_str_mv' conf/recordmanager.ini
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
 sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
+# fix UNIX socket URL encoding
+sudo sed -i -e 's,mongodb:///tmp/,mongodb://%2Ftmp%2F,' conf/recordmanager.ini
 
 # just a sample config - for actual use replace this with a proper one
 #  sudo cat <<EOF >> conf/datasources.ini
 sudo tee -a conf/datasources.ini >/dev/null <<EOF
 [sample]
 institution = testituutio
-recordXPath = "//record"
 format = marc
 EOF
 

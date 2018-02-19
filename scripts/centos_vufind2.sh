@@ -31,7 +31,7 @@ for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
     if [[ -f $x ]] && [[ ! -f $t ]]; then
-      cp $x $t
+      sudo cp $x $t
     fi
   done
 done
@@ -40,7 +40,7 @@ for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
     if [[ -f $x ]] && [[ ! -f $t ]]; then
-      cp $x $t
+      sudo cp $x $t
     fi
   done
 done

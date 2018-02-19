@@ -8,7 +8,7 @@ fi
 echo "Installing Solr..."
 echo "=================="
 # libvoikko
-sudo yum -y install libvoikko unzip
+sudo yum -y install libvoikko unzip wget
 cd /tmp
 sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
 sudo unzip -d /etc/voikko '*.zip'
@@ -34,6 +34,9 @@ sudo chown -R solr $SOLR_PATH
 # set java heap min/max
 sudo sed -i 's/SOLR_JAVA_MEM=/#SOLR_JAVA_MEM=/' $SOLR_PATH/vufind/solr.in.finna.sh
 sudo sed -i '/#SOLR_JAVA_MEM/a SOLR_JAVA_MEM="-Xms'"$JAVA_HEAP_MIN"' -Xmx'"$JAVA_HEAP_MAX"'"' $SOLR_PATH/vufind/solr.in.finna.sh
+# disable solrcloud
+sudo sed -i 's/ZK_/#ZK_=/' $SOLR_PATH/vufind/solr.in.finna.sh
+sudo sed -i 's/SOLR_MODE/#SOLR_MODE=/' $SOLR_PATH/vufind/solr.in.finna.sh
 
 # fix solr local dir setting in vufind
 sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
