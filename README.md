@@ -3,7 +3,7 @@
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
   - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development.
-- **centos** (ATM this is borken! Will be fixed... soonish)
+- **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
 #### Requirements
