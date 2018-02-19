@@ -61,13 +61,14 @@ sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = cate
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = sector_str_mv' conf/recordmanager.ini
 sudo sed -i '/;hierarchical_facets\[\] = building/a hierarchical_facets[] = format' conf/recordmanager.ini
 sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = building,' conf/recordmanager.ini
+# fix UNIX socket URL encoding
+sudo sed -i -e 's,mongodb:///tmp/,mongodb://%2Ftmp%2F,' conf/recordmanager.ini
 
 # just a sample config - for actual use replace this with a proper one
 #  sudo cat <<EOF >> conf/datasources.ini
 sudo tee -a conf/datasources.ini >/dev/null <<EOF
 [sample]
 institution = testituutio
-recordXPath = "//record"
 format = marc
 EOF
 
