@@ -21,7 +21,7 @@ for _ubuntu_:
 
 #### Set-Up
 
-_ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</a>):
+_ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/xenial64">xenial64</a>):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
 
@@ -33,7 +33,7 @@ _ubuntu_ (<a href="https://atlas.hashicorp.com/ubuntu/boxes/xenial64">xenial64</
 If using sqlplus from Oracle:
 * Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
-_centos_ (<a href="https://atlas.hashicorp.com/geerlingguy/boxes/centos7">centos7</a>):
+_centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer unless this is already done. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
 
