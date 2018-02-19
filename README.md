@@ -3,7 +3,7 @@
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
   - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development.
-- **centos**
+- **centos** (ATM this is borken! Will be fixed... soonish)
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
 #### Requirements
@@ -48,10 +48,11 @@ If using Oracle:
 
 If using local RecordManager/Solr, some options exist for the records data:
 * bare minimum (e.g. testing purposes): add a sample data file to the _data/_ directory to import to the local Solr database via RecordManager during install
-* more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done
-* without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
-  - either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
-  - add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
+* more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done.
+
+Without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
+* either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
+* add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
 #### Use
 
@@ -100,7 +101,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box update`
   - update the cached boxes if newer versions exist 
 * `vagrant box list`
-  - show the cached box files, delete unnecessary ones with `vagrant box remove`
+  - show the cached box files, delete unnecessary ones with `vagrant box remove` or `vagrant box prune`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
