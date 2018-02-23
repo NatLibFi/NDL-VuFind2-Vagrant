@@ -47,8 +47,8 @@ If using Oracle:
 * Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
 If using local RecordManager/Solr, some options exist for the records data:
-* bare minimum (e.g. testing purposes): add a sample data file to the _data/_ directory to import to the local Solr database via RecordManager during install
-* more proper use: import your data manually from file(s) or set up harvesting sources after the provisioning/installing is done.
+* default but bare minimum (e.g. testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
+* more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) **or** set up harvesting sources after the provisioning/installing is done.
 
 Without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
 * either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
@@ -79,7 +79,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
   - _centos_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
 
-**RecordManager & Importing Data**: If SAMPLE_DATA location is set in the bootstrap files and the corresponding xml file present, the provisioning phase will install a sample dataset to the local index. It is recommended to delete the sample config found in /usr/local/RecordManager/conf/datasources.ini and create your own (see <a href="https://github.com/NatLibFi/RecordManager/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>).
+**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu/centos.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to **false** and set up data harvesting inside the virtual machine after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
 - <a href="https://github.com/NatLibFi/RecordManager/wiki">RecordManager Wiki</a> for additional information.
 
 #### Useful Commands
@@ -114,10 +114,10 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 ### Known Issues
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
-  - Mac users, ~~adding the line `ubuntu.vm.network "private_network", type: "dhcp"` and modifying the shared folder line to read `ubuntu.vm.synced_folder "../vufind2", "/vufind2", type: "nfs"` in Vagrantfile should be enough, but~~ (**NFS is now default for Mac**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
+  - Mac users, (**NFS is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see the previous link for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
-- If running Solr, v.memory needs to be at least around 2048, which should work.
+- If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>

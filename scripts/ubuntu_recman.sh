@@ -6,6 +6,7 @@ if [ -z "$INSTALL_RECMAN" ]; then
 fi
 
 # RecordManager
+echo
 echo "Installing RecordManager..."
 echo "==========================="
 sudo apt-get install -y pkg-config libpcre3-dev phpunit
@@ -64,18 +65,17 @@ sudo sed -i -e 's,;hierarchical_facets\[\] = building,hierarchical_facets[] = bu
 # fix UNIX socket URL encoding
 sudo sed -i -e 's,mongodb:///tmp/,mongodb://%2Ftmp%2F,' conf/recordmanager.ini
 
-# just a sample config - for actual use replace this with a proper one
-#  sudo cat <<EOF >> conf/datasources.ini
-sudo tee -a conf/datasources.ini >/dev/null <<EOF
-[sample]
-institution = testituutio
-format = marc
-EOF
-
-# import sample data and load records into Solr
-if [ -f "$SAMPLE_DATA" ]; then
-  sudo php import.php --file=$SAMPLE_DATA --source=sample
+# import data and load records into Solr
+if [ "$RECMAN_IMPORT" = true ]; then
+  if [[ "$RECMAN_SOURCE" == 'sample' ]]; then
+    sudo cp /vagrant/data/sample_datasources.ini conf/datasources.ini
+    sudo php import.php --file=/vagrant/data/sample_data.xml --source=sample
+  else
+    sudo cp $RECMAN_DATASOURCE conf/datasources.ini
+    sudo php import.php --file=$RECMAN_DATA --source=$RECMAN_SOURCE
+  fi
   sudo php manage.php --func=updatesolr 
 fi
+echo
 echo "================================="
 echo "...done installing RecordManager."

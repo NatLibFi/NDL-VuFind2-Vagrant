@@ -4,7 +4,7 @@
 if [ -z "$INSTALL_VUFIND2" ]; then
   source /vagrant/centos.conf
 fi
-
+echo
 echo "Installing NDL-VuFind2..."
 echo "========================="
 
@@ -103,6 +103,6 @@ sudo curl -sS https://getcomposer.org/installer | sudo php
 sudo mv composer.phar /usr/local/bin/composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
 cd
-
+echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."
