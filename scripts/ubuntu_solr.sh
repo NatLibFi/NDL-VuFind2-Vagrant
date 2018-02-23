@@ -6,6 +6,7 @@ if [ -z "$INSTALL_SOLR" ]; then
 fi
 
 # Solr
+echo
 echo "Installing Solr..."
 echo "=================="
 # libvoikko
@@ -50,6 +51,6 @@ sudo cp $SOLR_PATH/vufind/solr.service /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable solr
 sudo systemctl start solr
-
+echo
 echo "========================"
 echo "...done installing Solr."

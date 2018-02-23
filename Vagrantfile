@@ -73,7 +73,7 @@ Vagrant.configure(2) do |config|
 Virtual machine installation FINISHED!"
   end
 
-  # CentOS 6 config, 'vagrant up centos'
+  # CentOS config, 'vagrant up centos'
   config.vm.define "centos", autostart: false do |centos|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.

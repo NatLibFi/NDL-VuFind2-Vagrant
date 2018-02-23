@@ -4,7 +4,7 @@
 if [ -z "$INSTALL_VUFIND2" ]; then
   source /vagrant/ubuntu.conf
 fi
-
+echo
 echo "Installing NDL-VuFind2..."
 echo "========================="
 
@@ -87,6 +87,6 @@ touch /home/ubuntu/.bash_aliases
 sudo tee -a /home/ubuntu/.bash_aliases >/dev/null <<EOF
 alias less2css='lessc --clean-css="--s1 --advanced --compatibility=ie8" /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css; lessc --clean-css="--s1 --advanced --compatibility=ie8" /vufind2/themes/national/less/finna.less > /vufind2/themes/national/css/finna.css'
 EOF
-
+echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."
