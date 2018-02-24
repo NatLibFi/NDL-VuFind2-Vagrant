@@ -1,6 +1,6 @@
 If using local Solr + RecordManager installations, this directory includes
 example files 'sample_data.xml' and 'sample_datasources.ini' to import a
-small sample dataset in MARC format to the Solr database of the virtual
+small sample dataset in MARC format to the Solr index of the virtual
 machine being installed and provisioned.
 
 See '/usr/local/RecordManager/conf/datasources.ini.sample' inside the
@@ -8,4 +8,4 @@ virtual machine and RecordManager docs to create an actual institution
 configuration for more proper use.
 
 Adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA values in
-ubuntu.conf / centos.conf files when using your own data.
+ubuntu.conf/centos.conf files when using your own data.
