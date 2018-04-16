@@ -27,9 +27,13 @@ sudo yum -y install httpd
 # install php7
 sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear
 
-# configure php
-sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini
+# configure php: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php.ini
+sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini
+# set memory_limit
+if [[ "$PHP_MEMORY_LIMIT" != "128M" ]]; then
+  sudo sed -i -e 's/memory_limit = 128M/memory_limit = '"$PHP_MEMORY_LIMIT"'/' /etc/php.ini
+fi
 # fix timezone to suppress PHP errors, use a different timezone if needed
 sudo sed -i -e 's,;date.timezone =,date.timezone = "Europe/Helsinki",' /etc/php.ini
 

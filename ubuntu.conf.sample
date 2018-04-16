@@ -26,6 +26,9 @@ USER_PW='vufind'
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
 
+# PHP config
+PHP_MEMORY_LIMIT=128M              # default 128M
+
 # Oracle config                    # Make sure you have the installer ZIP files
 ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
 CONFIG_PATH='/vagrant/oracle'      # Voyager config files location.

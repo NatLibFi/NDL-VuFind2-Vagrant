@@ -31,9 +31,13 @@ sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mcr
 
 sudo phpenmod mbstring
 
-# change php.ini: display_errors = On, opcache.enable=0
+# configure php: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php/7.?/apache2/php.ini
 sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php/7.?/apache2/php.ini
+# set memory_limit
+if [[ "$PHP_MEMORY_LIMIT" != "128M" ]]; then
+  sudo sed -i -e 's/memory_limit = 128M/memory_limit = '"$PHP_MEMORY_LIMIT"'/' /etc/php/7.?/apache2/php.ini
+fi
 
 # install NDL-Vufind2
 if [ "$INSTALL_VUFIND2" = true ]; then
