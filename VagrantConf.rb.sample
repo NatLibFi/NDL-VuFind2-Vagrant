@@ -11,6 +11,9 @@ module VagrantConf
 
   # CentOS Vagrant box. https://app.vagrantup.com/centos/boxes/7
   CentosBox = 'centos/7'
+  
+  # Provider for virtual machine (Windows users may want to try 'hyperv')
+  VMProvider = 'virtualbox'
 
   # The amount of memory in megabytes used by each virtual machine
   VirtualMemory = '2048'
