@@ -81,12 +81,18 @@ sudo chown www-data:www-data /var/log/vufind2.log
 # install node.js v7 & less 2.7.1 + less-plugin-clean-css
 curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 sudo apt-get install -y nodejs
-sudo npm install -g less@2.7.1
+sudo npm install -g less@$LESS_VERSION
 sudo npm install -g less-plugin-clean-css
-touch /home/ubuntu/.bash_aliases
-sudo tee -a /home/ubuntu/.bash_aliases >/dev/null <<EOF
-alias less2css='lessc --clean-css="--s1 --advanced --compatibility=ie8" /vufind2/themes/finna/less/finna.less > /vufind2/themes/finna/css/finna.css; lessc --clean-css="--s1 --advanced --compatibility=ie8" /vufind2/themes/national/less/finna.less > /vufind2/themes/national/css/finna.css'
+# do not run these with sudo
+tee -a /usr/local/bin/less2css >/dev/null <<EOF
+#!/usr/bin/env bash
+lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" /vufind2/themes/finna2/less/finna.less > /vufind2/themes/finna2/css/finna.css
 EOF
+sudo chmod a+x /usr/local/bin/less2css
+if [ "$LESS_RUN" = true ]; then  
+  less2css
+fi
+
 echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."
