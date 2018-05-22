@@ -34,8 +34,8 @@ sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini
 if [[ "$PHP_MEMORY_LIMIT" != "128M" ]]; then
   sudo sed -i -e 's/memory_limit = 128M/memory_limit = '"$PHP_MEMORY_LIMIT"'/' /etc/php.ini
 fi
-# fix timezone to suppress PHP errors, use a different timezone if needed
-sudo sed -i -e 's,;date.timezone =,date.timezone = "Europe/Helsinki",' /etc/php.ini
+# fix timezone to suppress PHP errors
+sudo sed -i -e 's,;date.timezone =,date.timezone = "'"$TIMEZONE"'",' /etc/php.ini
 
 # set security settings for Apache
 sudo setsebool -P httpd_can_network_relay=1
