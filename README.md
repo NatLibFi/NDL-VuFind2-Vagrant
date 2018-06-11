@@ -13,7 +13,7 @@ Mandatory:
 - <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
 
 Optional:
-- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/tmikkonen/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
+- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
   - If the installer files are not found during provisioning, the Oracle installation will be skipped with a warning message. The message can be turned off by setting 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files.
 
 for _ubuntu_:
@@ -96,10 +96,10 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
 
     > vagrant ssh -c "less2css"
-    
+
     or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
 * `vagrant box update`
-  - update the cached boxes if newer versions exist 
+  - update the cached boxes if newer versions exist
 * `vagrant box list`
   - show the cached box files, delete unnecessary ones with `vagrant box remove` or `vagrant box prune`
 * `vagrant plugin install vagrant-vbguest`
