@@ -25,7 +25,7 @@ sudo yum -y update
 # install apache
 sudo yum -y install httpd
 # install php7
-sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear
+sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear php71w-soap
 
 # configure php: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php.ini
