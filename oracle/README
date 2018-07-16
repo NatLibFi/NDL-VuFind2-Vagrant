@@ -9,7 +9,7 @@ Files to put in this directory:
 To be able to access holdings information from Voyager systems dowload
 the Oracle Instant Client packages for Linux x86-64 from
 http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html
-and put them into this directory before privisioning the virtual machine.
+and put them into this directory before provisioning the virtual machine.
 
 The files needed are Basic and SDK:
 - Ubuntu
