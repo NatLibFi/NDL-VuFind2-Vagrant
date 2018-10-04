@@ -78,8 +78,8 @@ cd
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
-# install node.js v7 & less 2.7.1 + less-plugin-clean-css
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+# install node.js & less 2.7.1 + less-plugin-clean-css
+curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g less@$LESS_VERSION
 sudo npm install -g less-plugin-clean-css
@@ -90,7 +90,7 @@ lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/finna2/less/fin
 EOF
 sudo chmod a+x /usr/local/bin/less2css
 if [ "$LESS_RUN" = true ]; then  
-  less2css
+  /usr/local/bin/less2css
 fi
 
 echo

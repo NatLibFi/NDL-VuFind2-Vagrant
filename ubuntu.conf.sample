@@ -29,7 +29,8 @@ EXTERNAL_SOLR_URL=''
 # PHP config
 PHP_MEMORY_LIMIT=128M              # default 128M
 
-# less config
+# node & less config
+NODE_VERSION=10                    # https://github.com/nodesource/distributions/tree/master/deb
 LESS_VERSION=2.7.1                 # version to install via npm
 LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
