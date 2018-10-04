@@ -81,6 +81,21 @@ if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
   sudo ln -s /usr/local/vufind2/local/httpd-vufind.conf /etc/httpd/conf.d/vufind2.conf
 fi
 
+# install node.js & less 2.7.1 + less-plugin-clean-css
+curl --silent --location https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
+sudo yum -y install nodejs
+# do not run these with sudo
+npm install -g less@$LESS_VERSION
+npm install -g less-plugin-clean-css
+tee -a /usr/local/bin/less2css >/dev/null <<EOF
+#!/usr/bin/env bash
+sudo su -c 'lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/finna2/less/finna.less > $VUFIND2_PATH/themes/finna2/css/finna.css'
+EOF
+sudo chmod a+x /usr/local/bin/less2css
+if [ "$LESS_RUN" = true ]; then  
+  /usr/local/bin/less2css
+fi
+
 # give Apache permissions to use the cache and config
 sudo chown -R apache:apache /usr/local/vufind2/local/cache/
 sudo chcon -R unconfined_u:object_r:httpd_sys_rw_content_t:s0 /usr/local/vufind2/local/cache/
