@@ -61,7 +61,7 @@ sudo systemctl start mariadb
 # create database and user & modify database
 MYSQL=`which mysql`
 Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
-Q2="GRANT ALL ON $DATABASE.* TO '$USER'@'localhost' IDENTIFIED BY '$USER_PW';"
+Q2="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost' IDENTIFIED BY '$SQL_USER_PW';"
 Q3="FLUSH PRIVILEGES;"
 Q4="USE $DATABASE;"
 Q5="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"

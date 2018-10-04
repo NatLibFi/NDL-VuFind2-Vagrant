@@ -19,8 +19,8 @@ VUFIND2_BRANCH='master'            # often 'master'
 # MySQL/MariaDB
 PASSWORD='root' # change this to your liking
 DATABASE='vufind2'
-USER='vufind'
-USER_PW='vufind'
+SQL_USER='vufind'
+SQL_USER_PW='vufind'
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
