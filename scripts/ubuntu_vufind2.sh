@@ -87,7 +87,7 @@ sudo npm install -g less-plugin-clean-css
 tee -a /usr/local/bin/less2css >/dev/null <<EOF
 #!/usr/bin/env bash
 lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/finna2/less/finna.less > $VUFIND2_PATH/themes/finna2/css/finna.css
-if [ -f $VUFIND_PATH/themes/custom/less/custom.less ]; then
+if [ -f $VUFIND_PATH/themes/custom/less/finna.less ]; then
   lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/custom/less/finna.less > $VUFIND2_PATH/themes/custom/css/finna.css
 fi
 EOF
