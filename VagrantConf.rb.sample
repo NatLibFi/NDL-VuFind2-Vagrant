@@ -7,7 +7,7 @@ module VagrantConf
   MountPath = '/vufind2'
 
   # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64
-  UbuntuBox = 'ubuntu/xenial64'
+  UbuntuBox = 'ubuntu/bionic64'
 
   # CentOS Vagrant box. https://app.vagrantup.com/centos/boxes/7
   CentosBox = 'centos/7'

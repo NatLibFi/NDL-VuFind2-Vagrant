@@ -71,7 +71,9 @@ fi
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 cd /vufind2
-/usr/local/bin/composer install --no-plugins --no-scripts
+# see https://github.com/phpseclib/mcrypt_compat
+/usr/local/bin/composer require phpseclib/mcrypt_compat
+# /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # create log file and change owner
@@ -79,6 +81,7 @@ sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
 # install node.js & less 2.7.1 + less-plugin-clean-css
+APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g less@$LESS_VERSION
