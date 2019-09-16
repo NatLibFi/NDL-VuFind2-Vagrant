@@ -23,7 +23,7 @@ sudo yum history new
 sudo yum -y update
 
 # install apache
-sudo yum -y install httpd
+sudo yum -y install httpd unzip
 # install php7
 sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear php71w-soap
 

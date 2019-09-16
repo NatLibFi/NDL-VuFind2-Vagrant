@@ -8,7 +8,7 @@ echo
 echo "Installing Solr..."
 echo "=================="
 # libvoikko
-sudo yum -y install libvoikko unzip wget
+sudo yum -y install libvoikko wget
 cd /tmp
 sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
 sudo unzip -d /etc/voikko '*.zip'
