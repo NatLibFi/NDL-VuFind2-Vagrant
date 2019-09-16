@@ -67,13 +67,11 @@ if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
   sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
 fi
 
-# install Composer (globally)
+# install Composer (globally) - see: https://github.com/Varying-Vagrant-Vagrants/VVV/issues/986
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 cd /vufind2
-# see https://github.com/phpseclib/mcrypt_compat
-/usr/local/bin/composer require phpseclib/mcrypt_compat
-# /usr/local/bin/composer install --no-plugins --no-scripts
+/usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # create log file and change owner
@@ -81,7 +79,7 @@ sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
 # install node.js & less 2.7.1 + less-plugin-clean-css
-APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
+export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="DontWarn"
 curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g less@$LESS_VERSION
