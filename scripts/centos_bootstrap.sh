@@ -14,18 +14,19 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
-# Add Epel & Webtatic repos for php7 & update yum
+# Add Epel & Remi repos for php7 & update yum
 sudo rpm --import http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
 sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo rpm --import https://mirror.webtatic.com/yum/RPM-GPG-KEY-webtatic-el7
-sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
+sudo rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum history new
 sudo yum -y update
 
 # install apache
 sudo yum -y install httpd unzip
 # install php7
-sudo yum -y install php71w php71w-devel php71w-intl php71w-mysql php71w-xml php71w-gd php71w-mbstring php71w-mcrypt php71w-curl php71w-pear php71w-soap
+yum-config-manager --enable remi-php73
+sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap
 
 # configure php: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php.ini
