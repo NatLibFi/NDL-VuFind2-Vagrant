@@ -21,7 +21,7 @@ for _ubuntu_:
 
 #### Set-Up
 
-_ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/xenial64">xenial64</a>):
+_ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/bionic64">bionic64</a>):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
 
