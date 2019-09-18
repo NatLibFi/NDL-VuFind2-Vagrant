@@ -26,7 +26,7 @@ sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
 
 #MongoDB driver
-sudo yum -y install php71w-pecl-mongodb
+sudo yum -y install php-pecl-mongodb
 #sudo sh -c 'printf "extension=mongodb.so\n" >> /etc/php.d/mongodb.ini'
 sudo systemctl reload httpd
 # MongoDB

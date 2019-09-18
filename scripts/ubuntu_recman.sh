@@ -21,7 +21,7 @@ if [ "$INSTALL_GEOS" = true ]; then
   sudo ./configure
   sudo make
   sudo make install
-  sudo sh -c 'echo extension=geos.so > /etc/php/7.0/mods-available/geos.ini'
+  sudo sh -c 'echo extension=geos.so > /etc/php/7.3/mods-available/geos.ini'
   sudo phpenmod geos
 fi
 

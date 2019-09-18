@@ -16,13 +16,12 @@ cd /tmp
 sudo wget http://www.puimula.org/htp/testing/voikko-snapshot-v5/dict-morphoid.zip
 sudo unzip -d /etc/voikko '*.zip'
 
-# add Java 8 repository; Solr 6 requires Java 8
-sudo apt-add-repository -y ppa:webupd8team/java
-sudo apt-get -q update
+# add Java repository; no update needed from 18.04 onwards after adding PPA
+echo | sudo add-apt-repository ppa:linuxuprising/java
 
 # install Java JDK
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-sudo apt-get install -y oracle-java8-installer
+echo oracle-java12-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install -y oracle-java12-installer
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
