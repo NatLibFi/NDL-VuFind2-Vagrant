@@ -70,7 +70,7 @@ fi
 # install Composer (globally) - see: https://github.com/Varying-Vagrant-Vagrants/VVV/issues/986
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
-cd /vufind2
+cd $VUFIND2_PATH
 /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
@@ -96,6 +96,11 @@ sudo chmod a+x /usr/local/bin/less2css
 if [ "$LESS_RUN" = true ]; then
   /usr/local/bin/less2css
 fi
+
+# download datasources translation strings
+curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
+curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
+curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
 
 echo
 echo "==============================="

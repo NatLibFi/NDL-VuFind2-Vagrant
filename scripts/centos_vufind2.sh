@@ -116,11 +116,17 @@ sudo su -c 'echo export VUFIND_LOCAL_DIR="/usr/local/vufind2/local"  >> /etc/pro
 sudo su -c 'source /etc/profile.d/vufind.sh'
 
 # install Composer (globally)
-cd /usr/local/vufind2
+cd $VUFIND2_PATH
 sudo curl -sS https://getcomposer.org/installer | sudo php
 sudo mv composer.phar /usr/local/bin/composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
 cd
+
+# download datasources translation strings
+curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
+curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
+curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
+
 echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."

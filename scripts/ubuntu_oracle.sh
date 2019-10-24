@@ -17,14 +17,16 @@ if [ "$ORACLE_FILES_EXIST" = true ] ; then
   echo "Installing Oracle Instant Client..."
   echo "==================================="
   sudo pear upgrade pear
+  sudo pecl channel-update pecl.php.net
   sudo mkdir -p /opt/oracle
   cd /opt/oracle
   sudo unzip -o "$ORACLE_PATH/instantclient*linux.x64-$OCI_DOT_VERSION*.zip" -d ./
-  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
-  sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
-  sudo sh -c "echo /opt/oracle/instantclient_$OCI_VERSION > /etc/ld.so.conf.d/oracle-instantclient"
+  #sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so.* /opt/oracle/instantclient_$OCI_VERSION/libclntsh.so
+  #sudo ln -s /opt/oracle/instantclient_$OCI_VERSION/libocci.so.* /opt/oracle/instantclient_$OCI_VERSION/libocci.so
+  sudo sh -c "echo /opt/oracle/instantclient_$OCI_VERSION > /etc/ld.so.conf.d/oracle-instantclient.conf"
+  sudo ldconfig
   # fix pecl - see https://serverfault.com/questions/589877/pecl-command-produces-long-list-of-errors
-  sed -i "$ s|\-n||g" /usr/bin/pecl
+  #sed -i "$ s|\-n||g" /usr/bin/pecl
   if php --version | grep -q "PHP 7"; then
     # oci8 2.1.0 and up needs php7
     sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | pecl install oci8"
@@ -32,7 +34,7 @@ if [ "$ORACLE_FILES_EXIST" = true ] ; then
     # use older version
     sudo sh -c "echo instantclient,/opt/oracle/instantclient_$OCI_VERSION | pecl install oci8-2.0.10"
   fi
-  sudo sh -c 'echo extension=oci8.so > /etc/php/7.0/mods-available/oci8.ini'
+  sudo sh -c 'echo extension=oci8.so > /etc/php/7.3/mods-available/oci8.ini'
   sudo ln -s /usr/include/php7 /usr/include/php
   sudo phpenmod oci8
   sudo service apache2 reload

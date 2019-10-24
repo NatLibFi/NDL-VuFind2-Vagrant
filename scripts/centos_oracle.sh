@@ -26,15 +26,28 @@ if [ "$ORACLE_FILES_EXIST" = true ]; then
 #  sudo execstack -c /usr/lib/oracle/$VERSION/client64/lib/*.so.*  # no execstack
   sudo setsebool -P httpd_execmem 1
   sudo yum -y install gcc
-  sudo sh -c "echo /usr/lib/oracle/$OCI_VERSION/client64 > /etc/ld.so.conf.d/oracle-instantclient"
+  sudo sh -c "echo /usr/lib/oracle/$OCI_VERSION/client64/lib > /etc/ld.so.conf.d/oracle-instantclient.conf"
+  sudo ldconfig
   # oci8
-  if php --version | grep -q "PHP 7"; then
-    # oci8 2.1.0 and up needs php7
-    sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8"
-  else
-    # use older version
-    sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8-2.0.11"
-  fi
+  sudo yum -y install systemtap-sdt-devel
+  export PHP_DTRACE=yes
+  #  if php --version | grep -q "PHP 7"; then
+  #    # oci8 2.1.0 and up needs php7
+  #    sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8"
+  #  else
+  #    # use older version
+  #    sudo sh -c "echo instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib | pecl install oci8-2.0.11"
+  #  fi
+  # The above fails for some reason so needs to be built manually
+  cd
+  pear download pecl/oci8
+  tar xvzf oci8-*.tgz
+  cd oci8-*/
+  phpize
+  ./configure --with-oci8=instantclient,/usr/lib/oracle/$OCI_VERSION/client64/lib
+  make
+  sudo make install
+  cd
   sudo chcon system_u:object_r:textrel_shlib_t:s0 /usr/lib64/php/modules/oci8.so
   sudo chmod +x /usr/lib64/php/modules/oci8.so
   sudo sh -c 'echo extension=oci8.so > /etc/php.d/oci8.ini'
@@ -63,7 +76,7 @@ if [ "$ORACLE_FILES_EXIST" = true ]; then
 
   # Voyager conf files
   shopt -s nullglob
-  voyagers=(/vagrant/config/VoyagerRestful_*.ini)
+  voyagers=($CONFIG_PATH/VoyagerRestful_*.ini)
   shopt -u nullglob
   if [ ${#voyagers[@]} -gt 0 ]; then
     cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_PATH/local/config/vufind/

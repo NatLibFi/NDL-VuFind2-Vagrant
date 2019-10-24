@@ -6,7 +6,7 @@ VUFIND2_PATH='/usr/local/vufind2'
 
 # installations
 INSTALL_VUFIND2=true               # NDL-VuFind2
-INSTALL_ORACLE_CLIENT=true         # Oracle PHP OCI Instant Client (Voyager)
+INSTALL_ORACLE_CLIENT=false         # Oracle PHP OCI Instant Client (Voyager)
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false                # Geocoding (only with RecordManager)
@@ -38,9 +38,9 @@ LESS_RUN=true                      # run lessc while provisioning
 ORACLE_PATH='/vagrant/oracle'      # downloaded here from Oracle Downloads.
 CONFIG_PATH='/vagrant/oracle'      # Voyager config files.
 # version info
-OCI_VERSION='12.2'
-# versions above 12.2 need a new config file to be created
-OCI_CONFIG_URL='https://pastebin.com/raw/LMk7eGCH'  # LMk7eGCH <= v12.2, 20T49aHg <= v12.1
+OCI_VERSION='19.3'
+# versions above 19.3 need a new config file to be created
+OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'  # LMk7eGCH <= v12.2, 20T49aHg <= v12.1
 
 # Solr config                      # You will also need RecordManager!
 SOLR_PATH='/data/solr'             # Separately installing one without the other
