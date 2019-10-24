@@ -52,12 +52,14 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
     ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033
 
-    # Share an additional folder to the guest VM.
+    # Share additional folders to the guest VM.
   if RUBY_PLATFORM =~ /darwin/
     ubuntu.vm.network "private_network", type: "dhcp"
     ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
+    ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
   else
     ubuntu.vm.synced_folder VufindPath, MountPath
+    ubuntu.vm.synced_folder RMPath, RMMountPath
   end
 
     # Share the cache folder and allow guest machine write access
