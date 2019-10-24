@@ -22,7 +22,7 @@ when "up", "up ubuntu"
     exit
   end
 when "up centos"
-  if !(File.exists?('ubuntu.conf'))
+  if !(File.exists?('centos.conf'))
     puts "centos.conf file DOES NOT EXIST!"
     exit
   end
