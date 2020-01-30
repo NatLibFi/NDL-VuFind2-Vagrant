@@ -26,9 +26,9 @@ sudo apt-get install -y apache2
 sudo a2enmod rewrite
 sudo a2enmod headers
 
-# install PHP 7.3
+# install PHP
 echo | sudo add-apt-repository ppa:ondrej/php
-sudo apt-get install -y php libapache2-mod-php7.3 php7.3-dev php-pear php7.3-json php7.3-mysql php7.3-xml php7.3-intl php7.3-gd php7.3-curl php7.3-mbstring php7.3-soap
+sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mysql php-xml php-intl php-gd php-curl php-mbstring php-soap
 
 sudo phpenmod mbstring
 
