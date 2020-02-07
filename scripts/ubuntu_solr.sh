@@ -32,6 +32,10 @@ else
 fi
 sudo su -c "useradd solr -m"
 #sudo su -c 'echo solr:rlos | chpasswd'
+
+# fix maven URL
+sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' $SOLR_PATH/install_solr.sh
+
 cd $SOLR_PATH
 sudo ./install_solr.sh
 sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh

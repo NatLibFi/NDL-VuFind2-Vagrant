@@ -26,6 +26,8 @@ fi
 sudo adduser solr
 #sudo su -c 'echo solr:rlos | chpasswd'
 cd $SOLR_PATH
+# fix maven URL
+sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' ./install_solr.sh
 sudo ./install_solr.sh
 sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
 sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample $SOLR_PATH/vufind/biblio/core.properties
