@@ -20,8 +20,8 @@ sudo unzip -d /etc/voikko '*.zip'
 echo | sudo add-apt-repository ppa:linuxuprising/java
 
 # install Java JDK
-echo oracle-java13-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
-sudo apt-get install -y oracle-java13-installer
+echo oracle-java14-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install -y oracle-java14-installer
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
