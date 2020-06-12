@@ -55,7 +55,7 @@ SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='master'               # often 'master'
 
 # RecordManager config
-RECMAN_PATH='/usr/local/RecordManager'
+RECMAN_PATH='/recordmanager'
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
