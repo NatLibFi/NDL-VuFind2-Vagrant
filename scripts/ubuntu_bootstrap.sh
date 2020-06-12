@@ -30,8 +30,6 @@ sudo a2enmod headers
 echo | sudo add-apt-repository ppa:ondrej/php
 sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mysql php-xml php-intl php-gd php-curl php-mbstring php-soap
 
-curl php7.3-mbstring php7.3-soap
-
 sudo phpenmod mbstring
 
 # configure php: display_errors = On, opcache.enable=0
