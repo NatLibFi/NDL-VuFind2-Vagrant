@@ -1,8 +1,8 @@
 #########################   U B U N T U  -  C O N F   #########################
 # Use single quotes instead of double to work with special-character passwords
 
-# VuFind2 'install path' ie. mount path/point of the host's shared folder
-VUFIND2_PATH='/vufind2'
+# VuFind2 mount path/point of the guest machine's shared folder
+VUFIND2_MOUNT='/vufind2'
 
 # installations
 INSTALL_VUFIND2=true               # NDL-VuFind2
@@ -30,7 +30,8 @@ EXTERNAL_SOLR_URL=''
 PHP_MEMORY_LIMIT=128M              # default 128M
 
 # node & less config
-NODE_VERSION=10                    # https://github.com/nodesource/distributions/tree/master/deb
+# see: https://github.com/nodesource/distributions/tree/master/deb
+NODE_VERSION=10
 LESS_VERSION=2.7.1                 # version to install via npm
 LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
@@ -42,25 +43,32 @@ CONFIG_PATH='/vagrant/oracle'      # Voyager config files location.
 OCI_VERSION='19_3'
 OCI_DOT_VERSION='19.3'
 # versions above 19.3 need a new config file to be created
-OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'  # LMk7eGCH <= v12.2, 20T49aHg <= v12.1
+# older versions: LMk7eGCH <= v12.2, 20T49aHg <= v12.1
+OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'
 
 # Solr config                      # You will also need RecordManager!
 SOLR_PATH='/data/solr'             # Separately installing one without the other
 JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
 JAVA_HEAP_MAX='512m'               # process if errors arise.
-JAVA_VERSION=14                    # see https://www.codejava.net/java-se/java-se-versions-history
+# see: https://www.codejava.net/java-se/java-se-versions-history
+JAVA_VERSION=14
 ORACLE_LICENSE='v1-2'              # if this fails try increasing
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='master'               # often 'master'
 
 # RecordManager config
-RECMAN_PATH='/recordmanager'
+# true: use files in host, false: install RM inside guest
+RECMAN_DEV=false
+# RecordManager mount path/point of the host shared folder if RECMAN_DEV=true
+RECMAN_MOUNT='/recordmanager'
+# RecordManafer install path in the guest file system if RECMAN_DEV=false
+RECMAN_PATH='/usr/local/RecordManager'
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
-# RecordManager GithHub config
+# RecordManager GitHub config if RECMAN_DEV=false
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
 RECMAN_BRANCH='master'             # often 'master'
 

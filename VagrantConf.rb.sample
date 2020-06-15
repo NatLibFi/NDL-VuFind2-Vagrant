@@ -9,7 +9,7 @@ module VagrantConf
   # relative path to the cloned directory of RecordManager files from Github
   RMPath = '../recordmanager'
 
-  # Make this match the RECMAN_PATH in ubuntu.conf
+  # Make this match the RECMAN_MOUNT in ubuntu.conf
   RMMountPath = '/recordmanager'
 
   # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64

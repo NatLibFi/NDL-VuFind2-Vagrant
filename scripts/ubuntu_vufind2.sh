@@ -22,14 +22,14 @@ Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
 Q2="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost' IDENTIFIED BY '$SQL_USER_PW';"
 Q3="FLUSH PRIVILEGES;"
 Q4="USE $DATABASE;"
-Q5="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"
-Q6="SOURCE $VUFIND2_PATH/module/Finna/sql/mysql.sql;"
+Q5="SOURCE $VUFIND2_MOUNT/module/VuFind/sql/mysql.sql;"
+Q6="SOURCE $VUFIND2_MOUNT/module/Finna/sql/mysql.sql;"
 SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
 $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
 # link VuFind to Apache
-sudo cp -f $VUFIND2_PATH/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
-sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$VUFIND2_PATH"',' /etc/apache2/conf-available/httpd-vufind.conf
+sudo cp -f $VUFIND2_MOUNT/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
+sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$VUFIND2_MOUNT"',' /etc/apache2/conf-available/httpd-vufind.conf
 if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
@@ -38,7 +38,7 @@ fi
 CfgExt=( ini yaml json )
 
 # copy sample configs to ini files
-cd $VUFIND2_PATH/local/config/finna
+cd $VUFIND2_MOUNT/local/config/finna
 for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
@@ -48,7 +48,7 @@ for i in "${CfgExt[@]}"; do
   done
 done
 
-cd $VUFIND2_PATH/local/config/vufind
+cd $VUFIND2_MOUNT/local/config/vufind
 for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
@@ -60,17 +60,17 @@ done
 cd
 
 # modify MultiBackend default driver
-sudo sed -i -e 's,default_driver = "NoILS",default_driver = "",' $VUFIND2_PATH/local/config/finna/MultiBackend.ini
+sudo sed -i -e 's,default_driver = "NoILS",default_driver = "",' $VUFIND2_MOUNT/local/config/finna/MultiBackend.ini
 
 # modify Solr URL if set
 if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
-  sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
+  sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_MOUNT/local/config/vufind/config.ini
 fi
 
 # install Composer (globally) - see: https://github.com/Varying-Vagrant-Vagrants/VVV/issues/986
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
-cd $VUFIND2_PATH
+cd $VUFIND2_MOUNT
 /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
@@ -87,9 +87,9 @@ sudo npm install -g less-plugin-clean-css
 # do not run these with sudo
 tee -a /usr/local/bin/less2css >/dev/null <<EOF
 #!/usr/bin/env bash
-lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/finna2/less/finna.less > $VUFIND2_PATH/themes/finna2/css/finna.css
-if [ -f $VUFIND_PATH/themes/custom/less/finna.less ]; then
-  lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/custom/less/finna.less > $VUFIND2_PATH/themes/custom/css/finna.css
+lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_MOUNT/themes/finna2/less/finna.less > $VUFIND2_MOUNT/themes/finna2/css/finna.css
+if [ -f $VUFIND_MOUNT/themes/custom/less/finna.less ]; then
+  lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_MOUNT/themes/custom/less/finna.less > $VUFIND2_MOUNT/themes/custom/css/finna.css
 fi
 EOF
 sudo chmod a+x /usr/local/bin/less2css
@@ -98,9 +98,9 @@ if [ "$LESS_RUN" = true ]; then
 fi
 
 # download datasources translation strings
-curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
-curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
-curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
+curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.ini
+curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
+curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
 
 echo
 echo "==============================="
