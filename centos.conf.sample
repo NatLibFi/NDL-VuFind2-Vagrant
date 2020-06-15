@@ -29,7 +29,8 @@ EXTERNAL_SOLR_URL=''
 PHP_MEMORY_LIMIT=128M              # default 128M
 
 # node & less config
-NODE_VERSION=10                    # https://github.com/nodesource/distributions/tree/master/deb
+# see: https://github.com/nodesource/distributions/tree/master/deb
+NODE_VERSION=10
 LESS_VERSION=2.7.1                 # version to install via npm
 LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
@@ -40,7 +41,8 @@ CONFIG_PATH='/vagrant/oracle'      # Voyager config files.
 # version info
 OCI_VERSION='19.3'
 # versions above 19.3 need a new config file to be created
-OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'  # LMk7eGCH <= v12.2, 20T49aHg <= v12.1
+# older versions: LMk7eGCH <= v12.2, 20T49aHg <= v12.1
+OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'
 
 # Solr config                      # You will also need RecordManager!
 SOLR_PATH='/data/solr'             # Separately installing one without the other
