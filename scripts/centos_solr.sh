@@ -25,6 +25,10 @@ else
 fi
 sudo adduser solr
 #sudo su -c 'echo solr:rlos | chpasswd'
+
+# fix maven URL
+sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' $SOLR_PATH/install_solr.sh
+
 cd $SOLR_PATH
 # fix maven URL
 sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' ./install_solr.sh
