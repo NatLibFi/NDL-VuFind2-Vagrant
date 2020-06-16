@@ -18,40 +18,49 @@ Optional:
 
 for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
+- <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> also cloned to the host (optional)
 
 #### Set-Up
 
 _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/bionic64">bionic64</a>):
 
-* Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here.
+* Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here. All the same applies also to RecordManager files if using it on the host.
 
-* Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_.
-  * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there.<br/>
+* Run `vagrant up` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_.
+  * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there. Similar attention to possible RecordManager directory should be used.<br/>
 
-* Copy the _ubuntu.conf.sample_ to _ubuntu.conf_ and see the .conf file for possible install configuration changes (e.g. enabling Sizzy etc.) prior to running the VM.
+* Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or enabling Sizzy etc.) prior to running the VM in full.
 
-If using sqlplus from Oracle:
+If using **sqlplus** from Oracle:
 * Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
 
 _centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
 
-* Clone the NDL-VuFind2-Vagrant files to the host computer unless this is already done. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
+* Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
 
-* Copy the _VagrantConf.rb.sample_ to _VagrantConf.rb_ unless this is already done. There should be no need for any changes.
+* Run `vagrant up centos` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_ **unless this is already done**. There should be no need for any changes.
 
-* Copy the _centos.conf.sample_ to _centos.conf_ and see the .conf file for possible install configuration changes prior to running the VM.
+* Run `vagrant up centos` again or manually copy _centos.conf.sample_ to _centos.conf_ and see the file for possible install configuration changes prior to running the VM in full.
 
 _both_:
 
 If using Oracle:
 * Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
-If using local RecordManager/Solr, some options exist for the records data:
+The default is to run Solr/RecordManager locally, some configuration options still exist (see also _Without local database_):
+* Install both inside the guest VM
+  - INSTALL_SOLR=true (default: true)
+  - INSTALL_RECMAN=true (default: true)
+
+* Use cloned RecordManager files on the host system (ubuntu.conf)
+  - RECMAN_DEV=true (default: false)
+
+Regarding the records data:
 * default (but bare minimum e.g. testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
 * more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) **or** set up harvesting sources after the provisioning/installing is done.
 
-Without local database: use a remote Solr server (like the NDL development index - unfortunately, for limited users only)
-* either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RM to _false_ as they are not needed), or
+Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
+* either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
 #### Use
@@ -84,7 +93,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 
 #### Useful Commands
 * `vagrant reload`
-  - reload the configuration changes made to _Vagrantfile_
+  - reload the configuration changes made to _VagrantConf.rb_ file
 * `vagrant suspend`
   - freeze the virtual machine, continue with `vagrant resume`
 * `vagrant halt`
@@ -105,7 +114,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
-  - package the virtual machine as a new base box, roughly 700MB or more - the _Vagrantfile_ needs to be edited to use the created box file. )
+  - package the virtual machine as a new base box, roughly 700MB or more - the _VagrantConf.rb_ file needs to be edited to use the created box file. )
 
 When addressing the _centos_ machine, just add `centos` at the end of each command.
 
@@ -115,7 +124,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Mac users, (**NFS is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
-  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see the previous link for details.
+  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 
