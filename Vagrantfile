@@ -4,27 +4,44 @@
 # make sure the VagrantConf.rb exists
 if !(File.exists?('VagrantConf.rb'))
   puts "VagrantConf.rb file DOES NOT EXIST!"
+  puts "Copying from VagrantConf.rb.sample as default configuration..."
+  File.write('VagrantConf.rb', File.open('VagrantConf.rb.sample').read())
+  puts "Please try running the command again!"
   exit
-else
-  require_relative './VagrantConf.rb'
-  include VagrantConf
 end
+require './VagrantConf.rb'
+include VagrantConf
 
-# make sure the forked NDL-VuFind2 folder exists + the .sample -> .conf have been copied
-case ARGV[0]
-when "up", "up ubuntu"
-  if !(File.exists?(VufindPath))
-    puts VufindPath + " directory DOES NOT EXIST!"
-    exit
+# check the forked NDL-VuFind2 folder exists + create conf file if missing
+case ARGV[1] 
+when nil, "ubuntu"
+  if ARGV[0] == "up"
+    conf = 'ubuntu.conf'
+    sample = conf + '.sample'
+    if !(File.exists?(VufindPath))
+      puts VufindPath + " directory DOES NOT EXIST!"
+      puts "Clone/copy the NDL-VuFind2 files & check the path in VagrantConf.rb"
+      exit
+    end
+    if !(File.exists?(conf))
+      puts conf + " file DOES NOT EXIST!"
+      puts "Copying from " + sample + "..."
+      File.write(conf, File.open(sample).read())
+      puts "See " + conf + " for changing the defaults and/or try again!"
+      exit
+    end
   end
-  if !(File.exists?('ubuntu.conf'))
-    puts "ubuntu.conf file DOES NOT EXIST!"
-    exit
-  end
-when "up centos"
-  if !(File.exists?('centos.conf'))
-    puts "centos.conf file DOES NOT EXIST!"
-    exit
+when "centos"
+  if ARGV[0] == "up"
+    conf = 'centos.conf'
+    sample = conf + '.sample' 
+    if !(File.exists?(conf))
+      puts conf + " file DOES NOT EXIST!"
+      puts "Copying from " + sample + "..."
+      File.write(conf, File.open(sample).read())
+      puts "See " + conf + " for changing the defaults and/or try again!"
+      exit
+    end
   end
 else
   # do nothing
