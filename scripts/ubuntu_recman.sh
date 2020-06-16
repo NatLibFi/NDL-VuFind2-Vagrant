@@ -41,12 +41,16 @@ sudo systemctl start mongod
 sudo systemctl enable mongod
 
 # install RecordManager
-sudo mkdir -p $RECMAN_PATH
-cd $RECMAN_PATH
-if [[ "$RECMAN_BRANCH" == "master" ]]; then
-  sudo git clone $RECMAN_GIT $RECMAN_PATH
+if [ "$RECMAN_DEV" = true ]; then
+  cd $RECMAN_MOUNT
 else
-  sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
+  sudo mkdir -p $RECMAN_PATH
+  cd $RECMAN_PATH
+  if [[ "$RECMAN_BRANCH" == "master" ]]; then
+    sudo git clone $RECMAN_GIT $RECMAN_PATH
+  else
+    sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
+  fi
 fi
 # run Composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts

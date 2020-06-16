@@ -56,13 +56,13 @@ if [ "$ORACLE_FILES_EXIST" = true ] ; then
   voyagers=($CONFIG_PATH/VoyagerRestful_*.ini)
   shopt -u nullglob
   if [ ${#voyagers[@]} -gt 0 ]; then
-    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_PATH/local/config/vufind/
+    cp -rf $CONFIG_PATH/VoyagerRestful_*.ini $VUFIND2_MOUNT/local/config/vufind/
     for i in "${voyagers[@]}"; do
       org=$(echo $i| cut -d'_' -f 2| cut -d'.' -f 1)
-      if grep $org $VUFIND2_PATH/local/config/finna/MultiBackend.ini; then
+      if grep $org $VUFIND2_MOUNT/local/config/finna/MultiBackend.ini; then
         echo "$org MultiBackend setting already exists!"
       else
-        sed -i '/\[Drivers\]$/a '"$org"' = \"VoyagerRestful\"' $VUFIND2_PATH/local/config/finna/MultiBackend.ini
+        sed -i '/\[Drivers\]$/a '"$org"' = \"VoyagerRestful\"' $VUFIND2_MOUNT/local/config/finna/MultiBackend.ini
       fi
     done
   fi

@@ -30,6 +30,8 @@ sudo adduser solr
 sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' $SOLR_PATH/install_solr.sh
 
 cd $SOLR_PATH
+# fix maven URL
+sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' ./install_solr.sh
 sudo ./install_solr.sh
 sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
 sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample $SOLR_PATH/vufind/biblio/core.properties
