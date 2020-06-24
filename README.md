@@ -1,4 +1,15 @@
-### NDL-VuFind2-Vagrant
+## NDL-VuFind2-Vagrant
+
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Set-Up](#set-up)
+- [Use](#use)
+  * [Useful Commands](#useful-commands)
+- [Troubleshooting](#troubleshooting)
+- [Known Issues](#known-issues)
+- [Resources](#resources)
+
+### Overview
 
 Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **ubuntu** (default)
@@ -6,7 +17,7 @@ Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
-#### Requirements
+### Requirements
 
 Mandatory:
 - <a href="https://www.virtualbox.org">VirtualBox</a> (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_) - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails. **If you have network issues with v6.1.x use v6.0.x!**
@@ -20,7 +31,7 @@ for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> also cloned to the host (optional)
 
-#### Set-Up
+### Set-Up
 
 _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/bionic64">bionic64</a>):
 
@@ -63,14 +74,14 @@ Without local database: use a remote Solr server (like the NDL development index
 * either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
-#### Use
+### Use
 
 _ubuntu_:
 - `vagrant up`
   - This will take a few minutes, so enjoy your beverage of choice!
   - Mac only!: NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
-  - Blank page or errors: adjust VuFind config(s), reload browser page.
+  - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
 - When using Sizzy, point the browser to <a href="http://localhost:3033/?url=http://localhost:8081/vufind2">http://localhost:3033/?url=http://localhost:8081/vufind2</a>
   - If you forgot to enable Sizzy in ubuntu.conf, just run<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_sizzy.sh"`
 
@@ -79,7 +90,7 @@ _centos_:
   - Again, this will take a few minutes...
 - `vagrant ssh -c "/usr/bin/mysql_secure_installation" centos` to add MySQL root password and remove anonymous user & test databases
 - <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>
-  - Blank page or errors: adjust VuFind config(s) inside the VM, reload browser page.
+  - Blank page or errors: adjust VuFind config(s) inside the VM, reload browser page. See also [Troubleshooting](#troubleshooting).
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
@@ -119,6 +130,15 @@ Both machines can be run simultaneously provided the host has enough oomph.
 When addressing the _centos_ machine, just add `centos` at the end of each command.
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
+
+### Troubleshooting
+
+1. Check the network connection is working. The virtual environment needs to load from several Internet resources and cannot build itself properly without them. Note that there might also be problems with the cloud resources themselves.
+
+2. As <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore if problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed the old settings can now be carried over manually from the backups.  
+**A telltale sign of this is usually when the ubuntu machine fails to function properly or the PHP server crashes while the centos machine is working properly** (if built).
+
+3. The Ubuntu basebox is updated quite regularly so after `vagrant box update` it is not very common but quite possible that something breaks in the install scripts. If this happens and items 1 & 2 are already ruled out, run `vagrant up 2>&1 | tee ./vagrant-log.txt` with the default ubuntu.conf settings + create an issue describing shortly what happened and include the logfile.
 
 ### Known Issues
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
