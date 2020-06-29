@@ -11,9 +11,9 @@
 
 ### Overview
 
-Vagrant setup for NDL VuFind2 with two separate guest virtual machines:
+Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development.
+  - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development. An added development feature is the possibility to use also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> from the host filesystem.
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -135,7 +135,7 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 
 1. Check the network connection is working. The virtual environment needs to load from several Internet resources and cannot build itself properly without them. Note that there might also be problems with the cloud resources themselves.
 
-2. As <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore if problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed the old settings can now be carried over manually from the backups.  
+2. As NDL-VuFind2 is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore if problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed the old settings can now be carried over manually from the backups.  
 **A telltale sign of this is usually when the ubuntu machine fails to function properly or the PHP server crashes while the centos machine is working properly** (if built).
 
 3. The Ubuntu basebox is updated quite regularly so after `vagrant box update` it is not very common but quite possible that something breaks in the install scripts. If this happens and items 1 & 2 are already ruled out, run `vagrant up 2>&1 | tee ./vagrant-log.txt` with the default ubuntu.conf settings + create an issue describing shortly what happened and include the logfile.
