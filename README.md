@@ -13,7 +13,7 @@
 
 Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem. Includes optional install of <a href="https://medium.com/@kitze/introducing-sizzy-a-tool-for-developing-responsive-websites-crazy-fast-39a8c0061992">Sizzy</a> to help in responsive & mobile development. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> on the host's native filesystem.
+  - for development, uses NDL-VuFind2 files from the host's filesystem. No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>). An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> on the host's native filesystem.
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -155,4 +155,4 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
-- <a href="https://www.sizzy.co">Sizzy</a>
+- <a href="https://responsively.app/">Responsively.app</a>
