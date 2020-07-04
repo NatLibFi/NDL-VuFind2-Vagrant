@@ -13,7 +13,7 @@
 
 Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem. No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>). An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> on the host's native filesystem.
+  - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> on the host's native filesystem.
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -82,8 +82,9 @@ _ubuntu_:
   - Mac only!: NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
-- When using Sizzy, point the browser to <a href="http://localhost:3033/?url=http://localhost:8081/vufind2">http://localhost:3033/?url=http://localhost:8081/vufind2</a>
-  - If you forgot to enable Sizzy in ubuntu.conf, just run<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_sizzy.sh"`
+- No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
+- If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
+  - This is quicker than `vagrant destroy` + `vagrant up` which is of course possible.
 
 _centos_:
 - `vagrant up centos`
