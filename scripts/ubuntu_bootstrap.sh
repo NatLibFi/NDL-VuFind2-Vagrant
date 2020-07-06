@@ -58,6 +58,3 @@ fi
 if [ "$INSTALL_RECMAN" = true ]; then
   source /vagrant/scripts/ubuntu_recman.sh
 fi
-if [ "$INSTALL_SIZZY" = true ]; then
-  source /vagrant/scripts/ubuntu_sizzy.sh
-fi
