@@ -71,7 +71,7 @@ Regarding the records data:
 * more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) **or** set up harvesting sources after the provisioning/installing is done.
 
 Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
-* either set the EXTERNAL_SOLR_URL in the bootstrap files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
+* either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
 
 ### Use
@@ -79,7 +79,7 @@ Without local database: use a remote Solr server (like the NDL development index
 _ubuntu_:
 - `vagrant up`
   - This will take a few minutes, so enjoy your beverage of choice!
-  - Mac only!: NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
+  - Mac only! - NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
 - No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
