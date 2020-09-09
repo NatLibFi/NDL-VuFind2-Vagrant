@@ -49,7 +49,7 @@ JAVA_VERSION=14
 ORACLE_LICENSE='v1-2'              # if this fails try increasing
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
-SOLR_BRANCH='master'               # often 'master'
+SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
 # true: use files in host, false: install RM inside guest

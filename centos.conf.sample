@@ -50,7 +50,7 @@ JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
 JAVA_HEAP_MAX='512m'               # process if errors arise.
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
-SOLR_BRANCH='master'               # often 'master'
+SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
 RECMAN_PATH='/usr/local/RecordManager'
