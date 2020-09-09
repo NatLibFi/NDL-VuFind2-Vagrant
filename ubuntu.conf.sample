@@ -64,7 +64,7 @@ RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
 # RecordManager GitHub config if RECMAN_DEV=false
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
-RECMAN_BRANCH='master'             # often 'master'
+RECMAN_BRANCH='dev'                # used to be 'master'
 
 # timezone
 TIMEZONE='Europe/Helsinki'

@@ -14,7 +14,7 @@ INSTALL_RECMAN=true                # RecordManager
 # VuFind2 GitHub config
 GITHUB_USER='NatLibFi'
 VUFIND2_GIT='https://github.com/'"$GITHUB_USER"'/NDL-VuFind2.git'
-VUFIND2_BRANCH='master'            # often 'master'
+VUFIND2_BRANCH='dev'               # used to be 'master'
 
 # MySQL/MariaDB
 PASSWORD='root' # change this to your liking
@@ -60,7 +60,7 @@ RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
 # RecordManager GithHub config
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
-RECMAN_BRANCH='master'             # often 'master'
+RECMAN_BRANCH='dev'                # used to be 'master'
 
 # timezone
 TIMEZONE='Europe/Helsinki'
