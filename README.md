@@ -143,6 +143,17 @@ When addressing the _centos_ machine, just add `centos` at the end of each comma
 
 3. The Ubuntu basebox is updated quite regularly so after `vagrant box update` it is not very common but quite possible that something breaks in the install scripts. If this happens and items 1 & 2 are already ruled out, run `vagrant up 2>&1 | tee ./vagrant-log.txt` with the default ubuntu.conf settings + create an issue describing shortly what happened and include the logfile.
 
+4. "Cannot shutdown/remove VM - HELP!"  
+Often (but not always) it is possible to use the VirtualBox GUI to remove the troublesome VM.  
+If this is not the case try VBoxManage:
+- Find the name (or ID) of the VM you want to remove:  
+`VBoxManage list vms`  
+- Shutdown the VM:  
+`VBoxManage startvm NAME(OR ID) --type emergencystop`
+- Delete the VM:  
+`VBoxManage unregistervm NAME(OR ID) --delete`
+
+
 ### Known Issues
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
