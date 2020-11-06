@@ -55,8 +55,10 @@ if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
 fi
 
 # install MariaDB
-sudo yum -y install mariadb-server mariadb
+sudo yum -y install mariadb-server
 sudo systemctl start mariadb
+sudo sed -i -e 's,json DEFAULT,longtext DEFAULT,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
+sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 
 # create database and user & modify database
 MYSQL=`which mysql`
