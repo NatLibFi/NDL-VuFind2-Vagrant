@@ -68,10 +68,10 @@ if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
 fi
 
 # install Composer (globally) - see: https://github.com/Varying-Vagrant-Vagrants/VVV/issues/986
-sudo curl -sS https://getcomposer.org/installer | php
-sudo mv composer.phar /usr/local/bin/composer
+sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /usr/local/bin/composer
+sudo chmod a+x /usr/local/bin/composer
 cd $VUFIND2_MOUNT
-/usr/local/bin/composer install --no-plugins --no-scripts
+sudo /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # create log file and change owner

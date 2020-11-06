@@ -119,8 +119,8 @@ sudo su -c 'source /etc/profile.d/vufind.sh'
 
 # install Composer (globally)
 cd $VUFIND2_PATH
-sudo curl -sS https://getcomposer.org/installer | sudo php
-sudo mv composer.phar /usr/local/bin/composer
+sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /usr/local/bin/composer
+sudo chmod a+x /usr/local/bin/composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
