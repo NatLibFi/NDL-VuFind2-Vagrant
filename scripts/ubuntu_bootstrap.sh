@@ -33,11 +33,18 @@ sudo apt-get install -y php libapache2-mod-php php-dev php-pear php-json php-mys
 sudo phpenmod mbstring
 
 # configure php: display_errors = On, opcache.enable=0
-sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php/7.?/apache2/php.ini
-sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php/7.?/apache2/php.ini
+sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php/???/apache2/php.ini
+# for PHP 7.x
+if [ -z /etc/php/7*/apache2/php.ini ]; then
+  sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php/7*/apache2/php.ini;
+fi
+# for PHP 8.x (not really needed see https://php.watch/versions/8.0/JIT#jit-opcache.enable )
+if [ -z /etc/php/8*/apache2/php.ini ]; then
+  sudo sed -i -e 's/^opcache.enable=1/;opcache.enable=1/' /etc/php/8*/apache2/php.ini
+fi
 # set memory_limit
 if [[ "$PHP_MEMORY_LIMIT" != "128M" ]]; then
-  sudo sed -i -e 's/memory_limit = 128M/memory_limit = '"$PHP_MEMORY_LIMIT"'/' /etc/php/7.?/apache2/php.ini
+  sudo sed -i -e 's/memory_limit = 128M/memory_limit = '"$PHP_MEMORY_LIMIT"'/' /etc/php/???/apache2/php.ini
 fi
 
 # install NDL-Vufind2

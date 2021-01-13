@@ -98,9 +98,25 @@ if [ "$LESS_RUN" = true ]; then
 fi
 
 # download datasources translation strings
-curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.ini
-curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
-curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
+curl $DATASOURCE_FI_URL > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.ini
+curl $DATASOURCE_SV_URL > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
+curl $DATASOURCE_EN_URL > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
+
+#set organisation if set
+if [ ! -z "$DEFAULT_ORG" ]; then
+  if ! grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
+    sed -i -e '$a[General]'
+  elif grep -q -m 1 "^enabled =" $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
+    sudo sed 's,^enabled\s=\s.*,replace= 1,g' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+    sudo sed 's,^defaultOrganisation\s=\s.*,replace= "'"$DEFAULT_ORG"'",g' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+  else
+    sudo sed ',^enabled = 1,after=[General],a' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+    sudo sed ',^defaultOrganisation = "'"$DEFAULT_ORG"'",a' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini      
+  fi
+elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
+  sudo sed ',enabled,d' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+  sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+fi
 
 echo
 echo "==============================="

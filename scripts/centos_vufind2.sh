@@ -125,9 +125,9 @@ sudo /usr/local/bin/composer install --no-plugins --no-scripts
 cd
 
 # download datasources translation strings
-curl 'https://www.finna-test.fi/fi-datasources.ini' > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
-curl 'https://www.finna-test.fi/sv-datasources.ini' > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
-curl 'https://www.finna-test.fi/en-gb-datasources.ini' > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
+curl $DATASOURCE_FI_URL > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
+curl $DATASOURCE_SV_URL > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
+curl $DATASOURCE_EN_URL > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
 
 echo
 echo "==============================="
