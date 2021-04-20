@@ -79,6 +79,22 @@ sudo systemctl enable mariadb
 
 # link VuFind2 to Apache
 sudo chcon system_u:object_r:httpd_config_t:s0 /usr/local/vufind2/local/httpd-vufind.conf
+# needed for e.g. 3D-files
+sudo tee -a /usr/local/vufind2/local/httpd-vufind.conf > /dev/null <<EOT
+
+# Configuration for public cache (used for asset pipeline minification)
+AliasMatch ^/vufind2/cache/(.*)$ /vufind2/local/cache/public/$1
+<Directory ~ "^/vufind2/local/cache/public/">
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+  </IfModule>
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+  AllowOverride All
+</Directory>
+EOT
 if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
   sudo ln -s /usr/local/vufind2/local/httpd-vufind.conf /etc/httpd/conf.d/vufind2.conf
 fi
