@@ -102,20 +102,20 @@ curl $DATASOURCE_FI_URL > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.in
 curl $DATASOURCE_SV_URL > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
 curl $DATASOURCE_EN_URL > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
 
-#set organisation if set
+#Organisation if set
 if [ ! -z "$DEFAULT_ORG" ]; then
-  if ! grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
+  if ! grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
     sed -i -e '$a[General]'
-  elif grep -q -m 1 "^enabled =" $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
-    sudo sed 's,^enabled\s=\s.*,replace= 1,g' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
-    sudo sed 's,^defaultOrganisation\s=\s.*,replace= "'"$DEFAULT_ORG"'",g' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+  elif grep -q -m 1 "^enabled =" $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
+    sudo sed 's,^enabled\s=\s.*,replace= 1,g' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    sudo sed 's,^defaultOrganisation\s=\s.*,replace= "'"$DEFAULT_ORG"'",g' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
   else
-    sudo sed ',^enabled = 1,after=[General],a' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
-    sudo sed ',^defaultOrganisation = "'"$DEFAULT_ORG"'",a' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini      
+    sudo sed ',^enabled = 1,after=[General],a' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    sudo sed ',^defaultOrganisation = "'"$DEFAULT_ORG"'",a' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini      
   fi
-elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini; then
-  sudo sed ',enabled,d' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
-  sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/vufind/OrganisationInfo.ini
+elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
+  sudo sed ',enabled,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+  sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
 fi
 
 echo

@@ -30,9 +30,10 @@ DATASOURCE_FI_URL='https://www.finna-pre.fi/fi-datasources.ini'
 DATASOURCE_SV_URL='https://www.finna-pre.fi/sv-datasources.ini'
 DATASOURCE_EN_URL='https://www.finna-pre.fi/en-gb-datasources.ini'
 
-# TODO: Organisation info
-#DEFAULT_ORGANISATION=''
-#CONSORTIUM_INFO=false
+# Organisation info
+# TODO: execute also changes instead of need to manually alter after once set
+DEFAULT_ORGANISATION=''
+CONSORTIUM_INFO=false
 
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb

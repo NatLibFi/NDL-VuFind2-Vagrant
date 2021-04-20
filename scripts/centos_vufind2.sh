@@ -129,6 +129,21 @@ curl $DATASOURCE_FI_URL > $VUFIND2_PATH/local/languages/finna/fi-datasources.ini
 curl $DATASOURCE_SV_URL > $VUFIND2_PATH/local/languages/finna/sv-datasources.ini
 curl $DATASOURCE_EN_URL > $VUFIND2_PATH/local/languages/finna/en-gb-datasources.ini
 
+#Organisation if set
+if [ ! -z "$DEFAULT_ORG" ]; then
+  echo "
+[General]
+enabled = 1
+defaultOrganisation = \"$DEFAULT_ORG\"
+  
+[OrganisationPage]" | sudo tee -a $VUFIND2_PATH/local/config/vufind/OrganisationInfo.ini > /dev/null
+  if [ "$CONSORTIUM_INFO" = true ]; then
+    sudo su -c 'echo consortiumInfo = 1 >> '"$VUFIND2_PATH"'/local/config/vufind/OrganisationInfo.ini'
+  else
+    sudo su -c 'echo consortiumInfo = 0 >> '"$VUFIND2_PATH"'/local/config/vufind/OrganisationInfo.ini'
+  fi
+fi
+
 echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."
