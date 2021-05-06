@@ -56,8 +56,8 @@ OCI_CONFIG_URL='https://pastebin.com/raw/DHGFQaFf'
 SOLR_PATH='/data/solr'             # Separately installing one without the other
 JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
 JAVA_HEAP_MAX='512m'               # process if errors arise.
-# see: https://www.codejava.net/java-se/java-se-versions-history
-JAVA_VERSION=11
+# see: https://adoptopenjdk.net/releases.html
+JAVA_VERSION=11                    # OpenJDK
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
