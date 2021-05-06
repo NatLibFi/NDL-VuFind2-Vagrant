@@ -16,12 +16,8 @@ cd /tmp
 sudo wget http://www.puimula.org/htp/testing/voikko-snapshot-v5/dict-morphoid.zip
 sudo unzip -d /etc/voikko '*.zip'
 
-# add Java repository; no update needed from 18.04 onwards after adding PPA
-echo | sudo add-apt-repository ppa:linuxuprising/java
-
-# install Java JDK
-echo oracle-java$JAVA_VERSION-installer shared/accepted-oracle-license-$ORACLE_LICENSE select true | sudo /usr/bin/debconf-set-selections
-sudo apt-get install -y oracle-java$JAVA_VERSION-installer
+# install Java OpenJDK
+sudo apt-get install -y openjdk-$JAVA_VERSION-jdk-headless
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
