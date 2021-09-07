@@ -20,7 +20,9 @@ Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2<
 ### Requirements
 
 Mandatory:
-- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_) - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails. **If you have network issues with v6.1.x use v6.0.x!**
+- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_)  
+  - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails.
+  - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
 - <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
 
 Optional:
@@ -160,6 +162,7 @@ If this is not the case try VBoxManage:
   - Mac users, (**NFS is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
+- Virtualbox v6.1.x is known to have some permission issues on occasion, especially with macs. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using integrated terminal in VSCode etc.). More <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">NFS troubleshooting</a>.
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 
 ### Resources
