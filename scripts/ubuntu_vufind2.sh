@@ -87,7 +87,7 @@ fi
 sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /usr/local/bin/composer
 sudo chmod a+x /usr/local/bin/composer
 cd $VUFIND2_MOUNT
-sudo /usr/local/bin/composer install --no-plugins --no-scripts
+sudo su vagrant -c '/usr/local/bin/composer install --no-plugins --no-scripts'
 cd
 
 # create log file and change owner
