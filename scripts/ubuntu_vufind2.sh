@@ -134,6 +134,33 @@ elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInf
   sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
 fi
 
+#Set up email test environment
+if [ "$EMAIL_TEST_ENV" = true ]; then
+  cd /home/vagrant
+  sudo su vagrant -c 'mkdir -p finna-views/testi'
+  sudo su vagrant -c 'mkdir -p finna-views/127'
+  ln -s $VUFIND2_MOUNT finna-views/testi/default
+  ln -s $VUFIND2_MOUNT finna-views/127$VUFIND2_MOUNT
+  # add write permission to log
+  sudo chmod o+w /var/log/vufind2.log
+  # crete script file for due date reminder
+  # run with:
+  # $ vagrant ssh -c "duedatereminder"
+  tee -a /usr/local/bin/duedatereminder >/dev/null <<EOF
+#!/usr/bin/env bash
+VUFIND_LOCAL_MODULES=FinnaSearch,FinnaTheme,Finna,FinnaConsole VUFIND_LOCAL_DIR=$VUFIND2_MOUNT/local php -d short_open_tag=1 $VUFIND2_MOUNT/public/index.php util due_date_reminders $VUFIND2_MOUNT /home/vagrant/finna-views
+EOF
+  sudo chmod a+x /usr/local/bin/duedatereminder
+  # crete script file for scheduled alert
+  # run with:
+  # $ vagrant ssh -c "scheduledalert"
+  tee -a /usr/local/bin/scheduledalert >/dev/null <<EOF
+#!/usr/bin/env bash
+VUFIND_LOCAL_MODULES=FinnaSearch,FinnaTheme,Finna,FinnaConsole VUFIND_LOCAL_DIR=$VUFIND2_MOUNT/local php -d short_open_tag=1 $VUFIND2_MOUNT/public/index.php util scheduled_alerts /home/vagrant/finna-views $VUFIND2_MOUNT/local
+EOF
+  sudo chmod a+x /usr/local/bin/scheduledalert
+fi
+
 echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."

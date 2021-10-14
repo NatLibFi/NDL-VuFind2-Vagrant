@@ -35,6 +35,10 @@ DATASOURCE_EN_URL='https://www.finna-pre.fi/en-gb-datasources.ini'
 DEFAULT_ORGANISATION=''
 CONSORTIUM_INFO=false
 
+# environment for due date reminder and scheduled alert tests
+# use 127.0.0.1 instead of localhost in url and add needed config changes
+EMAIL_TEST_ENV=false
+
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb
 NODE_VERSION=10
