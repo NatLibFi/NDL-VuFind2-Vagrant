@@ -56,6 +56,8 @@ fi
 
 # install MariaDB
 sudo yum -y install mariadb-server
+# fix MariaDB 'key was too long', see: https://dba.stackexchange.com/questions/231219/mariadb-10-1-38-specified-key-was-too-long-max-key-length-is-767-bytes
+sudo sed -i -e '/^\[mysqld\]/a innodb_file_format = Barracuda\ninnodb_file_per_table = on\ninnodb_large_prefix = 1\ninnodb_file_format_max = Barracuda' /etc/my.cnf
 sudo systemctl start mariadb
 sudo sed -i -e 's,json DEFAULT,longtext DEFAULT,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
