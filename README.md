@@ -5,6 +5,7 @@
 - [Set-Up](#set-up)
 - [Use](#use)
   * [Useful Commands](#useful-commands)
+- [Email Testing Environment](#email-testing-environment)
 - [Troubleshooting](#troubleshooting)
 - [Known Issues](#known-issues)
 - [Resources](#resources)
@@ -62,11 +63,11 @@ If using Oracle:
 
 The default is to run Solr/RecordManager locally, some configuration options still exist (see also _Without local database_):
 * Install both inside the guest VM
-  - INSTALL_SOLR=true (default: true)
-  - INSTALL_RECMAN=true (default: true)
+  > INSTALL_SOLR=true (default: true)
+  > INSTALL_RECMAN=true (default: true)
 
 * Use cloned RecordManager files on the host system (ubuntu.conf)
-  - RECMAN_DEV=true (default: false)
+  > RECMAN_DEV=true (default: false)
 
 Regarding the records data:
 * default (but bare minimum e.g. testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
@@ -118,7 +119,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache `sudo service apache2 restart` or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
   - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
 
-    > vagrant ssh -c "less2css"
+    `vagrant ssh -c "less2css"`
 
     or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
 * `vagrant box update`
@@ -126,7 +127,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box list`
   - show the cached box files, delete unnecessary ones with `vagrant box remove` or `vagrant box prune` (add `-h` for help) e.g.
   
-    > vagrant box remove ubuntu/bionic64 --box-version 20200701.0.0
+    `vagrant box remove ubuntu/bionic64 --box-version 20200701.0.0`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
@@ -135,6 +136,38 @@ Both machines can be run simultaneously provided the host has enough oomph.
 When addressing the _centos_ machine, just add `centos` at the end of each command.
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
+
+### Email Testing Environment
+Testing exists only in the _ubuntu_ VM.
+
+- ubuntu.conf:
+  >EMAIL_TEST_ENV=true
+- add the settings below & adjust the [Mail] section accordingly - you need a working mail server - in _vufind2/local/config/vufind/config.ini_
+  ```
+  [Site]
+  institution = testi
+
+  [Account]
+  force_first_scheduled_email = true
+
+  [Mail]
+  host            = localhost
+  port            = 25
+  ;username       = user
+  ;password       = pass
+  ; If set to false, users can send anonymous emails; otherwise, they must log in first
+  require_login   = false
+  ```
+- Use **127.0.0.1** instead of localhost i.e. <a href="http://127.0.0.1:8081/vufind2">http://127.0.0.1:8081/vufind2</a> to log in as a new test user.
+- Due date reminders
+  - in user profile add the email address to receive the messages, set Due date reminders via email
+  - run `vagrant ssh -c "duedatereminder"`
+- Scheduled alerts
+  - in user profile add the email address to receive the messages, if not already set
+  - save a search or two, in Saved searched set the Alert schedule
+  - run `vagrant ssh -c "scheduledalert"`
+
+The email address in user profile should receive the messages. Note that another test user need to be set up to run the scheduled alerts again. 
 
 ### Troubleshooting
 
