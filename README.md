@@ -167,7 +167,7 @@ Testing exists only in the _ubuntu_ VM.
   - save a search or two, in Saved searched set the Alert schedule
   - run `vagrant ssh -c "scheduledalert"`
 
-The email address in user profile should receive the messages. Note that another test user needs to be set up to run the scheduled alerts again. 
+The email address in user profile should receive the messages. Note that another test user needs to be set up to run the scheduled alerts again (without waiting min 24 hrs). 
 
 ### Troubleshooting
 
