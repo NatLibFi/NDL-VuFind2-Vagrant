@@ -6,6 +6,8 @@
 - [Use](#use)
   * [Useful Commands](#useful-commands)
 - [Email Testing Environment](#email-testing-environment)
+  * [Due Date Reminders](#due-date-reminders)
+  * [Scheduled Alerts](#scheduled-alerts)
 - [Troubleshooting](#troubleshooting)
 - [Known Issues](#known-issues)
 - [Resources](#resources)
@@ -164,15 +166,15 @@ Testing exists only in the _ubuntu_ VM.
     driver = Demo
     ```
 - After `vagrant up` use **127.0.0.1** instead of localhost i.e. <a href="http://127.0.0.1:8081/vufind2">http://127.0.0.1:8081/vufind2</a> to log in as a (new) test user.
-- Due date reminders
-  - in user profile add the email address to receive the messages, set Due date reminders via email
-  - run `vagrant ssh -c "duedatereminder"`
-- Scheduled alerts
-  - in user profile add the email address to receive the messages, if not already set
-  - save a search or two, in Saved searched set the Alert schedule
-  - run `vagrant ssh -c "scheduledalert"`
+#### Due Date Reminders
+- in user profile add the email address to receive the messages, set Due date reminders via email
+- run `vagrant ssh -c "duedatereminder"`
+#### Scheduled Alerts
+- in user profile add the email address to receive the messages, if not already set
+- save a search or two, in Saved searched set the Alert schedule
+- run `vagrant ssh -c "scheduledalert"`
 
-The email address in user profile should receive the messages. Note that another test user needs to be set up to run the scheduled alerts again (without waiting min 24 hrs). 
+The email address in user profile should receive the messages. Note that another test user needs to be set up to run the made-up scheduled alerts again - turning them off and back on _might_ work but this is untested. 
 
 ### Troubleshooting
 
