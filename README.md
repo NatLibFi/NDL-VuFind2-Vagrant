@@ -158,7 +158,12 @@ Testing exists only in the _ubuntu_ VM.
   ; If set to false, users can send anonymous emails; otherwise, they must log in first
   require_login   = false
   ```
-- After `vagrant up` use **127.0.0.1** instead of localhost i.e. <a href="http://127.0.0.1:8081/vufind2">http://127.0.0.1:8081/vufind2</a> to log in as a new test user.
+  - There might also be need to use the setting below but YMMV
+    ```
+    [Catalog]
+    driver = Demo
+    ```
+- After `vagrant up` use **127.0.0.1** instead of localhost i.e. <a href="http://127.0.0.1:8081/vufind2">http://127.0.0.1:8081/vufind2</a> to log in as a (new) test user.
 - Due date reminders
   - in user profile add the email address to receive the messages, set Due date reminders via email
   - run `vagrant ssh -c "duedatereminder"`
