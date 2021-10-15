@@ -75,7 +75,7 @@ Regarding the records data:
 
 Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
-* add the external URL to the _vufind2/local/config/vufind/config.ini_ file after install.
+* add the external URL to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
 ### Use
 
@@ -142,7 +142,7 @@ Testing exists only in the _ubuntu_ VM.
 
 - ubuntu.conf:
   >EMAIL_TEST_ENV=true
-- add the settings below & adjust the [Mail] section accordingly - you need a working mail server - in _vufind2/local/config/vufind/config.ini_
+- add the settings below & adjust the [Mail] section accordingly - you need a working mail server - in _NDL-VuFind2/local/config/vufind/config.ini_
   ```
   [Site]
   institution = testi
