@@ -154,7 +154,7 @@ Testing exists only in the _ubuntu_ VM.
   host            = localhost
   port            = 25
   ;username       = user
-  ;password       = pass
+  ;password       = "pass"  ; better to use quotes
   ; If set to false, users can send anonymous emails; otherwise, they must log in first
   require_login   = false
   ```
