@@ -45,7 +45,7 @@ _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/bionic64">bionic64</a>
 * Run `vagrant up` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_.
   * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there. Similar attention to possible RecordManager directory should be used.<br/>
 
-* Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or enabling Sizzy etc.) prior to running the VM in full.
+* Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
 If using **sqlplus** from Oracle:
 * Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
@@ -65,14 +65,14 @@ If using Oracle:
 
 The default is to run Solr/RecordManager locally, some configuration options still exist (see also _Without local database_):
 * Install both inside the guest VM
-  > INSTALL_SOLR=true (default: true)
-  > INSTALL_RECMAN=true (default: true)
+  > INSTALL_SOLR=true ;default: true  
+  > INSTALL_RECMAN=true ;default: true
 
 * Use cloned RecordManager files on the host system (ubuntu.conf)
-  > RECMAN_DEV=true (default: false)
+  > RECMAN_DEV=true ;default: false
 
 Regarding the records data:
-* default (but bare minimum e.g. testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
+* default (but bare minimum for testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
 * more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) **or** set up harvesting sources after the provisioning/installing is done.
 
 Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
@@ -89,7 +89,7 @@ _ubuntu_:
   - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
 - No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
 - If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine later by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
-  - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or prefered.
+  - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or preferred.
 
 _centos_:
 - `vagrant up centos`
