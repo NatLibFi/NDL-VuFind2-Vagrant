@@ -70,7 +70,7 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033
 
     # Share additional folders to the guest VM.
-  if RUBY_PLATFORM =~ /darwin/
+  if RUBY_PLATFORM =~ /darwin/ && !DisableNFS
     ubuntu.vm.network "private_network", type: "dhcp"
     ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
     ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"

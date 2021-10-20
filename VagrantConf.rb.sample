@@ -12,6 +12,9 @@ module VagrantConf
   # Make this match the RECMAN_MOUNT in ubuntu.conf
   RMMountPath = '/recordmanager'
 
+  # Trouble with NFS mounting synced folders on macOS? Disable NFS.
+  DisableNFS = false
+
   # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64
   # An example to use instead if you repackage a local custom base box 
   # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
