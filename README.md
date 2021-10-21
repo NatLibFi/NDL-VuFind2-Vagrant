@@ -199,10 +199,12 @@ If this is not the case try VBoxManage:
 ### Known Issues
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
-  - Mac users, (**NFS is now default**) admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See the previous link for more information.
+  - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L16">EnableNFS</a> to `true`.
+  - Mac users, admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
+    Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and nothing else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
-- Virtualbox v6.1.x is known to have some permission issues on occasion, especially with macs. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using integrated terminal in VSCode etc.). More <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">NFS troubleshooting</a>.
+- On macOS, Virtualbox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 
 ### Resources
