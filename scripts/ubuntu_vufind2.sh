@@ -146,19 +146,19 @@ if [ "$EMAIL_TEST_ENV" = true ]; then
   # crete script file for due date reminder
   # run with:
   # $ vagrant ssh -c "duedatereminder"
-  tee -a /usr/local/bin/duedatereminder >/dev/null <<EOF
+  tee -a /usr/local/bin/due_date_reminders >/dev/null <<EOF
 #!/usr/bin/env bash
 VUFIND_LOCAL_MODULES=FinnaSearch,FinnaTheme,Finna,FinnaConsole VUFIND_LOCAL_DIR=$VUFIND2_MOUNT/local php -d short_open_tag=1 $VUFIND2_MOUNT/public/index.php util due_date_reminders $VUFIND2_MOUNT /home/vagrant/finna-views
 EOF
-  sudo chmod a+x /usr/local/bin/duedatereminder
+  sudo chmod a+x /usr/local/bin/due_date_reminders
   # crete script file for scheduled alert
   # run with:
   # $ vagrant ssh -c "scheduledalert"
-  tee -a /usr/local/bin/scheduledalert >/dev/null <<EOF
+  tee -a /usr/local/bin/scheduled_alerts >/dev/null <<EOF
 #!/usr/bin/env bash
 VUFIND_LOCAL_MODULES=FinnaSearch,FinnaTheme,Finna,FinnaConsole VUFIND_LOCAL_DIR=$VUFIND2_MOUNT/local php -d short_open_tag=1 $VUFIND2_MOUNT/public/index.php util scheduled_alerts /home/vagrant/finna-views $VUFIND2_MOUNT/local
 EOF
-  sudo chmod a+x /usr/local/bin/scheduledalert
+  sudo chmod a+x /usr/local/bin/scheduled_alerts
 fi
 
 echo
