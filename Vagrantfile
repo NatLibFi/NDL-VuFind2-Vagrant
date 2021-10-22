@@ -18,7 +18,7 @@ when nil, "ubuntu"
   if ARGV[0] == "up"
     conf = 'ubuntu.conf'
     sample = conf + '.sample'
-    if !(File.exists?(VufindPath))
+    if !(Dir.exists?(VufindPath))
       puts VufindPath + " directory DOES NOT EXIST!"
       puts "Clone/copy the NDL-VuFind2 files & check the path in VagrantConf.rb"
       exit
@@ -73,10 +73,14 @@ Vagrant.configure(2) do |config|
   if RUBY_PLATFORM =~ /darwin/ && EnableNFS
     ubuntu.vm.network "private_network", type: "dhcp"
     ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
-    ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
+    if defined?(RMPath)
+      ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
+    end
   else
     ubuntu.vm.synced_folder VufindPath, MountPath
-    ubuntu.vm.synced_folder RMPath, RMMountPath
+    if defined?(RMPath)
+      ubuntu.vm.synced_folder RMPath, RMMountPath
+    end
   end
 
     # Share the cache folder and allow guest machine write access

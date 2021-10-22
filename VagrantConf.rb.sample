@@ -6,12 +6,14 @@ module VagrantConf
   # Make this match the VUFIND2_PATH in ubuntu.conf
   MountPath = '/vufind2'
 
-  # relative path to the cloned directory of RecordManager files from Github
-  RMPath = '../recordmanager'
+  if Dir.exists?('../recordmanager')
+    # relative path to the cloned directory of RecordManager files from Github
+    RMPath = '../recordmanager'
 
-  # Make this match the RECMAN_MOUNT in ubuntu.conf
-  RMMountPath = '/recordmanager'
-
+    # Make this match the RECMAN_MOUNT in ubuntu.conf
+    RMMountPath = '/recordmanager'
+  end
+  
   # Enable NFS for synced folders on macOS
   EnableNFS = false
 
