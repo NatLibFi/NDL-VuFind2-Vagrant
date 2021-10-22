@@ -168,11 +168,11 @@ Testing exists only in the _ubuntu_ VM.
 - After `vagrant up` use **127.0.0.1** instead of localhost i.e. <a href="http://127.0.0.1:8081/vufind2">http://127.0.0.1:8081/vufind2</a> to log in as a (new) test user.
 #### Due Date Reminders
 - in user profile add the email address to receive the messages, set Due date reminders via email
-- run `vagrant ssh -c "duedatereminder"`
+- run `vagrant ssh -c "due_date_reminders"`
 #### Scheduled Alerts
 - in user profile add the email address to receive the messages, if not already set
 - save a search or two, in Saved searched set the Alert schedule
-- run `vagrant ssh -c "scheduledalert"`
+- run `vagrant ssh -c "scheduled_alerts"`
 
 The email address in user profile should receive the messages. Note that another test user needs to be set up to run the made-up scheduled alerts again - turning them off and back on _might_ work but this is untested. 
 
