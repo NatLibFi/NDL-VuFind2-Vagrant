@@ -12,7 +12,7 @@ INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false                # Geocoding (only with RecordManager)
 
 # MySQL
-PASSWORD='root' # change this to your liking
+PASSWORD='root'                    # change this to your liking
 DATABASE='vufind2'
 SQL_USER='vufind'
 SQL_USER_PW='vufind'
@@ -21,6 +21,7 @@ SQL_USER_PW='vufind'
 EXTERNAL_SOLR_URL=''
 
 # PHP config
+PHP_VERSION=''                     # use '' for system default
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=1                 # v2 is not yet suitable for all plugins
@@ -67,6 +68,7 @@ SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
+MONGODB_VERSION=5.0
 # true: use files in host, false: install RM inside guest
 RECMAN_DEV=false
 # RecordManager mount path/point of the host shared folder if RECMAN_DEV=true
@@ -80,6 +82,9 @@ RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
 # RecordManager GitHub config if RECMAN_DEV=false
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
 RECMAN_BRANCH='dev'                # used to be 'master'
+
+# GEOS config
+LIBGEOS_VERSION=3.8.0
 
 # timezone
 TIMEZONE='Europe/Helsinki'

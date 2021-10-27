@@ -20,7 +20,7 @@ module VagrantConf
   # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64
   # An example to use instead if you repackage a local custom base box 
   # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
-  UbuntuBox = 'ubuntu/bionic64'
+  UbuntuBox = 'ubuntu/focal64'
 
   # CentOS Vagrant box. https://app.vagrantup.com/centos/boxes/7
   # An example to use instead if you repackage a local custom base box 
