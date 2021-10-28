@@ -19,12 +19,13 @@ sudo sed -i -e 's/myisam-recover\s\{2,\}/myisam-recover-options\t/' /etc/mysql/m
 # create database and user & modify database
 MYSQL=`which mysql`
 Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
-Q2="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost' IDENTIFIED BY '$SQL_USER_PW';"
-Q3="FLUSH PRIVILEGES;"
-Q4="USE $DATABASE;"
-Q5="SOURCE $VUFIND2_MOUNT/module/VuFind/sql/mysql.sql;"
-Q6="SOURCE $VUFIND2_MOUNT/module/Finna/sql/mysql.sql;"
-SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
+Q2="CREATE USER '$SQL_USER'@'localhost' IDENTIFIED BY '$SQL_USER_PW';"
+Q3="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost';"
+Q4="FLUSH PRIVILEGES;"
+Q5="USE $DATABASE;"
+Q6="SOURCE $VUFIND2_MOUNT/module/VuFind/sql/mysql.sql;"
+Q7="SOURCE $VUFIND2_MOUNT/module/Finna/sql/mysql.sql;"
+SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}${Q7}"
 $MYSQL -uroot -p$PASSWORD -e "$SQL"
 
 # link VuFind to Apache

@@ -9,31 +9,25 @@ fi
 echo
 echo "Installing RecordManager..."
 echo "==========================="
-sudo apt-get install -y pkg-config libpcre3-dev phpunit
+#sudo apt-get install -y pkg-config libpcre3-dev phpunit
 
 # libgeos and PHP bindings 
-if [ "$INSTALL_GEOS" = true ]; then
-  sudo apt-get install -y libgeos-3.5.0 libgeos-dev
-  cd /tmp
-  sudo git clone https://git.osgeo.org/gogs/geos/php-geos.git
-  cd php-geos
-  sudo ./autogen.sh
-  sudo ./configure
-  sudo make
-  sudo make install
-  sudo sh -c 'echo extension=geos.so > /etc/php/7.3/mods-available/geos.ini'
+if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "7.4" ]; then
+  sudo apt-get install -y libgeos-$LIBGEOS_VERSION libgeos-dev
+  sudo apt-get install -y php-geos
   sudo phpenmod geos
 fi
 
 # MongoDB driver
+sudo pecl channel-update pecl.php.net
 sudo sh -c 'echo no | sudo pecl install mongodb'
 sudo sh -c 'echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`'
 sudo service apache2 reload
 sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
 # MongoDB
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B00A0BD1E2C63C11
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu focal/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 sudo systemctl start mongod

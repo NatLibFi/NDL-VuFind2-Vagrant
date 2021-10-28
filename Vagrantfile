@@ -73,12 +73,12 @@ Vagrant.configure(2) do |config|
   if RUBY_PLATFORM =~ /darwin/ && EnableNFS
     ubuntu.vm.network "private_network", type: "dhcp"
     ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
-    if defined?(RMPath)
+    if defined?(RMMountPath)
       ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
     end
   else
     ubuntu.vm.synced_folder VufindPath, MountPath
-    if defined?(RMPath)
+    if defined?(RMMountPath)
       ubuntu.vm.synced_folder RMPath, RMMountPath
     end
   end
