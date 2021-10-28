@@ -60,9 +60,6 @@ sudo systemctl start httpd
 sudo systemctl enable httpd
 
 # additional installs
-if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/scripts/centos_oracle.sh;
-fi
 if [ "$INSTALL_SOLR" = true ]; then
   source /vagrant/scripts/centos_solr.sh;
 fi

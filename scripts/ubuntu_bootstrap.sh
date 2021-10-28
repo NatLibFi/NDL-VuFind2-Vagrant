@@ -56,9 +56,6 @@ fi
 sudo service apache2 reload
 
 # additional installs
-if [ "$INSTALL_ORACLE_CLIENT" = true ]; then
-  source /vagrant/scripts/ubuntu_oracle.sh
-fi
 if [ "$INSTALL_SOLR" = true ]; then
   source /vagrant/scripts/ubuntu_solr.sh
 fi
