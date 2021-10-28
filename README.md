@@ -28,10 +28,6 @@ Mandatory:
   - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
 - <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
 
-Optional:
-- <a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html">Oracle Instant Client</a> installer files downloaded from Oracle (a soul-selling registration needed), see the <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/tree/master/oracle">oracle/README</a> for details.
-  - If the installer files are not found during provisioning, the Oracle installation will be skipped with a warning message. The message can be turned off by setting 'INSTALL_ORACLE_CLIENT=false' in the bootstrap files.
-
 for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> also cloned to the host (optional)
@@ -47,9 +43,6 @@ _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/bionic64">bionic64</a>
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
-If using **sqlplus** from Oracle:
-* Put the _tnsnames.ora_ file in the _oracle/_ directory (or copy/create it into _/opt/oracle/instantclient_xx_x/_ in the guest afterwards).
-
 _centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
@@ -59,9 +52,6 @@ _centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
 * Run `vagrant up centos` again or manually copy _centos.conf.sample_ to _centos.conf_ and see the file for possible install configuration changes prior to running the VM in full.
 
 _both_:
-
-If using Oracle:
-* Put the downloaded Oracle installer files in the _oracle/_ directory and the VoyagerRestful_*.ini files in the _config/_ directory.
 
 The default is to run Solr/RecordManager locally, some configuration options still exist (see also _Without local database_):
 * Install both inside the guest VM
@@ -210,7 +200,6 @@ If this is not the case try VBoxManage:
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
 - <a href="https://github.com/NatLibFi/finna-solr">finna-solr</a>
-- <a href="http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html">Oracle Instant Client</a>
 - <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
