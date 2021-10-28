@@ -9,8 +9,8 @@ INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_ORACLE_CLIENT=false         # Oracle PHP OCI Instant Client (Voyager)
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
-  INSTALL_GEOS=false                # Geocoding (only with RecordManager)
-
+  INSTALL_GEOS=false                # Geocoding (use with RecordManager)
+                                   # installs only when PHP_VERSION='7.4'
 # MySQL
 PASSWORD='root'                    # change this to your liking
 DATABASE='vufind2'
@@ -32,7 +32,7 @@ DATASOURCE_SV_URL='https://www.finna-pre.fi/sv-datasources.ini'
 DATASOURCE_EN_URL='https://www.finna-pre.fi/en-gb-datasources.ini'
 
 # Organisation info
-# TODO: execute also changes instead of need to manually alter after once set
+# TODO: execute also changes instead of need to manually alter after set once
 DEFAULT_ORGANISATION=''
 CONSORTIUM_INFO=false
 
@@ -68,13 +68,15 @@ SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
-MONGODB_VERSION=5.0
 # true: use files in host, false: install RM inside guest
 RECMAN_DEV=false
 # RecordManager mount path/point of the host shared folder if RECMAN_DEV=true
 RECMAN_MOUNT='/recordmanager'
 # RecordManafer install path in the guest file system if RECMAN_DEV=false
 RECMAN_PATH='/usr/local/RecordManager'
+# MongoDB
+MONGODB_VERSION=5.0                # http://repo.mongodb.org/apt/ubuntu/dists/
+# RecordManaget dataset
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
