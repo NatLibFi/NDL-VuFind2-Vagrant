@@ -74,7 +74,6 @@ Without local database: use a remote Solr server (like the NDL development index
 _ubuntu_:
 - `vagrant up`
   - This will take a few minutes, so enjoy your beverage of choice!
-  - Mac only! - NFS is enabled as default and Vagrant needs to modify _/etc/exports_ and will ask password for _sudo_ privileges on building the virtual environent and destroying it. This can be avoided by either modifying sudoers or more easily running `sudo scripts/nfs-sudoers_mac.sh` (see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> in Vagrant documentation for more details).
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
 - No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
@@ -190,7 +189,7 @@ If this is not the case try VBoxManage:
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more VirtualMemory in VagrantConf.rb (and/or v.cpus in Vagrantfile).<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L16">EnableNFS</a> to `true`.
-  - Mac users, admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
+  - Mac users, with NFS enabled Vagrant needs to modify _/etc/exports_ and admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
     Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and nothing else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
   - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install `nfsd`, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
