@@ -16,7 +16,7 @@
 
 Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> on the host's native filesystem.
+  - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> on the host's native filesystem.
 - **centos**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -30,7 +30,7 @@ Mandatory:
 
 for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
-- <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> also cloned to the host (optional)
+- <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (optional)
 
 ### Set-Up
 
@@ -95,7 +95,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
   - _centos_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
 
-**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu/centos.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to **false** and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
+**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu/centos.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to **false** and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager-Finna/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
 - <a href="https://github.com/NatLibFi/RecordManager/wiki">RecordManager Wiki</a> for additional information.
 
 #### Useful Commands
@@ -200,7 +200,7 @@ If this is not the case try VBoxManage:
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
 - <a href="https://github.com/NatLibFi/finna-solr">finna-solr</a>
-- <a href="https://github.com/NatLibFi/RecordManager">RecordManager</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">Wiki</a>
+- <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">RecordManager Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://responsively.app/">Responsively.app</a>
