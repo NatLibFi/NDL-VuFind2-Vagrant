@@ -60,7 +60,7 @@ RECMAN_SOURCE='sample'             # if 'sample', the next two default to:
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
 # RecordManager GithHub config
-RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
+RECMAN_GIT='https://github.com/NatLibFi/RecordManager-Finna.git'
 RECMAN_BRANCH='dev'                # used to be 'master'
 
 # timezone
