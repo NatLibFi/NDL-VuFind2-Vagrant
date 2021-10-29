@@ -7,7 +7,7 @@ module VagrantConf
   MountPath = '/vufind2'
 
   # relative path to the cloned directory of RecordManager files from Github
-  RMPath = '../RecordManager'
+  RMPath = '../RecordManager-Finna'
   
   if Dir.exists?(RMPath)
     # Make this match the RECMAN_MOUNT in ubuntu.conf

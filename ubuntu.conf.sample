@@ -71,10 +71,11 @@ RECMAN_SOURCE='sample'             # if 'sample', the next two default to:
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
 # RecordManager GitHub config if RECMAN_DEV=false
-RECMAN_GIT='https://github.com/NatLibFi/RecordManager.git'
+RECMAN_GIT='https://github.com/NatLibFi/RecordManager-Finna.git'
 RECMAN_BRANCH='dev'                # used to be 'master'
 
 # GEOS config
+# https://packages.ubuntu.com/search?keywords=libgeos&searchon=names
 LIBGEOS_VERSION=3.8.0
 
 # timezone
