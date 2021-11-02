@@ -54,27 +54,41 @@ if [ ! -z "$EXTERNAL_SOLR_URL" ]; then
   sudo sed -i -e 's,;url *= *,url = '"$EXTERNAL_SOLR_URL"',' $VUFIND2_PATH/local/config/vufind/config.ini
 fi
 
+# fix DB user password
+if [[ "$SQL_USER_PW" != 'vufind' ]]; then
+  sudo sed -i -e 's,mysql://vufind:vufind,mysql://vufind:'"$SQL_USER_PW"',' $VUFIND2_PATH/local/config/finna/config.ini
+fi
+
 # install MariaDB
-sudo yum -y install mariadb-server
+#sudo yum -y install mariadb-server mariadb-libs mariadb
 # fix MariaDB 'key was too long', see: https://dba.stackexchange.com/questions/231219/mariadb-10-1-38-specified-key-was-too-long-max-key-length-is-767-bytes
-sudo sed -i -e '/^\[mysqld\]/a innodb_file_format = Barracuda\ninnodb_file_per_table = on\ninnodb_large_prefix = 1\ninnodb_file_format_max = Barracuda' /etc/my.cnf
-sudo systemctl start mariadb
-sudo sed -i -e 's,json DEFAULT,longtext DEFAULT,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
-sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
+#sudo sed -i -e '/^\[mysqld\]/a innodb_file_format = Barracuda\ninnodb_file_per_table = on\ninnodb_large_prefix = 1\ninnodb_file_format_max = Barracuda' /etc/my.cnf
+#sudo sed -i -e 's,json DEFAULT,longtext DEFAULT,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
+#sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
+
+# install MySQL
+rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+sudo rpm -ivh mysql80-community-release-el7-3.noarch.rpm
+sudo yum -y install mysql-server
+sudo systemctl start mysqld
+# change database root password
+mysqladmin --user=root --password=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $13}') password $SQL_ROOT_PW
 
 # create database and user & modify database
 MYSQL=`which mysql`
 Q1="CREATE DATABASE IF NOT EXISTS $DATABASE;"
-Q2="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost' IDENTIFIED BY '$SQL_USER_PW';"
-Q3="FLUSH PRIVILEGES;"
-Q4="USE $DATABASE;"
-Q5="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"
-Q6="SOURCE $VUFIND2_PATH/module/Finna/sql/mysql.sql;"
+Q2="CREATE USER '$SQL_USER'@'localhost' IDENTIFIED WITH mysql_native_password BY '$SQL_USER_PW';"
+Q3="GRANT ALL ON $DATABASE.* TO '$SQL_USER'@'localhost';"
+Q4="FLUSH PRIVILEGES;"
+Q5="USE $DATABASE;"
+Q6="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"
+Q7="SOURCE $VUFIND2_PATH/module/Finna/sql/mysql.sql;"
 SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
-$MYSQL -uroot -e "$SQL"
+$MYSQL -uroot -p$SQL_ROOT_PW -e "$SQL"
 
-# start MariaDB at boot
-sudo systemctl enable mariadb
+# start MySQL at boot
+sudo systemctl enable mysqld
 
 # set security settings for Apache
 #sudo chcon -R unconfined_u:object_r:httpd_sys_content_t:s0 /usr/local/vufind2/
@@ -102,7 +116,10 @@ if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
 fi
 
 # install node.js & less 2.7.1 + less-plugin-clean-css
-curl --silent --location https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
+# https://github.com/nodesource/distributions
+curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
+#add key
+rpm --import https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
 sudo yum -y install nodejs
 # do not run these with sudo
 npm install -g less@$LESS_VERSION

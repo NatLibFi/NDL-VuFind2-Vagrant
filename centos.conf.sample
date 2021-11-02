@@ -16,10 +16,10 @@ VUFIND2_GIT='https://github.com/'"$GITHUB_USER"'/NDL-VuFind2.git'
 VUFIND2_BRANCH='dev'               # used to be 'master'
 
 # MySQL/MariaDB
-PASSWORD='root' # change this to your liking
+SQL_ROOT_PW='root-10CHAR'         # min 10 chars + needs num/upper/special
 DATABASE='vufind2'
 SQL_USER='vufind'
-SQL_USER_PW='vufind'
+SQL_USER_PW='vufind-8CHAR'        # min 8 chars + needs num/upper/special
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
@@ -54,7 +54,10 @@ SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
-RECMAN_PATH='/usr/local/RecordManager'
+RECMAN_PATH='/usr/local/RecordManager-Finna'
+# MongoDB
+# https://repo.mongodb.org/yum/redhat/7/mongodb-org/
+MONGODB_VERSION=5.0
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini

@@ -14,16 +14,19 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
+# add key
+sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
+
 # Add Epel & Remi repos for php7 & update yum
 sudo rpm --import http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
-sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
 sudo rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum history new
 sudo yum -y update
 
 # install apache
-sudo yum -y install httpd unzip
+sudo yum -y install httpd unzip wget
 # install php7
 yum-config-manager --enable remi-php73
 sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap
