@@ -31,9 +31,9 @@ $MYSQL -uroot -p$PASSWORD -e "$SQL"
 # link VuFind to Apache
 sudo cp -f $VUFIND2_MOUNT/local/httpd-vufind.conf.sample /etc/apache2/conf-available/httpd-vufind.conf
 sudo sed -i -e 's,/path-to/NDL-VuFind2,'"$VUFIND2_MOUNT"',' /etc/apache2/conf-available/httpd-vufind.conf
+
 # needed for e.g. 3D-files
 sudo tee -a /etc/apache2/conf-available/httpd-vufind.conf > /dev/null <<EOT
-
 # Configuration for public cache (used for asset pipeline minification)
 AliasMatch ^/vufind2/cache/(.*)$ /vufind2/local/cache/public/$1
 <Directory ~ "^/vufind2/local/cache/public/">
