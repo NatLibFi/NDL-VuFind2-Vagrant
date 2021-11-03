@@ -23,7 +23,7 @@ EXTERNAL_SOLR_URL=''
 PHP_VERSION=''                     # use '' for system default
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
-COMPOSER_VERSION=1                 # v2 is not yet suitable for all plugins
+COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
 
 # VuFind2 datasources
 DATASOURCE_FI_URL='https://www.finna-pre.fi/fi-datasources.ini'
