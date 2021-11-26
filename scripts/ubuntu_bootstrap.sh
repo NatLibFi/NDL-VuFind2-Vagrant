@@ -56,6 +56,9 @@ fi
 sudo service apache2 reload
 
 # additional installs
+if [ "$INSTALL_IMGSERVICE" = true ]; then
+  source /vagrant/scripts/ubuntu_imgservice.sh
+fi
 if [ "$INSTALL_SOLR" = true ]; then
   source /vagrant/scripts/ubuntu_solr.sh
 fi

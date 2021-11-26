@@ -68,7 +68,8 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.network "forwarded_port", guest: 80, host: 8081
     ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
     ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033
-
+    ubuntu.vm.network "forwarded_port", guest: 36000, host: 36000
+    
     # Share additional folders to the guest VM.
   if RUBY_PLATFORM =~ /darwin/ && EnableNFS
     ubuntu.vm.network "private_network", type: "dhcp"
