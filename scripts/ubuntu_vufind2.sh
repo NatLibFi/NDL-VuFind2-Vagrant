@@ -51,7 +51,7 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
-# Config file extensions
+# config file extensions
 CfgExt=( ini yaml json )
 
 # copy sample configs to ini files
@@ -119,7 +119,7 @@ curl $DATASOURCE_FI_URL > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.in
 curl $DATASOURCE_SV_URL > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
 curl $DATASOURCE_EN_URL > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
 
-#Organisation if set
+# organisation if set
 if [ ! -z "$DEFAULT_ORG" ]; then
   if ! grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
     sed -i -e '$a[General]'
@@ -135,7 +135,16 @@ elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInf
   sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
 fi
 
-#Set up email test environment
+# prepare for unit-tests
+tee -a /home/vagrant/phing.sh >/dev/null <<EOF
+#!/bin/sh
+$VUFIND2_MOUNT/vendor/bin/phing -Dmysqlrootpass=$PASSWORD \$*
+EOF
+sudo chmod a+x /home/vagrant/phing.sh
+cp $VUFIND2_MOUNT/build.xml /home/vagrant/
+sudo sed -i -e 's,basedir=".",basedir="/vufind2",' /home/vagrant/build.xml
+
+# set up email test environment
 if [ "$EMAIL_TEST_ENV" = true ]; then
   cd /home/vagrant
   sudo su vagrant -c 'mkdir -p finna-views/testi'
@@ -144,7 +153,7 @@ if [ "$EMAIL_TEST_ENV" = true ]; then
   ln -s $VUFIND2_MOUNT finna-views/127$VUFIND2_MOUNT
   # add write permission to log
   sudo chmod o+w /var/log/vufind2.log
-  # crete script file for due date reminder
+  # create script file for due date reminder
   # run with:
   # $ vagrant ssh -c "duedatereminder"
   tee -a /usr/local/bin/due_date_reminders >/dev/null <<EOF
@@ -152,7 +161,7 @@ if [ "$EMAIL_TEST_ENV" = true ]; then
 VUFIND_LOCAL_MODULES=FinnaSearch,FinnaTheme,Finna,FinnaConsole VUFIND_LOCAL_DIR=$VUFIND2_MOUNT/local php -d short_open_tag=1 $VUFIND2_MOUNT/public/index.php util due_date_reminders $VUFIND2_MOUNT /home/vagrant/finna-views
 EOF
   sudo chmod a+x /usr/local/bin/due_date_reminders
-  # crete script file for scheduled alert
+  # create script file for scheduled alert
   # run with:
   # $ vagrant ssh -c "scheduledalert"
   tee -a /usr/local/bin/scheduled_alerts >/dev/null <<EOF
