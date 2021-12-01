@@ -168,9 +168,10 @@ The email address in user profile should receive the messages. Note that another
 
 ### Unit Tests
 
-Unit tests can be run in the _ubuntu_ VM if needed - this might come handy especially if developing upstream to vufind.org <a href="https://github.com/vufind-org/vufind">repository</a>.  
-A quick example of running a single test (adjust params as needed):
-> vagrant ssh -c "./phing.sh phpunitfaster -Dphpunit_extra_params=/vufind2/module/VuFindConsole/tests/unit-tests/src/VuFindTest/Command/ScheduledSearch/NotifyCommandTest.php"
+Unit tests can be run in the _ubuntu_ VM if needed - this might come handy especially if developing upstream to vufind.org <a href="https://github.com/vufind-org/vufind">repository</a>.
+
+A quick example of running a single test (adjust params as needed):  
+`vagrant ssh -c "./phing.sh phpunitfaster -Dphpunit_extra_params=/vufind2/module/VuFindConsole/tests/unit-tests/src/VuFindTest/Command/ScheduledSearch/NotifyCommandTest.php"`
 
 For more possibilities see [Using Phing](https://vufind.org/wiki/development:testing:unit_tests#using_phing) in the <a href="https://vufind.org/wiki/development">VuFind Developer Manual</a>.
 
