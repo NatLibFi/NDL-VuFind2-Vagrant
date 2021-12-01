@@ -8,6 +8,7 @@
 - [Email Testing Environment](#email-testing-environment)
   * [Due Date Reminders](#due-date-reminders)
   * [Scheduled Alerts](#scheduled-alerts)
+- [Unit Tests](#unit-tests)
 - [Troubleshooting](#troubleshooting)
 - [Known Issues](#known-issues)
 - [Resources](#resources)
@@ -164,6 +165,14 @@ Testing exists only in the _ubuntu_ VM.
 - run `vagrant ssh -c "scheduled_alerts"`
 
 The email address in user profile should receive the messages. Note that another test user needs to be set up to run the made-up scheduled alerts again - turning them off and back on _might_ work but this is untested. 
+
+### Unit Tests
+
+Unit tests can be run in the _ubuntu_ VM if needed - this might come handy especially if developing upstream to vufind.org <a href="https://github.com/vufind-org/vufind">repository</a>.  
+A quick example of running a single test (adjust params as needed):
+> vagrant ssh -c "./phing.sh phpunitfaster -Dphpunit_extra_params=/vufind2/module/VuFindConsole/tests/unit-tests/src/VuFindTest/Command/ScheduledSearch/NotifyCommandTest.php"
+
+For more possibilities see [Using Phing](https://vufind.org/wiki/development:testing:unit_tests#using_phing) in the <a href="https://vufind.org/wiki/development">VuFind Developer Manual</a>.
 
 ### Troubleshooting
 
