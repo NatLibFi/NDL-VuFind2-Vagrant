@@ -104,7 +104,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant suspend`
   - freeze the virtual machine, continue with `vagrant resume`
 * `vagrant halt`
-  - shut down the virtual machine, restart with `vagrant up`
+  - shut down the virtual machine, restart with `vagrant up --no-provision`
 * `vagrant destroy`
   - delete the virtual machine
 * `vagrant ssh`
