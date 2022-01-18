@@ -93,8 +93,7 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.provision :shell, path: "scripts/ubuntu_bootstrap.sh"
 
     # Message to show after provisioning
-    ubuntu.vm.post_up_message = "
-Virtual machine installation FINISHED!"
+    ubuntu.vm.post_up_message = "Virtual machine installation FINISHED!"
   end
 
   # CentOS config, 'vagrant up centos'
@@ -123,6 +122,10 @@ To do both of the above:
 - Access the virtual machine first: 'vagrant ssh centos'
 - Then run: '/usr/bin/mysql_secure_installation'"
   end
+
+  config.trigger.after :up,
+    info: "All provisioning done! SYSTEM INFO:",
+    run_remote: {inline: "neofetch"}
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,

@@ -25,7 +25,11 @@ sudo rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum history new
 sudo yum -y update
 
-# install apache
+# install neofetch
+sudo curl -o /etc/yum.repos.d/konimex-neofetch-epel-7.repo https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo
+sudo yum -y install neofetch
+
+# install apache + some tools
 sudo yum -y install httpd unzip wget
 # install php7
 yum-config-manager --enable remi-php73

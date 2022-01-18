@@ -16,8 +16,8 @@ sudo dpkg-reconfigure debconf -f noninteractive -p critical
 sudo apt-get update
 sudo apt-get -y upgrade
 
-# install unzip; this may come handy later on
-sudo apt-get install -y unzip
+# install unzip & neofetch; these may come handy later on
+sudo apt-get install -y unzip neofetch
 
 # install Apache 2
 sudo apt-get install -y apache2
