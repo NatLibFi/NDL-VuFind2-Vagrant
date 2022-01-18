@@ -33,8 +33,7 @@ DATASOURCE_SV_URL='https://www.finna-pre.fi/sv-datasources.ini'
 DATASOURCE_EN_URL='https://www.finna-pre.fi/en-gb-datasources.ini'
 
 # Organisation info
-# TODO: execute also changes instead of need to manually alter after set once
-DEFAULT_ORGANISATION=''
+DEFAULT_ORG=''
 CONSORTIUM_INFO=false
 
 # environment for due date reminder and scheduled alert tests

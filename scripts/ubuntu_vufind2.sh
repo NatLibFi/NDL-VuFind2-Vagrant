@@ -122,17 +122,33 @@ curl $DATASOURCE_EN_URL > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources
 # organisation if set
 if [ ! -z "$DEFAULT_ORG" ]; then
   if ! grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
-    sed -i -e '$a[General]'
-  elif grep -q -m 1 "^enabled =" $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
-    sudo sed 's,^enabled\s=\s.*,replace= 1,g' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
-    sudo sed 's,^defaultOrganisation\s=\s.*,replace= "'"$DEFAULT_ORG"'",g' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    tee -a $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini >/dev/null <<EOF
+
+[General]
+enabled = 1
+defaultOrganisation = "$DEFAULT_ORG"
+EOF
   else
-    sudo sed ',^enabled = 1,after=[General],a' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
-    sudo sed ',^defaultOrganisation = "'"$DEFAULT_ORG"'",a' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini      
+    sudo sed -E -i ',enabled.+,enabled = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    sudo sed -E -i 's,defaultOrganisation.+,defaultOrganisation = "'$DEFAULT_ORG'",' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
   fi
 elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
-  sudo sed ',enabled,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
-  sudo sed ',defaultOrganisation,d' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+  sudo sed -i -e '/General/{N;N;N;d}' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+fi
+
+# consortiuminfo if set
+if [ "$CONSORTIUM_INFO" = true ]; then
+  if ! grep -Fxq -m 1 [OrganisationPage] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then 
+    tee -a $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini >/dev/null <<EOF
+
+[OrganisationPage]
+consortiumInfo = 1
+EOF
+  else 
+    sudo sed -i -E 's,consortiumInfo.+,consortiumInfo = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+  fi
+else 
+  sudo sed -i -E 's,consortiumInfo.+,consortiumInfo = 0,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
 fi
 
 # prepare for unit-tests
