@@ -114,6 +114,8 @@ Both machines can be run simultaneously provided the host has enough oomph.
     `vagrant ssh -c "less2css"`
 
     or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
+* `vagrant ssh -c "neofetch"`
+  - VM system info
 * `vagrant box update`
   - update the cached boxes if newer versions exist
 * `vagrant box list`
