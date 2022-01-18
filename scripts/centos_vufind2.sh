@@ -67,7 +67,7 @@ fi
 #sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 
 # install MySQL
-rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql
+rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
 sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 sudo rpm -ivh mysql80-community-release-el7-3.noarch.rpm
 sudo yum -y install mysql-server
