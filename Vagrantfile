@@ -145,13 +145,16 @@ To do both of the above:
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  config.vm.provider VMProvider do |vb|
+  config.vm.provider VMProvider do |v|
     # Display the VirtualBox GUI when booting the machine
-    # vb.gui = true
+    v.gui = VirtualBoxGUI
   
-    # Customize the amount of memory on the VM:
-    vb.memory = VirtualMemory
-    # vb.cpus = 2
+    # Check for VirtualBox Guest Additions
+    v.check_guest_additions = CheckGuestAdditions    
+  
+    # Customize the amount of memory and cpus on the VM:
+    v.memory = VirtualMemory
+    v.cpus = VirtualCPUs
   end
   #
   # View the documentation for the provider you are using for more

@@ -15,6 +15,7 @@ module VagrantConf
   end
   
   # Enable NFS for synced folders on macOS
+  # default: false
   EnableNFS = false
 
   # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64
@@ -28,9 +29,23 @@ module VagrantConf
   CentosBox = 'centos/7'
   
   # Provider for virtual machine (Windows users may want to try 'hyperv')
+  # default: virtualbox
   VMProvider = 'virtualbox'
 
+  # Show VirtualBox GUI when booting the virtual machine
+  # default: false
+  VirtualBoxGUI = false
+
+  # Check for VirtualBox Guest additions
+  # default: false
+  CheckGuestAdditions = false
+
   # The amount of memory in megabytes used by each virtual machine
+  # default: 2048
   VirtualMemory = '2048'
+
+  # The amount of virtual CPUs
+  # default: 1
+  VirtualCPUs = 1
 
 end
