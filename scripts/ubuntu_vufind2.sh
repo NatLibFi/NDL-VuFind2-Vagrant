@@ -187,6 +187,14 @@ EOF
   sudo chmod a+x /usr/local/bin/scheduled_alerts
 fi
 
+# clear VuFind2 local cache files
+# see: https://askubuntu.com/questions/266179/how-to-exclude-ignore-hidden-files-and-directories-in-a-wildcard-embedded-find
+if [ "$LOCAL_CACHE_CLEAR" = true ]; then
+  echo "Clearing VuFind2 local cache..."
+  find $VUFIND2_MOUNT/local/cache/ \( ! -regex '.*/\..*' \) -type f -name "*" -delete
+  echo "...done!"
+fi
+
 echo
 echo "==============================="
 echo "...done installing NDL-VuFind2."

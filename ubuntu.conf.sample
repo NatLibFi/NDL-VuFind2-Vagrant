@@ -9,7 +9,7 @@ INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false                # Geocoding (use with RecordManager)
-                                   # installs only when PHP_VERSION='7.4'
+                                    # installs only when PHP_VERSION='7.4'
 INSTALL_IMGSERVICE=false            # FinnaImageService
 
 # MySQL
@@ -26,6 +26,9 @@ PHP_VERSION=''                     # use '' for system default
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
+
+# VuFind2 cache
+LOCAL_CACHE_CLEAR=false            # clear files from /local/cache/ folders
 
 # VuFind2 datasources
 DATASOURCE_FI_URL='https://www.finna-pre.fi/fi-datasources.ini'
