@@ -84,7 +84,7 @@ Q4="FLUSH PRIVILEGES;"
 Q5="USE $DATABASE;"
 Q6="SOURCE $VUFIND2_PATH/module/VuFind/sql/mysql.sql;"
 Q7="SOURCE $VUFIND2_PATH/module/Finna/sql/mysql.sql;"
-SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}"
+SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}${Q7}"
 $MYSQL -uroot -p$SQL_ROOT_PW -e "$SQL"
 
 # start MySQL at boot
