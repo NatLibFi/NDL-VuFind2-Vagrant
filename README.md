@@ -208,6 +208,8 @@ If this is not the case try VBoxManage:
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - On macOS, Virtualbox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
+- Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
+- Nested virtualization is possible using VMWare Player in the first host with VT-x enabled. Virtualbox does not support 64-bit nested OS.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
