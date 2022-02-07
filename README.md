@@ -209,7 +209,8 @@ If this is not the case try VBoxManage:
 - On macOS, Virtualbox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- Nested virtualization is possible using VMWare Player in the first host with VT-x enabled. Virtualbox does not support 64-bit nested OS.
+- Nested virtualization is possible using VMWare Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. Virtualbox does not support 64-bit nested OS.
+- ARM & M1 Apple users can try "spox/ubuntu-arm" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
