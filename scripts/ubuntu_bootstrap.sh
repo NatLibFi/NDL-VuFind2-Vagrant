@@ -4,6 +4,9 @@
 source /vagrant/ubuntu.conf
 ###############################################################################
 
+# remove unattended-upgrades
+sudo apt-get remove -y unattended-upgrades
+
 # set timezone
 sudo timedatectl set-timezone $TIMEZONE
 

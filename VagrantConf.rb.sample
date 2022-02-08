@@ -18,23 +18,35 @@ module VagrantConf
   # default: false
   EnableNFS = false
 
-  # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/xenial64
-  # An example to use instead if you repackage a local custom base box 
+  # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu/boxes/focal64
+  # An example to use instead if you repackage a local custom base box:
   # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
+  #
+  # VM Provider other than 'virtualbox' use:
+  # UbuntuBox = 'mrlesmithjr/focal64'
+  #
+  # ARM CPU try:
+  # UbuntuBox = 'spox/ubuntu-arm'
+  # or
+  # UbuntuBox = 'bytesguy/ubuntu-server-20.04-arm64'
   UbuntuBox = 'ubuntu/focal64'
-
+  
   # CentOS Vagrant box. https://app.vagrantup.com/centos/boxes/7
   # An example to use instead if you repackage a local custom base box 
   # CentosBox = 'centos_vufind2 file:./centos_vufind2.box'
   CentosBox = 'centos/7'
   
-  # Provider for virtual machine (Windows users may want to try 'hyperv')
+  # Provider for virtual machine: virtualbox | hyperv | vmware_desktop
+  # for 'hyperv', see:
+  # https://www.vagrantup.com/docs/providers/hyperv
+  # for 'vmware_desktop', see:
+  # https://www.vagrantup.com/docs/providers/vmware/installation
   # default: virtualbox
   VMProvider = 'virtualbox'
 
   # Show VirtualBox GUI when booting the virtual machine
   # default: false
-  VirtualBoxGUI = false
+  VMProviderGUI = false
 
   # Check for VirtualBox Guest additions
   # default: false

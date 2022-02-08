@@ -65,10 +65,14 @@ Vagrant.configure(2) do |config|
     # ubuntu.vm.box = "ubuntu_vufind2 file:./ubuntu_vufind2.box"
 
     # Create a forwarded port mapping
-    ubuntu.vm.network "forwarded_port", guest: 80, host: 8081
-    ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983
-    ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033
-    ubuntu.vm.network "forwarded_port", guest: 36000, host: 36000
+    ubuntu.vm.network "forwarded_port", guest: 80, host: 8081,
+    auto_correct: true
+    ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983,
+    auto_correct: true
+    ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033,
+    auto_correct: true
+    ubuntu.vm.network "forwarded_port", guest: 36000, host: 36000,
+    auto_correct: true
     
     # Share additional folders to the guest VM.
   if RUBY_PLATFORM =~ /darwin/ && EnableNFS
@@ -85,9 +89,21 @@ Vagrant.configure(2) do |config|
   end
 
     # Share the cache folder and allow guest machine write access
+  case VMProvider
+  when "virtualbox"
     ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
       owner: "www-data", group: "www-data",
       :mount_options => ["dmode=777","fmode=666"]
+  when "hyperv"
+    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+      owner: "www-data", group: "www-data",
+      :mount_options => ["dir_mode=777","file_mode=666"]
+  when "vmware_desktop"
+    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+      owner: "www-data", group: "www-data",
+      # umask might not give all permissions needed for some directories
+      umask: "666"
+  end
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     ubuntu.vm.provision :shell, path: "scripts/ubuntu_bootstrap.sh"
@@ -146,15 +162,25 @@ To do both of the above:
   # Example for VirtualBox:
   #
   config.vm.provider VMProvider do |v|
-    # Display the VirtualBox GUI when booting the machine
-    v.gui = VirtualBoxGUI
-  
-    # Check for VirtualBox Guest Additions
-    v.check_guest_additions = CheckGuestAdditions    
-  
+
+    # Settings depending on the VM Provider    
+    if VMProvider == "hyperv"
+      # Display the VM Provider GUI when booting the machine
+      v.gui = VMProviderGUI
+    end
+    if VMProvider == "virtualbox"
+      # Check for VirtualBox Guest Additions
+      v.check_guest_additions = CheckGuestAdditions    
+    end
     # Customize the amount of memory and cpus on the VM:
-    v.memory = VirtualMemory
-    v.cpus = VirtualCPUs
+    if VMProvider != "vmware_desktop"
+      v.memory = VirtualMemory
+      v.cpus = VirtualCPUs
+    else
+      v.vmx["memsize"] = VirtualMemory
+      v.vmx["numvcpus"] = VirtualCPUs
+    end
+    
   end
   #
   # View the documentation for the provider you are using for more
