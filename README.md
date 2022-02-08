@@ -24,10 +24,22 @@ Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2<
 ### Requirements
 
 Mandatory:
-- <a href="https://www.virtualbox.org">VirtualBox</a> (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_)  
+- <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
+
+  AND
+- <a href="https://www.virtualbox.org">VirtualBox</a> **RECOMMENDED**  
+  (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_)  
   - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails.
   - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
-- <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
+
+  OR
+- [VMWare Fusion Player](https://customerconnect.vmware.com/web/vmware/evalcenter?p=fusion-player-personal) (Apple M1 [Tech Preview](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)) / [VMWare Player](https://www.vmware.com/support/thankyou_player.html)  
+  Note: [extra installation steps](https://www.vagrantup.com/docs/providers/vmware/installation) needed
+ 
+  OR
+
+- [Hyper-V](https://www.vagrantup.com/docs/providers/hyperv)
+
 
 for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
@@ -116,6 +128,8 @@ Both machines can be run simultaneously provided the host has enough oomph.
     or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
 * `vagrant ssh -c "neofetch"`
   - VM system info
+* `vagrant port`
+  - see all forwarded ports
 * `vagrant box update`
   - update the cached boxes if newer versions exist
 * `vagrant box list`
@@ -210,7 +224,7 @@ If this is not the case try VBoxManage:
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
 - Nested virtualization is possible using VMWare Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. Virtualbox does not support 64-bit nested OS.
-- ARM & M1 Apple users can try "spox/ubuntu-arm" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
+- ARM & M1 Apple users can try "spox/ubuntu-arm" or "bytesguy/ubuntu-server-20.04-arm64" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
