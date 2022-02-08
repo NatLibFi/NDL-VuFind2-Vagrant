@@ -33,7 +33,7 @@ Mandatory:
   - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
 
   OR
-- [VMWare Fusion Player](https://customerconnect.vmware.com/web/vmware/evalcenter?p=fusion-player-personal) (Apple M1 [Tech Preview](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)) / [VMWare Player](https://www.vmware.com/support/thankyou_player.html)  
+- [VMware Fusion Player](https://customerconnect.vmware.com/web/vmware/evalcenter?p=fusion-player-personal) (Apple M1 [Tech Preview](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)) / [VMware Player](https://www.vmware.com/support/thankyou_player.html)  
   Note: [extra installation steps](https://www.vagrantup.com/docs/providers/vmware/installation) needed
  
   OR
@@ -223,7 +223,7 @@ If this is not the case try VBoxManage:
 - On macOS, Virtualbox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- Nested virtualization is possible using VMWare Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. Virtualbox does not support 64-bit nested OS.
+- Nested virtualization is possible using VMware Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. Virtualbox does not support 64-bit nested OS.
 - ARM & M1 Apple users can try "spox/ubuntu-arm" or "bytesguy/ubuntu-server-20.04-arm64" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
 - Using vmware_desktop as a provider does not allow mount_options for shared folders and umask is useful only for files so there might be permission issues for accessing directories unless manually adjusted when encountering issues.
 
@@ -233,4 +233,6 @@ If this is not the case try VBoxManage:
 - <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">RecordManager Wiki</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
+- <a href="https://www.wmware.com">VMware</a>
+- <a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/">Hyper-V</a>
 - <a href="https://responsively.app/">Responsively.app</a>
