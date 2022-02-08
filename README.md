@@ -53,6 +53,7 @@ _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/focal64">focal64</a>):
 
 * Run `vagrant up` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_.
   * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there. Similar attention to possible RecordManager directory should be used.<br/>
+  * Adjust also VMProvider accordingly if not using VirtualBox. 
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
