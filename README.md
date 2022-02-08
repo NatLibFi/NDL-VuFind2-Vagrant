@@ -225,6 +225,7 @@ If this is not the case try VBoxManage:
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
 - Nested virtualization is possible using VMWare Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. Virtualbox does not support 64-bit nested OS.
 - ARM & M1 Apple users can try "spox/ubuntu-arm" or "bytesguy/ubuntu-server-20.04-arm64" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
+- Using vmware_desktop as a provider does not allow mount_options for shared folders and umask is useful only for files so there might be permission issues for accessing directories unless manually changed.
 
 ### Resources
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
