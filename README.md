@@ -52,8 +52,8 @@ _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/focal64">focal64</a>):
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here. All the same applies also to RecordManager files if using it on the host.
 
 * Run `vagrant up` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_.
-  * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ **VufindPath** variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there. Similar attention to possible RecordManager directory should be used.<br/>
-  * Adjust also VMProvider accordingly if not using VirtualBox. 
+  * If the path to the NDL-VuFind2 working directory is other than _../NDL-VuFind2_ modify the _VagrantConf.rb_ <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L4">VufindPath</a> variable accordingly. The path can either be an absolute or a relative path as long as the NDL-VuFind2 files can be found there. Similar attention to possible RecordManager directory should be used.<br/>
+  * Adjust also <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/bd4bd3e9affd8dbd47ca69a2e4c602d82afac8ff/VagrantConf.rb.sample#L45">VMProvider</a> accordingly if not using VirtualBox.
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
@@ -67,7 +67,7 @@ _centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
 
 _both_:
 
-The default is to run Solr/RecordManager locally, some configuration options still exist (see also _Without local database_):
+The default is to run Solr/RecordManager locally, some configuration options still exist (see also [Without local database](#without-local-database)):
 * Install both inside the guest VM
   > INSTALL_SOLR=true ;default: true  
   > INSTALL_RECMAN=true ;default: true
@@ -79,7 +79,7 @@ Regarding the records data:
 * default (but bare minimum for testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
 * more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) OR set up harvesting sources after the provisioning/installing is done.
 
-Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
+<span id="without-local-database">**Without local database**</span>: use a remote Solr server (like the _NDL development index_ - unfortunately, **limited users only**)
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
@@ -88,9 +88,11 @@ Without local database: use a remote Solr server (like the NDL development index
 _ubuntu_:
 - `vagrant up`
   - This will take a few minutes, so enjoy your beverage of choice!
-- Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
-  - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
-  - Check forwarded ports `vagrant port` and adjust the URL if needed.
+- Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>  
+  blank page or errors:
+  - adjust VuFind config(s), reload browser page
+  - check forwarded ports `vagrant port` and adjust the URL if needed, reload browser page
+  - see also [Troubleshooting](#troubleshooting)
 - No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
 - If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine later by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
   - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or preferred.
@@ -99,9 +101,11 @@ _centos_:
 - `vagrant up centos`
   - Again, this will take a few minutes...
 - `vagrant ssh -c "/usr/bin/mysql_secure_installation" centos` to add MySQL root password and remove anonymous user & test databases
-- <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>
-  - Blank page or errors: adjust VuFind config(s) inside the VM, reload browser page. See also [Troubleshooting](#troubleshooting).
-  - Check forwarded ports `vagrant port centos` and adjust the URL if needed.
+- <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>  
+  blank page or errors:
+  - adjust VuFind config(s) inside the VM, reload browser page
+  - check forwarded ports `vagrant port centos` and adjust the URL if needed, reload browser page
+  - see also [Troubleshooting](#troubleshooting).
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
@@ -221,13 +225,13 @@ If this is not the case try VBoxManage:
   - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L19">EnableNFS</a> to _true_.
   - Mac users, with NFS enabled Vagrant needs to modify _/etc/exports_ and admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
     Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and nothing else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
-  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install **nfsd**, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
+  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install _nfsd_, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
 - Nested virtualization is possible using VMware Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. VirtualBox does not support 64-bit nested OS.
-- ARM & M1 Apple users can try "spox/ubuntu-arm" or "bytesguy/ubuntu-server-20.04-arm64" as UbuntuBox, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
+- ARM & M1 Apple users can try _spox/ubuntu-arm_ or _bytesguy/ubuntu-server-20.04-arm64_ as <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/bd4bd3e9affd8dbd47ca69a2e4c602d82afac8ff/VagrantConf.rb.sample#L32">UbuntuBox</a>, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
 - Using vmware_desktop as a provider does not allow mount_options for shared folders and umask is useful only for files so there might be permission issues for accessing directories unless manually adjusted when encountering issues.
 
 ### Resources
