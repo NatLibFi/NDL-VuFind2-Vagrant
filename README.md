@@ -230,7 +230,7 @@ If this is not the case try VBoxManage:
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
 - If running Solr, VirtualMemory needs to be at least around 2048, which should work.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- Nested virtualization is possible using VMware Player in the first host with VT-x enabled, there might be some trouble with CA certificates, though. VirtualBox does not support 64-bit nested OS.
+- Nested virtualization is possible using VMware Player in the first host with VT-x enabled. There might be some trouble with CA certificates, though. VirtualBox does not support 64-bit nested OS.
 - ARM & M1 Apple users can try _spox/ubuntu-arm_ or _bytesguy/ubuntu-server-20.04-arm64_ as <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/bd4bd3e9affd8dbd47ca69a2e4c602d82afac8ff/VagrantConf.rb.sample#L32">UbuntuBox</a>, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
 - Using _vmware_desktop_ as a provider does not allow _mount_options_ for shared folders and _umask_ might not prove to be as flexible. Alas, permission issues can occur for accessing some shared directories and need manual adjustments.
 
