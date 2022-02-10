@@ -77,7 +77,7 @@ The default is to run Solr/RecordManager locally, some configuration options sti
 
 Regarding the records data:
 * default (but bare minimum for testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
-* more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) **or** set up harvesting sources after the provisioning/installing is done.
+* more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) OR set up harvesting sources after the provisioning/installing is done.
 
 Without local database: use a remote Solr server (like the NDL development index - unfortunately, _limited users only_)
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
@@ -90,6 +90,7 @@ _ubuntu_:
   - This will take a few minutes, so enjoy your beverage of choice!
 - Point your browser to <a href="http://localhost:8081/vufind2">http://localhost:8081/vufind2</a>
   - Blank page or errors: adjust VuFind config(s), reload browser page. See also [Troubleshooting](#troubleshooting).
+  - Check forwarded ports `vagrant port` and adjust the URL if needed.
 - No integrated responsive/mobile development tool but try the native open source <a href="https://responsively.app/#Features">Responsively App</a> (also on <a href="https://github.com/manojVivek/responsively-app">GitHub</a>).
 - If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine later by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
   - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or preferred.
@@ -100,6 +101,7 @@ _centos_:
 - `vagrant ssh -c "/usr/bin/mysql_secure_installation" centos` to add MySQL root password and remove anonymous user & test databases
 - <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>
   - Blank page or errors: adjust VuFind config(s) inside the VM, reload browser page. See also [Troubleshooting](#troubleshooting).
+  - Check forwarded ports `vagrant port centos` and adjust the URL if needed.
 
 Both machines can be run simultaneously provided the host has enough oomph.
 
@@ -185,7 +187,7 @@ The email address in user profile should receive the messages. Note that another
 
 ### Unit Tests
 
-Unit tests can be run in the _ubuntu_ VM if needed - this might come handy especially if developing upstream to vufind.org <a href="https://github.com/vufind-org/vufind">repository</a>.
+Unit tests can be run in the _ubuntu_ VM if needed - this might come handy especially if developing upstream to <a href="https://github.com/vufind-org/vufind">vufind.org repository</a>.
 
 A quick example of running a single test (adjust params as needed):  
 `vagrant ssh -c "./phing.sh phpunitfaster -Dphpunit_extra_params=/vufind2/module/VuFindConsole/tests/unit-tests/src/VuFindTest/Command/ScheduledSearch/NotifyCommandTest.php"`
