@@ -32,7 +32,7 @@ sudo yum -y install neofetch
 # install apache + some tools
 sudo yum -y install httpd unzip wget
 # install php7
-yum-config-manager --enable remi-php73
+yum-config-manager --enable remi-php$REMI_PHP_VERSION
 sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap
 
 # configure php: display_errors = On, opcache.enable=0
