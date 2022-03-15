@@ -81,10 +81,16 @@ Vagrant.configure(2) do |config|
     if defined?(RMMountPath)
       ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
     end
+    if defined?(UICMountPath)
+      ubuntu.vm.synced_folder UICPath, UICMountPath, type: "nfs"
+    end
   else
     ubuntu.vm.synced_folder VufindPath, MountPath
     if defined?(RMMountPath)
       ubuntu.vm.synced_folder RMPath, RMMountPath
+    end
+    if defined?(UICMountPath)
+      ubuntu.vm.synced_folder UICPath, UICMountPath
     end
   end
 

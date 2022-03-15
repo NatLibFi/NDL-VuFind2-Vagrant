@@ -6,12 +6,18 @@ module VagrantConf
   # Make this match the VUFIND2_PATH in ubuntu.conf
   MountPath = '/vufind2'
 
-  # relative path to the cloned directory of RecordManager files from Github
+  # relative path to the cloned directory of RecordManager-Finna from Github
   RMPath = '../RecordManager-Finna'
+  
+  # relative path to the cloned directory of finna-ui-components from Github
+  UICPath = '../finna-ui-components'
   
   if Dir.exists?(RMPath)
     # Make this match the RECMAN_MOUNT in ubuntu.conf
     RMMountPath = '/recordmanager'
+  end
+  if Dir.exists?(UICPath)
+    UICMountPath = '/finna-ui-components'
   end
   
   # Enable NFS for synced folders on macOS
