@@ -44,6 +44,7 @@ Mandatory:
 for _ubuntu_:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
 - <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (optional)
+- <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a> also cloned to the host (optional)
 
 ### Set-Up
 
@@ -238,6 +239,7 @@ If this is not the case try VBoxManage:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
 - <a href="https://github.com/NatLibFi/finna-solr">finna-solr</a>
 - <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">RecordManager Wiki</a>
+- <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a>
 - <a href="https://www.vagrantup.com">Vagrant</a>
 - <a href="https://www.virtualbox.org">VirtualBox</a>
 - <a href="https://www.wmware.com">VMware</a>
