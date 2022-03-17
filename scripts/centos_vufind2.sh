@@ -68,8 +68,8 @@ fi
 
 # install MySQL
 rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
-sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
-sudo rpm -ivh mysql80-community-release-el7-3.noarch.rpm
+sudo wget https://repo.mysql.com/mysql80-community-release-el7.rpm
+sudo rpm -ivh mysql80-community-release-el7.rpm
 sudo yum -y install mysql-server
 sudo systemctl start mysqld
 # change database root password
