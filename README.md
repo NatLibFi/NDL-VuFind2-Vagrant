@@ -129,11 +129,13 @@ Both machines can be run simultaneously provided the host has enough oomph.
   - delete the virtual machine
 * `vagrant ssh`
   - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache `sudo service apache2 restart` or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
-  - use option `-c` to run commands in guest via ssh e.g. to compile less to css:
+  - use option `-c` to run commands in guest via ssh e.g.
 
-    `vagrant ssh -c "less2css"`
-
-    or restart Apache `vagrant ssh -c "sudo service apache2 restart"` etc.
+    `vagrant ssh -c "less2css"` to compile less to css, or
+    
+    `vagrant ssh -c "eslint-finna"` to run eslint, or
+    
+    `vagrant ssh -c "sudo service apache2 restart"` to restart Apache etc.
 * `vagrant ssh -c "neofetch"`
   - VM system info
 * `vagrant port`
