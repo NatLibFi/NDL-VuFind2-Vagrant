@@ -101,7 +101,15 @@ curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g less@$LESS_VERSION
 sudo npm install -g less-plugin-clean-css
-# do not run these with sudo
+sudo npm install -g eslint@$ESLINT_VERSION
+# do not run this with sudo
+tee -a /usr/local/bin/eslint-finna >/dev/null <<EOF
+cd /vufind2
+/vufind2/vendor/phing/phing/bin/phing eslint-finna
+cd
+EOF
+sudo chmod a+x /usr/local/bin/eslint-finna
+# do not run this with sudo
 tee -a /usr/local/bin/less2css >/dev/null <<EOF
 #!/usr/bin/env bash
 lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_MOUNT/themes/finna2/less/finna.less > $VUFIND2_MOUNT/themes/finna2/css/finna.css
