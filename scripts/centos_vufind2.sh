@@ -69,7 +69,7 @@ fi
 # install MySQL
 rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
 sudo wget https://repo.mysql.com/mysql80-community-release-el8.rpm
-sudo rpm -ivh mysql80-community-release-el7.rpm
+sudo rpm -ivh mysql80-community-release-el8.rpm
 sudo yum -y install mysql-server
 sudo systemctl start mysqld
 # change database root password
@@ -117,14 +117,13 @@ if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
   sudo sed -i -e 's/php_value short_open_tag On/#php_value short_open_tag On/g' /usr/local/vufind2/local/httpd-vufind.conf
 fi
 
-# see https://forums.fedoraforum.org/showthread.php?320926-failovemethod-option
-sudo sed '/^failovermethod=/d' /etc/yum.repos.d/*.repo
-
 # install node.js & less 2.7.1 + less-plugin-clean-css
 # https://github.com/nodesource/distributions
 curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
 #add key
 rpm --import https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
+# see https://forums.fedoraforum.org/showthread.php?320926-failovemethod-option
+sudo sed -i -e '/^failovermethod=/d' /etc/yum.repos.d/*.repo
 sudo yum -y install nodejs
 # do not run these with sudo
 npm install -g less@$LESS_VERSION

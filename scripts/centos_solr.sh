@@ -47,11 +47,38 @@ sudo sed -i 's/SOLR_MODE/#SOLR_MODE=/' $SOLR_PATH/vufind/solr.in.finna.sh
 # fix solr local dir setting in vufind
 sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
 
-sudo yum -y install policycoreutils-python lsof
+sudo yum -y install policycoreutils-python-utils lsof
 sudo semanage port -a -t http_port_t -p tcp 8983
 
 #set as service
 sudo cp $SOLR_PATH/vufind/solr.service /etc/systemd/system
+# see https://stackoverflow.com/questions/62240348/pm2-startup-issue-with-centos-8-selinux
+# solr dies after a few seconds
+sudo systemctl start solr
+# this does not work from script, let's create .te-file directly
+# sudo ausearch -c 'systemd' --raw | audit2allow -M solr
+sudo tee -a solr.te >/dev/null <<EOF
+
+module solr 1.0;
+
+require {
+	type init_t;
+	type initrc_tmp_t;
+	type default_t;
+	class file read;
+	class dir rmdir;
+	class file open;
+
+}
+
+#============= init_t ==============
+allow init_t default_t:file read;
+allow init_t initrc_tmp_t:dir rmdir;
+allow init_t default_t:file open;
+EOF
+sudo yum install -y policycoreutils-devel
+sudo make -f /usr/share/selinux/devel/Makefile solr.pp
+sudo semodule -i solr.pp
 sudo systemctl daemon-reload
 sudo systemctl enable solr
 sudo systemctl start solr
