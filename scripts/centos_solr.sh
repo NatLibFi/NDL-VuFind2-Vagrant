@@ -53,8 +53,6 @@ sudo semanage port -a -t http_port_t -p tcp 8983
 #set as service
 sudo cp $SOLR_PATH/vufind/solr.service /etc/systemd/system
 # see https://stackoverflow.com/questions/62240348/pm2-startup-issue-with-centos-8-selinux
-# solr dies after a few seconds
-sudo systemctl start solr
 # this does not work from script, let's create .te-file directly
 # sudo ausearch -c 'systemd' --raw | audit2allow -M solr
 sudo tee -a solr.te >/dev/null <<EOF
