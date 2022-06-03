@@ -11,7 +11,7 @@ echo "========================="
 # install git & clone repository
 sudo yum -y install git
 sudo mkdir -p $VUFIND2_PATH
-if [[ "$VUFIND2_BRANCH" == "master" ]]; then
+if [[ "$VUFIND2_BRANCH" == "dev" ]]; then
   sudo git clone $VUFIND2_GIT $VUFIND2_PATH
   # if you want to be prompted for password, use the line below instead
   # sudo git clone https://$GITHUB_USER@github.com/$GITHUB_USER/NDL-VuFind2.git $VUFIND2_PATH
@@ -68,12 +68,12 @@ fi
 
 # install MySQL
 rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
-sudo wget https://repo.mysql.com/mysql80-community-release-el7.rpm
-sudo rpm -ivh mysql80-community-release-el7.rpm
+sudo wget https://repo.mysql.com/mysql80-community-release-el8.rpm
+sudo rpm -ivh mysql80-community-release-el8.rpm
 sudo yum -y install mysql-server
 sudo systemctl start mysqld
 # change database root password
-mysqladmin --user=root --password=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $13}') password $SQL_ROOT_PW
+mysqladmin --user=root --password=$(sudo grep 'temporary password' /var/log/mysql/mysqld.log | awk '{print $13}') password $SQL_ROOT_PW
 
 # create database and user & modify database
 MYSQL=`which mysql`
@@ -113,6 +113,8 @@ AliasMatch ^/vufind2/cache/(.*)$ /vufind2/local/cache/public/$1
 EOT
 if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
   sudo ln -s /usr/local/vufind2/local/httpd-vufind.conf /etc/httpd/conf.d/vufind2.conf
+  # php_value does not work with suPHP
+  sudo sed -i -e 's/php_value short_open_tag On/#php_value short_open_tag On/g' /usr/local/vufind2/local/httpd-vufind.conf
 fi
 
 # install node.js & less 2.7.1 + less-plugin-clean-css
@@ -120,6 +122,8 @@ fi
 curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
 #add key
 rpm --import https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
+# see https://forums.fedoraforum.org/showthread.php?320926-failovemethod-option
+sudo sed -i -e '/^failovermethod=/d' /etc/yum.repos.d/*.repo
 sudo yum -y install nodejs
 # do not run these with sudo
 npm install -g less@$LESS_VERSION

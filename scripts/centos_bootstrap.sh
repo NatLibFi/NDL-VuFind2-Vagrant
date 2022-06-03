@@ -14,29 +14,27 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
-# add key
-sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
-
-# Add Epel & Remi repos for php7 & update yum
-sudo rpm --import http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
-sudo rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# Add Epel & Remi repos for php & update yum
+sudo dnf install -y epel-release
 sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
-sudo rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-sudo yum history new
+sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-8.rpm
+# if a new history file should be needed for yum, quite optional
+#sudo yum history new
 sudo yum -y update
 
 # install neofetch
-sudo curl -o /etc/yum.repos.d/konimex-neofetch-epel-7.repo https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo
 sudo yum -y install neofetch
 
 # install apache + some tools
 sudo yum -y install httpd unzip wget
-# install php7
-yum-config-manager --enable remi-php$REMI_PHP_VERSION
+# install php
+sudo dnf module reset php
+sudo dnf module enable php:remi-$REMI_PHP_VERSION -y
 sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap
 
-# configure php: display_errors = On, opcache.enable=0
+# configure php: display_errors = On, short_open_tag = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php.ini
+sudo sed -i -e 's/short_open_tag = Off/short_open_tag = On/g' /etc/php.ini
 sudo sed -i -e 's/;opcache.enable=0/opcache.enable=0/' /etc/php.ini
 # set memory_limit
 if [[ "$PHP_MEMORY_LIMIT" != "128M" ]]; then

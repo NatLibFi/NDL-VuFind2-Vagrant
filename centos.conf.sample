@@ -25,8 +25,10 @@ SQL_USER_PW='vufind-8CHAR'        # min 8 chars + needs num/upper/special
 EXTERNAL_SOLR_URL=''
 
 # PHP config
-# Centos7 PHP version, see: https://rpms.remirepo.net/enterprise/7/
-REMI_PHP_VERSION=80                # 80 = PHP8.0 etc.
+# see: https://rpms.remirepo.net for working remirepo mirrors
+REMI_MIRROR='https://mirror.23m.com/remi'
+# PHP version, see: https://rpms.remirepo.net/enterprise/8/
+REMI_PHP_VERSION=8.1               # 8.1 = PHP8.1 etc.
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
