@@ -48,7 +48,7 @@ for _ubuntu_:
 
 ### Set-Up
 
-_ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/focal64">focal64</a>):
+_ubuntu_ ([focal64](https://app.vagrantup.com/ubuntu/boxes/focal64)):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here. All the same applies also to RecordManager files if using it on the host.
 
@@ -58,7 +58,7 @@ _ubuntu_ (<a href="https://app.vagrantup.com/ubuntu/boxes/focal64">focal64</a>):
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
-_centos_ (<a href="https://app.vagrantup.com/centos/boxes/7">centos7</a>):
+_centos_ ([almalinux8](https://app.vagrantup.com/almalinux/boxes/8)) - Yes, the VM is still called _centos_ for historical reasons, this **might** change in the future:
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
 
