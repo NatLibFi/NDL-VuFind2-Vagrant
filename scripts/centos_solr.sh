@@ -47,7 +47,7 @@ sudo sed -i 's/SOLR_MODE/#SOLR_MODE=/' $SOLR_PATH/vufind/solr.in.finna.sh
 # fix solr local dir setting in vufind
 sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
 
-sudo yum -y install policycoreutils-python-utils lsof
+sudo yum -y install policycoreutils-python-utils policycoreutils-devel lsof
 sudo semanage port -a -t http_port_t -p tcp 8983
 
 #set as service
@@ -74,7 +74,7 @@ allow init_t default_t:file read;
 allow init_t initrc_tmp_t:dir rmdir;
 allow init_t default_t:file open;
 EOF
-sudo yum install -y policycoreutils-devel
+# policycoreutils-devel needed
 sudo make -f /usr/share/selinux/devel/Makefile solr.pp
 sudo semodule -i solr.pp
 sudo systemctl daemon-reload

@@ -25,9 +25,9 @@ SQL_USER_PW='vufind-8CHAR'        # min 8 chars + needs num/upper/special
 EXTERNAL_SOLR_URL=''
 
 # PHP config
-# AlmaLinux PHP version, see: https://rpms.remirepo.net/enterprise/8/
-# working remirepo mirrors, see: https://rpms.remirepo.net
+# see: https://rpms.remirepo.net for working remirepo mirrors
 REMI_MIRROR='https://mirror.23m.com/remi'
+# PHP version, see: https://rpms.remirepo.net/enterprise/8/
 REMI_PHP_VERSION=8.1               # 8.1 = PHP8.1 etc.
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
