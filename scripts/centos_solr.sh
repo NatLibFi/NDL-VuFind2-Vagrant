@@ -34,7 +34,7 @@ cd $SOLR_PATH
 sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' ./install_solr.sh
 sudo ./install_solr.sh
 sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
-sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample $SOLR_PATH/vufind/biblio/core.properties
+sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample-non-solrcloud $SOLR_PATH/vufind/biblio/core.properties
 sudo chown -R solr $SOLR_PATH
 
 # set java heap min/max
