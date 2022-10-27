@@ -11,6 +11,7 @@ sudo apt-get remove -y unattended-upgrades
 sudo timedatectl set-timezone $TIMEZONE
 
 # supress irrelevant stdin errors
+export DEBIAN_FRONTEND=noninteractive
 sudo sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile
 sudo ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
 sudo dpkg-reconfigure debconf -f noninteractive -p critical

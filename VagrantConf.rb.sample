@@ -29,7 +29,7 @@ module VagrantConf
   # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
   #
   # VM Provider other than 'virtualbox' use:
-  # UbuntuBox = 'mrlesmithjr/focal64'
+  # UbuntuBox = 'mrlesmithjr/jammy64'
   #
   # ARM CPU try:
   # UbuntuBox = 'spox/ubuntu-arm'
