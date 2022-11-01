@@ -48,7 +48,7 @@ for _ubuntu_:
 
 ### Set-Up
 
-_ubuntu_ ([focal64](https://app.vagrantup.com/ubuntu/boxes/focal64)):
+_ubuntu_ ([jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here. All the same applies also to RecordManager files if using it on the host.
 
@@ -145,7 +145,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * `vagrant box list`
   - show the cached box files, delete unnecessary ones with `vagrant box remove` or `vagrant box prune` (add `-h` for help) e.g.
   
-    `vagrant box remove ubuntu/focal64 --box-version 20211021.0.0`
+    `vagrant box remove ubuntu/jammy64 --box-version 20221027.0.0`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
 * ( `vagrant package --output ubuntu_vufind2.box`
