@@ -74,6 +74,8 @@ sudo yum -y install mysql-server
 sudo systemctl start mysqld
 # change database root password
 mysqladmin --user=root --password=$(sudo grep 'temporary password' /var/log/mysql/mysqld.log | awk '{print $13}') password $SQL_ROOT_PW
+# comment out some syntax for now
+sudo sed -i -e 's,alter online,-- alter online,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 
 # create database and user & modify database
 MYSQL=`which mysql`

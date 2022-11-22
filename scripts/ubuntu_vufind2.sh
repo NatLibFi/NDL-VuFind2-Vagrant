@@ -8,10 +8,10 @@ echo
 echo "Installing NDL-VuFind2..."
 echo "========================="
 
-# install MySQL and give password to installer
+# install MariaDB and give password to installer
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
-sudo apt-get -y install mysql-server
+sudo apt-get -y install mariadb-server
 # fix mysqld options errors
 sudo sed -i -e '0,/key_buffer\t/s//key_buffer_size\t/' /etc/mysql/my.cnf
 sudo sed -i -e 's/myisam-recover\s\{2,\}/myisam-recover-options\t/' /etc/mysql/my.cnf
