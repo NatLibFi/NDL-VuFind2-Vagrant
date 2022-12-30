@@ -176,7 +176,7 @@ To do both of the above:
     end
     if VMProvider == "virtualbox"
       # Check for VirtualBox Guest Additions
-      v.check_guest_additions = CheckGuestAdditions    
+      v.check_guest_additions = CheckGuestAdditions
     end
     # Customize the amount of memory and cpus on the VM:
     if VMProvider != "vmware_desktop"

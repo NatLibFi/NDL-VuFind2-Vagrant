@@ -69,7 +69,7 @@ RECMAN_MOUNT='/recordmanager'
 # RecordManafer install path in the guest file system if RECMAN_DEV=false
 RECMAN_PATH='/usr/local/RecordManager'
 # MongoDB
-MONGODB_VERSION=5.0                # http://repo.mongodb.org/apt/ubuntu/dists/
+MONGODB_VERSION=6.0                # http://repo.mongodb.org/apt/ubuntu/dists/
 # RecordManaget dataset
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 

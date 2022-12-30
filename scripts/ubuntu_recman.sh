@@ -26,8 +26,8 @@ sudo service apache2 reload
 sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
 # MongoDB
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B00A0BD1E2C63C11
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu focal/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
+wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | sudo tee /etc/apt/trusted.gpg.d/mongodb-server-$MONGODB_VERSION.asc
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 sudo systemctl start mongod
