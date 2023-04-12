@@ -49,7 +49,7 @@ fi
 # run Composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
 # connect to MongoDB
-mongo recman dbscripts/mongo.js
+mongosh recman dbscripts/mongo.js
 # copy some sample configurations
 sudo cp conf/abbreviations.lst.sample conf/abbreviations.lst
 sudo cp conf/articles.lst.sample conf/articles.lst

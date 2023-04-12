@@ -9,13 +9,6 @@ fi
 echo
 echo "Installing Solr..."
 echo "=================="
-# libvoikko
-sudo apt-get install -y libvoikko-dev
-sudo ldconfig
-cd /tmp
-sudo wget http://www.puimula.org/htp/testing/voikko-snapshot-v5/dict-morphoid.zip
-sudo unzip -d /etc/voikko '*.zip'
-
 # install Java OpenJDK
 sudo apt-get install -y openjdk-$JAVA_VERSION-jdk-headless
 
@@ -29,8 +22,8 @@ fi
 sudo su -c "useradd solr -m"
 #sudo su -c 'echo solr:rlos | chpasswd'
 
-# fix maven URL
-sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' $SOLR_PATH/install_solr.sh
+# set Solr version
+echo $SOLR_VERSION | sudo tee $SOLR_PATH/required_solr_version
 
 cd $SOLR_PATH
 sudo ./install_solr.sh
