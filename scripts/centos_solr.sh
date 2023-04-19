@@ -4,17 +4,23 @@
 if [ -z "$INSTALL_SOLR" ]; then
   source /vagrant/centos.conf
 fi
+
+# Solr
 echo
 echo "Installing Solr..."
 echo "=================="
-# libvoikko
-sudo yum -y install libvoikko
-cd /tmp
-sudo wget http://www.puimula.org/htp/testing/voikko-snapshot/dict-morphoid.zip
-sudo unzip -d /etc/voikko '*.zip'
+# install Java OpenJDK
+sudo yum -y install java-$JAVA_VERSION-openjdk-devel
+# set memory & open files limit
+if [ "$JAVA_SET_SHMMAX_OPENFILES" = true ]; then
+    echo $JAVA_SHMMAX | sudo tee /proc/sys/kernel/shmmax
+    echo -e "soft nofile $JAVA_OPENFILES_LIMIT\nhard nofile $JAVA_OPENFILES_LIMIT" | sudo tee -a /etc/sysctl.conf
+fi
 
-# install java
-sudo yum -y install java-*-openjdk-devel
+# Set used Java version
+# TODO: Fix this properly later
+sudo sudo rm /etc/alternatives/java
+sudo ln -s /usr/lib/jvm/java-11-openjdk-11.0.18.0.10-2.el8_7.x86_64/bin/java /etc/alternatives/java
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
@@ -26,12 +32,7 @@ fi
 sudo adduser solr
 #sudo su -c 'echo solr:rlos | chpasswd'
 
-# fix maven URL
-sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' $SOLR_PATH/install_solr.sh
-
 cd $SOLR_PATH
-# fix maven URL
-sudo sed -i 's;http://central.maven.org/;https://repo1.maven.org/;' ./install_solr.sh
 sudo ./install_solr.sh
 sudo cp $SOLR_PATH/vufind/solr.in.finna.sh.sample $SOLR_PATH/vufind/solr.in.finna.sh
 sudo cp $SOLR_PATH/vufind/biblio/core.properties.sample-non-solrcloud $SOLR_PATH/vufind/biblio/core.properties
@@ -40,11 +41,13 @@ sudo chown -R solr $SOLR_PATH
 # set java heap min/max
 sudo sed -i 's/SOLR_JAVA_MEM=/#SOLR_JAVA_MEM=/' $SOLR_PATH/vufind/solr.in.finna.sh
 sudo sed -i '/#SOLR_JAVA_MEM/a SOLR_JAVA_MEM="-Xms'"$JAVA_HEAP_MIN"' -Xmx'"$JAVA_HEAP_MAX"'"' $SOLR_PATH/vufind/solr.in.finna.sh
-# disable solrcloud
+# disable Zookeeper & SolrCloud
 sudo sed -i 's/ZK_/#ZK_=/' $SOLR_PATH/vufind/solr.in.finna.sh
 sudo sed -i 's/SOLR_MODE/#SOLR_MODE=/' $SOLR_PATH/vufind/solr.in.finna.sh
+# set allowed IPs
+sudo sed -i -e '$ a SOLR_JETTY_HOST=\"'"$SOLR_JETTY_HOST"'\"' $SOLR_PATH/vufind/solr.in.finna.sh
 
-# fix solr local dir setting in vufind
+# fix Solr local dir setting in VuFind
 sudo sed -i '/;url *= */a local = '"$SOLR_PATH"'' $VUFIND2_PATH/local/config/vufind/config.ini
 
 sudo yum -y install policycoreutils-python-utils policycoreutils-devel lsof

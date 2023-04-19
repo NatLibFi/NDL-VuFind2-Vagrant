@@ -8,7 +8,7 @@ VUFIND2_PATH='/usr/local/vufind2'
 INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
-  INSTALL_GEOS=false                # Geocoding (only with RecordManager)
+  INSTALL_GEOS=false               # Geocoding (only with RecordManager)
 
 # VuFind2 GitHub config
 GITHUB_USER='NatLibFi'
@@ -16,10 +16,10 @@ VUFIND2_GIT='https://github.com/'"$GITHUB_USER"'/NDL-VuFind2.git'
 VUFIND2_BRANCH='dev'               # used to be 'master'
 
 # MySQL/MariaDB
-SQL_ROOT_PW='root-10CHAR'         # min 10 chars + needs num/upper/special
+SQL_ROOT_PW='root-10CHAR'          # min 10 chars + needs num/upper/special
 DATABASE='vufind2'
 SQL_USER='vufind'
-SQL_USER_PW='vufind-8CHAR'        # min 8 chars + needs num/upper/special
+SQL_USER_PW='vufind-8CHAR'         # min 8 chars + needs num/upper/special
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
@@ -50,9 +50,19 @@ LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
 
 # Solr config                      # You will also need RecordManager!
-SOLR_PATH='/data/solr'             # Separately installing one without the other
-JAVA_HEAP_MIN='256m'               # is only useful for debugging the install
-JAVA_HEAP_MAX='512m'               # process if errors arise.
+# Separately installing one without the other is only useful for debugging
+SOLR_PATH='/data/solr'
+# Solr Admin allowed IPs, see: https://solr.apache.org/guide/solr/latest/deployment-guide/securing-solr.html
+SOLR_JETTY_HOST='0.0.0.0'          # 0.0.0.0 allows all
+# Java version, see: https://adoptopenjdk.net/releases.html
+JAVA_VERSION=11                    # OpenJDK: min 11, 17 works but is slower
+JAVA_HEAP_MIN='256m'               # bare minimum, increase when needed
+JAVA_HEAP_MAX='512m'               # bare minimum, increase when needed
+JAVA_SET_SHMMAX_OPENFILES=false    # try true if shared mem problem in Sorl log 
+# see: https://www.oracle.com/java/technologies/javase/largememory-pages.html
+    JAVA_SHMMAX=2147483648         # 2G mem: 2147483647, 4G mem: 4294967295
+# see: https://docs.revenera.com/fnci6132/Content/helplibrary/Setting_the_Open_File_Limit__Linux_Unix_.html
+    JAVA_OPENFILES_LiMIT=65536
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
@@ -61,7 +71,7 @@ SOLR_BRANCH='dev'                  # used to be 'master'
 RECMAN_PATH='/usr/local/RecordManager-Finna'
 # MongoDB
 # https://repo.mongodb.org/yum/redhat/7/mongodb-org/
-MONGODB_VERSION=5.0
+MONGODB_VERSION=6.0
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
