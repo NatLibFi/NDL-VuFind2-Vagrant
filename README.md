@@ -57,7 +57,7 @@ _ubuntu_ ([jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)):
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
-_alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)) - Yes, the VM -is still- was previously called _centos_, but this -**might**- has now changed:
+_alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _alma_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _alma_, the same directory with _ubuntu_ is fine.
 
@@ -222,7 +222,7 @@ If this is not the case try VBoxManage:
 
 
 ### Known Issues
-- Avoid Vagrant _v1.8.7_ (_curl_ issues), VirtualBox _v5.0.28_ & _v5.1.8_ (_Composer_ issues)
+- Avoid Vagrant v1.8.7 (_curl_ issues), VirtualBox v5.0.28 & v5.1.8 (_Composer_ issues)
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L57">VirtualMemory</a> and/or raising <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L61">VirtualCPUs</a> to _2_ in _VagrantConf.rb_.<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L19">EnableNFS</a> to _true_.
