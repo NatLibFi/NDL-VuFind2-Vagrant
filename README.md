@@ -18,17 +18,16 @@
 Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
   - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> on the host's native filesystem.
-- **centos**
+- **alma**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
 ### Requirements
 
 Mandatory:
-- <a href="https://www.vagrantup.com">Vagrant</a> (avoid _v1.8.7_ due to issues with _curl_)
+- <a href="https://www.vagrantup.com">Vagrant</a>
 
   AND
 - <a href="https://www.virtualbox.org">VirtualBox</a> **RECOMMENDED**  
-  (avoid _v5.0.28_ & _v5.1.8_ due to issues with _Composer_)  
   - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails.
   - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
 
@@ -58,13 +57,13 @@ _ubuntu_ ([jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)):
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
-_centos_ ([almalinux8](https://app.vagrantup.com/almalinux/boxes/8)) - Yes, the VM is still called _centos_ for historical reasons, this **might** change in the future:
+_alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)) - Yes, the VM -is still- was previously called _centos_, but this -**might**- has now changed:
 
-* Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _centos_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _centos_, the same directory with _ubuntu_ is fine.
+* Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _alma_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _alma_, the same directory with _ubuntu_ is fine.
 
-* Run `vagrant up centos` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_ **unless this is already done**. There should be no need for any changes.
+* Run `vagrant up alma` once or manually copy _VagrantConf.rb.sample_ to _VagrantConf.rb_ **unless this is already done**. There should be no need for any changes.
 
-* Run `vagrant up centos` again or manually copy _centos.conf.sample_ to _centos.conf_ and see the file for possible install configuration changes prior to running the VM in full.
+* Run `vagrant up alma` again or manually copy _alma.conf.sample_ to _alma.conf_ and see the file for possible install configuration changes prior to running the VM in full.
 
 _both_:
 
@@ -98,14 +97,14 @@ _ubuntu_:
 - If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine later by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
   - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or preferred.
 
-_centos_:
-- `vagrant up centos`
+_alma_:
+- `vagrant up alma`
   - Again, this will take a few minutes...
-- `vagrant ssh -c "/usr/bin/mysql_secure_installation" centos` to add MySQL root password and remove anonymous user & test databases
+- `vagrant ssh -c "/usr/bin/mysql_secure_installation" alma` to add MySQL root password and remove anonymous user & test databases
 - <a href="http://localhost:8082/vufind2">http://localhost:8082/vufind2</a>  
   blank page or errors:
   - adjust VuFind config(s) inside the VM, reload browser page
-  - check forwarded ports `vagrant port centos` and adjust the URL if needed, reload browser page
+  - check forwarded ports `vagrant port alma` and adjust the URL if needed, reload browser page
   - see also [Troubleshooting](#troubleshooting).
 
 Both machines can be run simultaneously provided the host has enough oomph.
@@ -113,9 +112,9 @@ Both machines can be run simultaneously provided the host has enough oomph.
 **Solr**: `sudo service solr start|stop|restart|status` inside the VM to control the running state.
 - Solr Admin UI can be accessed at
   - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
-  - _centos_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
+  - _alma_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
 
-**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu/centos.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to _false_ and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager-Finna/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
+**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu-/alma.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to _false_ and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager-Finna/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
 - <a href="https://github.com/NatLibFi/RecordManager/wiki">RecordManager Wiki</a> for additional information.
 
 #### Useful Commands
@@ -151,7 +150,7 @@ Both machines can be run simultaneously provided the host has enough oomph.
 * ( `vagrant package --output ubuntu_vufind2.box`
   - package the virtual machine as a new base box, roughly 700MB or more - the _VagrantConf.rb_ file needs to be edited to use the created box file. )
 
-When addressing the _centos_ machine, just add `centos` at the end of each command.
+When addressing the _alma_ machine, just add `alma` at the end of each command.
 
 <a href="https://docs.vagrantup.com/v2/cli/index.html">Vagrant documentation</a> for more info.
 
@@ -206,7 +205,7 @@ For more possibilities see [Using Phing](https://vufind.org/wiki/development:tes
 1. Check the network connection is working. The virtual environment needs to load from several Internet resources and cannot build itself properly without them. Note that there might also be problems with the cloud resources themselves.
 
 2. As NDL-VuFind2 is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore should problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed the old settings can now be carried over manually from the backups.  
-**A telltale sign of this is usually when the ubuntu machine fails to function properly or the PHP server crashes while the centos machine is working properly** (if built).  
+**A telltale sign of this is usually when the ubuntu machine fails to function properly or the PHP server crashes while the alma machine is working properly** (if built).  
 If all else fails, set LOCAL_CACHE_CLEAR to _true_ in _ubuntu.conf_ to clear local cache files during the virtual machine provisioning. Remember to set this back to _false_ to avoid clearing the cache every consecutive time the _ubuntu_ VM is being built.
 
 3. The Ubuntu basebox may be updated quite regularly so after `vagrant box update` it is not very common but quite possible that something breaks in the install scripts. If this happens and items 1 & 2 are already ruled out, run `vagrant up 2>&1 | tee ./vagrant-log.txt` with the default ubuntu.conf settings + create an issue describing shortly what happened and include the logfile.
@@ -223,6 +222,7 @@ If this is not the case try VBoxManage:
 
 
 ### Known Issues
+- Avoid Vagrant _v1.8.7_ (_curl_ issues), VirtualBox _v5.0.28_ & _v5.1.8_ (_Composer_ issues)
 - Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L57">VirtualMemory</a> and/or raising <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L61">VirtualCPUs</a> to _2_ in _VagrantConf.rb_.<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L19">EnableNFS</a> to _true_.

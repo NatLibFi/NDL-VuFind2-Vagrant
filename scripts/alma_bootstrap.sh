@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #########################  C O N F I G U R A T I O N  #########################
-source /vagrant/centos.conf
+source /vagrant/alma.conf
 ###############################################################################
 
 # turn SELinux on
@@ -56,7 +56,7 @@ sudo firewall-cmd --reload
 
 # install NDL-Vufind2
 if [ "$INSTALL_VUFIND2" = true ]; then
-  source /vagrant/scripts/centos_vufind2.sh;
+  source /vagrant/scripts/alma_vufind2.sh;
 fi
 
 # start Apache
@@ -66,8 +66,8 @@ sudo systemctl enable httpd
 
 # additional installs
 if [ "$INSTALL_SOLR" = true ]; then
-  source /vagrant/scripts/centos_solr.sh;
+  source /vagrant/scripts/alma_solr.sh;
 fi
 if [ "$INSTALL_RECMAN" = true ]; then
-  source /vagrant/scripts/centos_recman.sh;
+  source /vagrant/scripts/alma_recman.sh;
 fi

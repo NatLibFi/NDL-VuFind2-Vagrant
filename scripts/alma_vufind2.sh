@@ -2,7 +2,7 @@
 
 # if not set, then script called from command line and variables need to be set
 if [ -z "$INSTALL_VUFIND2" ]; then
-  source /vagrant/centos.conf
+  source /vagrant/alma.conf
 fi
 echo
 echo "Installing NDL-VuFind2..."

@@ -31,9 +31,9 @@ when nil, "ubuntu"
       exit
     end
   end
-when "centos"
+when "alma"
   if ARGV[0] == "up"
-    conf = 'centos.conf'
+    conf = 'alma.conf'
     sample = conf + '.sample' 
     if !(File.exists?(conf))
       puts conf + " file DOES NOT EXIST!"
@@ -118,30 +118,30 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.post_up_message = "Virtual machine installation FINISHED!"
   end
 
-  # CentOS config, 'vagrant up centos'
-  config.vm.define "centos", autostart: false do |centos|
+  # AlmaLinux config, 'vagrant up alma'
+  config.vm.define "alma", autostart: false do |alma|
     # Every Vagrant development environment requires a box. You can search for
     # boxes at https://atlas.hashicorp.com/search.
-    centos.vm.box = CentosBox
+    alma.vm.box = AlmaBox
     # An example to use instead if you repackage a local custom base box 
-    # centos.vm.box = "centos_vufind2 file:./centos_vufind2.box"
+    # alma.vm.box = "alma_vufind2 file:./alma_vufind2.box"
 
     # Create a forwarded port mapping
-    centos.vm.network "forwarded_port", guest: 80, host: 8082
-    centos.vm.network "forwarded_port", guest: 8983, host: 28983
+    alma.vm.network "forwarded_port", guest: 80, host: 8082
+    alma.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    centos.vm.provision :shell, path: "scripts/centos_bootstrap.sh"
+    alma.vm.provision :shell, path: "scripts/alma_bootstrap.sh"
 
     # Message to show after provisioning
-    centos.vm.post_up_message = "
+    alma.vm.post_up_message = "
 Virtual machine installation FINISHED!
 
-DO NOT FORGET to SET A PASSWORD for the MariaDB root USER!
+DO NOT FORGET to SET A PASSWORD for the MySQL/MariaDB root USER!
 Also, please remove 'anonymous' user & test databases.
 
 To do both of the above:
-- Access the virtual machine first: 'vagrant ssh centos'
+- Access the virtual machine first: 'vagrant ssh alma'
 - Then run: '/usr/bin/mysql_secure_installation'"
   end
 
