@@ -17,7 +17,7 @@ sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 # Add Epel & Remi repos for php & update yum
 sudo dnf install -y epel-release
 sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
-sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-8.rpm
+sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-9.rpm
 # if a new history file should be needed for yum, quite optional
 #sudo yum history new
 sudo yum -y update

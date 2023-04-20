@@ -40,7 +40,7 @@ module VagrantConf
   # CentOS Vagrant box. https://app.vagrantup.com/centos/boxes/7
   # An example to use instead if you repackage a local custom base box 
   # CentosBox = 'centos_vufind2 file:./centos_vufind2.box'
-  CentosBox = 'almalinux/8'
+  CentosBox = 'almalinux/9'
   
   # Provider for virtual machine: virtualbox | hyperv | vmware_desktop
   # for 'hyperv', see:

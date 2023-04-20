@@ -19,8 +19,8 @@ fi
 
 # Set used Java version
 # TODO: Fix this properly later
-sudo sudo rm /etc/alternatives/java
-sudo ln -s /usr/lib/jvm/java-11-openjdk-11.0.18.0.10-2.el8_7.x86_64/bin/java /etc/alternatives/java
+#sudo sudo rm /etc/alternatives/java
+#sudo ln -s /usr/lib/jvm/java-11-openjdk-11.0.18.0.10-2.el8_7.x86_64/bin/java /etc/alternatives/java
 
 # install Solr
 sudo mkdir -p $SOLR_PATH
