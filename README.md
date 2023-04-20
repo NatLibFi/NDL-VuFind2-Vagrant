@@ -23,7 +23,6 @@ Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2<
 
 ### Requirements
 
-Mandatory:
 - <a href="https://www.vagrantup.com">Vagrant</a>
 
   AND
@@ -41,9 +40,9 @@ Mandatory:
 
 
 for _ubuntu_:
-- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (fork it!) cloned to the host computer
-- <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (optional)
-- <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a> also cloned to the host (optional)
+- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (_fork it!_) cloned to the host computer (**mandatory**)
+- <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (**optional**)
+- <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a> also cloned to the host (**optional**)
 
 ### Set-Up
 
