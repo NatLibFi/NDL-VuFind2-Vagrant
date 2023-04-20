@@ -62,7 +62,7 @@ JAVA_SET_SHMMAX_OPENFILES=false    # try true if shared mem problem in Sorl log
 # see: https://www.oracle.com/java/technologies/javase/largememory-pages.html
     JAVA_SHMMAX=2147483648         # 2G mem: 2147483647, 4G mem: 4294967295
 # see: https://docs.revenera.com/fnci6132/Content/helplibrary/Setting_the_Open_File_Limit__Linux_Unix_.html
-    JAVA_OPENFILES_LiMIT=65536
+    JAVA_OPENFILES_LIMIT=65536
 # Solr GitHub config
 SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
