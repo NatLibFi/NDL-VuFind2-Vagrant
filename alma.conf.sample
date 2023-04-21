@@ -58,7 +58,7 @@ SOLR_JETTY_HOST='0.0.0.0'          # 0.0.0.0 allows all
 JAVA_VERSION=11                    # OpenJDK: min 11, 17 works but is slower
 JAVA_HEAP_MIN='256m'               # bare minimum, increase when needed
 JAVA_HEAP_MAX='512m'               # bare minimum, increase when needed
-JAVA_SET_SHMMAX_OPENFILES=false    # try true if shared mem problem in Sorl log 
+JAVA_SET_SHMMAX_OPENFILES=false    # try true if shared mem problem in Solr log 
 # see: https://www.oracle.com/java/technologies/javase/largememory-pages.html
     JAVA_SHMMAX=2147483648         # 2G mem: 2147483647, 4G mem: 4294967295
 # see: https://docs.revenera.com/fnci6132/Content/helplibrary/Setting_the_Open_File_Limit__Linux_Unix_.html
