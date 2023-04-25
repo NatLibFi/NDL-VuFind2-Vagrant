@@ -219,6 +219,9 @@ If this is not the case try VBoxManage:
 - Delete the VM:  
 `VBoxManage unregistervm NAME(OR ID) --delete`
 
+5. "Library not loaded: '/opt/vagrant/embedded/lib/libssh2.1.dylib' ... '/usr/lib/libssh2.1.dylib' (no such file)" or similar error on `vagrant` commands after upgrading macOS and/or XCode when Vagrant installed via Homebrew  
+- Try reinstalling Vagrant:  
+`brew reinstall --cask vagrant`
 
 ### Known Issues
 - Avoid Vagrant v1.8.7 (_curl_ issues), VirtualBox v5.0.28 & v5.1.8 (_Composer_ issues)
