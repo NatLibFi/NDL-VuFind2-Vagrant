@@ -3,7 +3,7 @@ module VagrantConf
   ## Host Machine settings
 
   # Relative path to the cloned directory of NDL-VuFind2 files from Github
-  VufindPath = '../vufind2'
+  VufindPath = '../NDL-VuFind2'
   # Make this match the VUFIND2_PATH in ubuntu.conf
   MountPath = '/vufind2'
 
