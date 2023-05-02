@@ -41,7 +41,7 @@ module VagrantConf
   # Provider for virtual machine: virtualbox | qemu | hyperv 
   # hyperv is untested, but SMBv1 needs to be enabled in Windows
   # default: virtualbox
-  VMProvider = 'qemu'
+  VMProvider = 'virtualbox'
   
   # Ubuntu Vagrant box.
   # See https://app.vagrantup.com/ubuntu and https://app.vagrantup.com/search 
