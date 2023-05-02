@@ -137,7 +137,7 @@ enabled = 1
 defaultOrganisation = "$DEFAULT_ORG"
 EOF
   else
-    sudo sed -E -i ',enabled.+,enabled = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    sudo sed -E -i 's,enabled.+,enabled = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
     sudo sed -E -i 's,defaultOrganisation.+,defaultOrganisation = "'$DEFAULT_ORG'",' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
   fi
 elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then
