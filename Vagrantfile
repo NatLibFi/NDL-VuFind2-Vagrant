@@ -30,6 +30,9 @@ when nil, "ubuntu"
       puts "See " + conf + " for changing the defaults and/or try again!"
       exit
     end
+    if QemuSharing == 'rsync'
+      system("scripts/ubuntu_pre-rsync.sh")
+    end
   end
 when "alma"
   if ARGV[0] == "up"
@@ -140,17 +143,21 @@ Vagrant.configure(2) do |config|
       # RSync sharing 
       when "rsync"
         ubuntu.vm.synced_folder ".", "/vagrant", type: "rsync"
-        ubuntu.vm.synced_folder VufindPath, MountPath, type: "rsync"
+        ubuntu.vm.synced_folder VufindPath, MountPath, type: "rsync",
+          rsync__exclude: [
+            "/vendor",
+            "/local/cache",
+            "/local/languages/finna/fi-datasources.ini",
+            "/local/languages/finna/sv-datasources.ini",
+            "/local/languages/finna/en-gb-datasources.ini",
+            "/themes/finna2/css/finna.css"
+          ]
         if Dir.exists?(RMPath)
           ubuntu.vm.synced_folder RMPath, RMMountPath, type: "rsync"
         end
         if Dir.exists?(UICPath)
           ubuntu.vm.synced_folder UICPath, UICMountPath, type: "rsync"
         end
-        # Share the cache folder and allow guest machine write access
-        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
-          type: "rsync",
-          owner: "www-data", group: "www-data"
       end
     when "hyperv"
       # SMBv1 needs to be enabled in Windows

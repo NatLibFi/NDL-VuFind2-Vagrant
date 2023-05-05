@@ -51,6 +51,12 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
+# If rsyncing make sure the web server has cache with permissions
+if [ "$RSYNC" = true ]; then
+  sudo mkdir /vufind2/local/cache
+  sudo chown www-data:www-data /vufind2/local/cache
+fi
+
 # config file extensions
 CfgExt=( ini yaml json )
 

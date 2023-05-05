@@ -29,6 +29,7 @@ COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
 
 # VuFind2 cache
 LOCAL_CACHE_CLEAR=false            # clear files from /local/cache/ folders
+RSYNC=false                        # only set to 'true' when rsyncing with QEMU
 
 # VuFind2 datasources
 DATASOURCE_FI_URL='https://www.finna-pre.fi/fi-datasources.ini'
