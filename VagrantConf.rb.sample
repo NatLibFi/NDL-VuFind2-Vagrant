@@ -34,6 +34,10 @@ module VagrantConf
     # default: 192.168.0.2
     NFSIP = '192.168.0.2'
 
+    # NFS version. You can try version 4 with Linux
+    # default: 3
+    NFSVersion = 3
+
     # UDP transport
     # default: false
     NFSUDP = false

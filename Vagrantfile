@@ -89,25 +89,29 @@ Vagrant.configure(2) do |config|
     
     # Share additional folders to the guest VM.
     case VMProvider
-    when "virtualbox"
+    when "virtualbox", "libvirt"
       # NFS sharing
       if EnableNFS
         ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs",
-          nfs_udp: NFSUDP
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
         if Dir.exists?(RMPath)
           ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs",
-          nfs_udp: NFSUDP
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
         if Dir.exists?(UICPath)
           ubuntu.vm.synced_folder UICPath, UICMountPath, type: "nfs",
-          nfs_udp: NFSUDP
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
 
         # Share the cache folder and allow guest machine write access
         ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache", type: "nfs",
-          nfs_udp: NFSUDP
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
       # VirtualBox sharing
       else
+        if VMProvider == "libvirt"
+          puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
+          exit
+        end  
         ubuntu.vm.synced_folder VufindPath, MountPath
         if Dir.exists?(RMPath)
           ubuntu.vm.synced_folder RMPath, RMMountPath
