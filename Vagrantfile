@@ -6,7 +6,7 @@ if !(File.exists?('VagrantConf.rb'))
   puts "VagrantConf.rb file DOES NOT EXIST!"
   puts "Copying from VagrantConf.rb.sample as default configuration..."
   File.write('VagrantConf.rb', File.open('VagrantConf.rb.sample').read())
-  puts "Please try running the command again!"
+  puts "See VagrantConf.rb for changing the defaults and/or try running the command again!"
   exit
 end
 require './VagrantConf.rb'
@@ -166,6 +166,9 @@ Vagrant.configure(2) do |config|
         if Dir.exists?(UICPath)
           ubuntu.vm.synced_folder UICPath, UICMountPath, type: "rsync"
         end
+      else
+        puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
+        exit
       end
     when "hyperv"
       # SMBv1 needs to be enabled in Windows
@@ -207,6 +210,39 @@ Vagrant.configure(2) do |config|
     alma.vm.network "forwarded_port", guest: 80, host: 8082
     alma.vm.network "forwarded_port", guest: 8983, host: 28983
 
+    # Share /vagrant folder to the guest VM.
+    case VMProvider
+    when "libvirt"
+      # NFS sharing
+      if EnableNFS
+        alma.vm.synced_folder ".", "/vagrant", type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+      else
+        puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
+        exit
+      end
+    when "qemu"
+      case QemuSharing
+      # SMB Sharing
+      when "smb"
+        alma.vm.synced_folder ".", "/vagrant",
+          type: "smb", smb_host: "10.0.2.2"
+      # RSync sharing 
+      when "rsync"
+        alma.vm.synced_folder ".", "/vagrant", type: "rsync"
+      else
+        puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
+        exit
+      end
+    when "hyperv"
+      # SMBv1 needs to be enabled in Windows
+      alma.vm.synced_folder ".", "/vagrant",
+        type: "smb", smb_host: "10.0.2.2"
+    else
+      puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
+      exit
+    end
+      
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     alma.vm.provision :shell, path: "scripts/alma_bootstrap.sh"
 
