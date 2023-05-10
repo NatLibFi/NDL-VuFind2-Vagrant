@@ -92,6 +92,10 @@ Vagrant.configure(2) do |config|
     when "virtualbox", "libvirt"
       # NFS sharing
       if EnableNFS
+        if VMProvider == "libvirt"
+          ubuntu.vm.synced_folder ".", "/vagrant", type: "nfs",
+            nfs_version: NFSVersion, nfs_udp: NFSUDP
+        end
         ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         if Dir.exists?(RMPath)
