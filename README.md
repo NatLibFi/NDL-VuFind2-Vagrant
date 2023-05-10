@@ -107,7 +107,7 @@ _alma_:
   - check forwarded ports `vagrant port alma` and adjust the URL if needed, reload browser page
   - see also [Troubleshooting](#troubleshooting).
 
-Both machines can be run simultaneously provided the host has enough oomph–except with QEMU provider. See [Troubleshooting](#troubleshooting).
+Both machines can be run simultaneously provided the host has enough oomph–except with QEMU provider. See [Known Issues](#known-issues).
 
 **Solr**: `sudo service solr start|stop|restart|status` inside the VM to control the running state.
 - Solr Admin UI can be accessed at
