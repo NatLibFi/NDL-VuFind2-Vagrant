@@ -25,21 +25,22 @@ Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2<
 
 - <a href="https://www.vagrantup.com">Vagrant</a>
 
-  AND
-- <a href="https://www.virtualbox.org">VirtualBox</a> **RECOMMENDED**  
-  - Mac users should also see <a href="https://developer.apple.com/library/archive/technotes/tn2459/_index.html">this</a> as you may need to allow the KEXT from Oracle if the VirtualBox install fails.
-  - **With v6.1.x see [Known Issues](#known-issues)** (if all else fails [v6.0.x](https://www.virtualbox.org/wiki/Download_Old_Builds) should still work!)
+  AND a provider:
+- <a href="https://www.virtualbox.org">VirtualBox</a> (**default** for ease of use, not for performance) 
+  - **v7.xx recommended**
+  - v6.1.x Mac users should see [this](https://developer.apple.com/library/archive/technotes/tn2459/_index.html)
 
   OR
-- [VMware Fusion Player](https://customerconnect.vmware.com/web/vmware/evalcenter?p=fusion-player-personal) (Apple M1 [Tech Preview](https://customerconnect.vmware.com/downloads/get-download?downloadGroup=FUS-PUBTP-2021H1)) / [VMware Player](https://www.vmware.com/support/thankyou_player.html)  
-  Note: [extra installation steps](https://www.vagrantup.com/docs/providers/vmware/installation) needed
+- [QEMU](https://www.qemu.org/download/#macos) (macOS only)  
+  Note: For Apple M1/M2 CPUs this is the only tested option
  
-  OR
+  OR 
+- [libvirt](https://libvirt.org/index.html) (Linux only)
 
-- [Hyper-V](https://www.vagrantup.com/docs/providers/hyperv)
+(Note:
+- [Hyper-V](https://www.vagrantup.com/docs/providers/hyperv) (Windows only) may work if using SMBv1 on the host for sharing but is untested - you have been warned!)
 
-
-for _ubuntu_:
+Also for _ubuntu_ VM:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (_fork it!_) cloned to the host computer (**mandatory**)
 - <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (**optional**)
 - <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a> also cloned to the host (**optional**)
@@ -224,28 +225,35 @@ If this is not the case try VBoxManage:
 `brew reinstall --cask vagrant`
 
 ### Known Issues
-- Avoid Vagrant v1.8.7 (_curl_ issues), VirtualBox v5.0.28 & v5.1.8 (_Composer_ issues)
-- Possibly slightly slower than native LAMP/MAMP/WAMP but shouldn't be a real issue. YMMV though, so worst case, try adding more <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L57">VirtualMemory</a> and/or raising <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L61">VirtualCPUs</a> to _2_ in _VagrantConf.rb_.<br>
+- If running Solr, [VirtualMemory](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L23) needs to be at least around 2048, which should work. Add more if/when needed considering the host has what to spare.
+- Antiquated software versions have issues e.g. Vagrant v1.8.7 (_curl_ issues), VirtualBox v5.0.28 & v5.1.8 (_Composer_ issues), maybe others. Use current versions!
+- Performance might be slightly slower than native LAMP/MAMP/WAMP but shouldn't be an issue. YMMV though, so worst case, try adding more [VirtualMemory](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L23) and/or raising [VirtualCPUs](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L27) to _2_ in _VagrantConf.rb_.<br>
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
-  - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L19">EnableNFS</a> to _true_.
-  - Mac users, with NFS enabled Vagrant needs to modify _/etc/exports_ and admin password will be asked with every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
-    Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and nothing else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
-  - Linux users, first remove the _if-else-end_ conditioning regarding _darwin_ in _Vagrantfile_, install _nfsd_, either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
-  - Windows users are out of luck as NFS synced folders are ignored by Vagrant.
+  - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L31">EnableNFS</a> to _true_.
+  - Mac users, with NFS enabled Vagrant needs to modify _/etc/exports_ and admin password will be asked at every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
+    Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and v7.x.x is not an option else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
+  - Linux users, NFS must be used with libvirt provider. To avoid being asked for credentials at every `vagrant up` & `vagrant destroy` either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
+  - Windows users may want to try [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd) as by default NFS synced folders are ignored by Vagrant - yet again, this is untested!
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
-- If running Solr, VirtualMemory needs to be at least around 2048, which should work.
+- Apple M1/M2 CPU users should use QEMU provider, which is limited to SMB sharing or RSync. Virtualbox [developer preview](https://www.virtualbox.org/wiki/Downloads) for Apple silicon may work but is untested.
+- QEMU provider ignores high-level network configurations and causes a conflict with SSH port forwarding if _ubuntu_ & _alma_ VMs are tried to be run simultaneously. Other providers shouldn't have this limitation given the host has enough resources.
+- QEMU and libvirt providers may prompt to destroy both VMs at `vagrant destroy` even when the other one is not running. If this is confusing, target the wanted VM using `vagrant destroy ubuntu` or `vagrant destroy alma`.
+- SMB sharing will first ask sudo password and later user credentials at `vagrant up`. User credentials are also asked at `vagrant destroy`.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- Nested virtualization is possible using VMware Player in the first host with VT-x enabled. There might be some trouble with CA certificates, though. VirtualBox does not support 64-bit nested OS.
-- ARM & M1 Apple users can try _spox/ubuntu-arm_ or _bytesguy/ubuntu-server-20.04-arm64_ as <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/bd4bd3e9affd8dbd47ca69a2e4c602d82afac8ff/VagrantConf.rb.sample#L32">UbuntuBox</a>, see https://gist.github.com/sbailliez/f22db6434ac84eccb6d3c8833c85ad92 for more information.
-- Using _vmware_desktop_ as a provider does not allow _mount_options_ for shared folders and _umask_ might not prove to be as flexible. Alas, permission issues can occur for accessing some shared directories and need manual adjustments.
+- For those about to use Windows, we salute you! And best of luck–you are on your own.
 
 ### Resources
-- <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a>
-- <a href="https://github.com/NatLibFi/finna-solr">finna-solr</a>
-- <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> & <a href="https://github.com/NatLibFi/RecordManager/Wiki">RecordManager Wiki</a>
-- <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a>
-- <a href="https://www.vagrantup.com">Vagrant</a>
-- <a href="https://www.virtualbox.org">VirtualBox</a>
-- <a href="https://www.wmware.com">VMware</a>
-- <a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/">Hyper-V</a>
-- <a href="https://responsively.app/">Responsively.app</a>
+- [NDL-VuFind2](https://github.com/NatLibFi/NDL-VuFind2)
+- [finna-solr](https://github.com/NatLibFi/finna-solr)
+- [RecordManager-Finna](https://github.com/NatLibFi/RecordManager-Finna) & [RecordManager Wiki](https://github.com/NatLibFi/RecordManager/Wiki)
+- [finna-ui-components](https://github.com/NatLibFi/finna-ui-components)
+- [Vagrant](https://www.vagrantup.com/)
+- [VirtualBox](https://www.virtualbox.org/)
+- [QEMU](https://www.qemu.org/)
+- [libvirt](https://libvirt.org/)
+- [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/)
+- [Ubuntu](https://ubuntu.com/)
+- [AlmaLinux OS](https://almalinux.org/)
+- [Vagrant Cloud](https://app.vagrantup.com/boxes/search)
+- [Responsively.app](https://responsively.app/)
+- [VuFind](https://vufind.org)
