@@ -212,6 +212,9 @@ Vagrant.configure(2) do |config|
 
     # Share /vagrant folder to the guest VM.
     case VMProvider
+    when "virtualbox"
+      # nothing to share, /vagrant is handled automatically
+      next
     when "libvirt"
       # NFS sharing
       if EnableNFS
