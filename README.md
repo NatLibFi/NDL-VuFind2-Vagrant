@@ -107,7 +107,7 @@ _alma_:
   - check forwarded ports `vagrant port alma` and adjust the URL if needed, reload browser page
   - see also [Troubleshooting](#troubleshooting).
 
-Both machines can be run simultaneously provided the host has enough oomph.
+Both machines can be run simultaneously provided the host has enough oomph–except with QEMU provider. See [Troubleshooting](#troubleshooting).
 
 **Solr**: `sudo service solr start|stop|restart|status` inside the VM to control the running state.
 - Solr Admin UI can be accessed at
@@ -204,7 +204,7 @@ For more possibilities see [Using Phing](https://vufind.org/wiki/development:tes
 
 1. Check the network connection is working. The virtual environment needs to load from several Internet resources and cannot build itself properly without them. Note that there might also be problems with the cloud resources themselves.
 
-2. As NDL-VuFind2 is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore should problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed the old settings can now be carried over manually from the backups.  
+2. As NDL-VuFind2 is being actively developed some new settings and configuration options will be presented in its _.ini/yaml/json.sample_ files from time to time. While building the virtual machine these files are only copied if previous ones don't already exist. Therefore should problems arise there might be need to make a backup of the _.ini/yaml/json_ files in _local/config/vufind/_ & _local/config/finna/_ before deleting all of them (not the _.sample_ ones!). The files will then be copied anew next time the virtual machine is succesfully build. If needed, the old settings can now be carried over manually from the backups.  
 **A telltale sign of this is usually when the ubuntu machine fails to function properly or the PHP server crashes while the alma machine is working properly** (if built).  
 If all else fails, set LOCAL_CACHE_CLEAR to _true_ in _ubuntu.conf_ to clear local cache files during the virtual machine provisioning. Remember to set this back to _false_ to avoid clearing the cache every consecutive time the _ubuntu_ VM is being built.
 
@@ -231,7 +231,7 @@ If this is not the case try VBoxManage:
   More speed can also be gained by enabling <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a>:
   - Set <a href="https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L31">EnableNFS</a> to _true_.
   - Mac users, with NFS enabled Vagrant needs to modify _/etc/exports_ and admin password will be asked at every `vagrant up` & `vagrant destroy` unless you once run `sudo scripts/nfs-sudoers_mac.sh` or manually modify sudoers. See <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for more information.  
-    Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and v7.x.x is not an option else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
+    Using VB v6.1.x, NFS will most likely be difficult to get working correctly. See <a href="https://github.com/hashicorp/vagrant/blob/80e94b5e4ed93a880130b815329fcbce57e4cfed/website/pages/docs/synced-folders/nfs.mdx#troubleshooting-nfs-issues">here</a> and <a href="https://github.com/hashicorp/vagrant/issues/11555">here</a> for NFS troubleshooting. If NFS is absolutely needed and v7.x.x is not an option and nothing else works, use the latest VB <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">v6.0.x</a>.
   - Linux users, NFS must be used with libvirt provider. To avoid being asked for credentials at every `vagrant up` & `vagrant destroy` either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users may want to try [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd) as by default NFS synced folders are ignored by Vagrant - yet again, this is untested!
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
