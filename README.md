@@ -240,7 +240,7 @@ If this is not the case try VBoxManage:
 - QEMU and libvirt providers may prompt to destroy both VMs at `vagrant destroy` even when the other one is not running. If this is confusing, target the wanted VM using `vagrant destroy ubuntu` or `vagrant destroy alma`.
 - SMB sharing will first ask sudo password and later user credentials at `vagrant up`. User credentials are also asked at `vagrant destroy`.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- For those about to use Windows, we salute you! And best of luck–you are on your own.
+- For those about to use Windows, we salute you! And best of luck–you tread the unwalked path.
 
 ### Resources
 - [NDL-VuFind2](https://github.com/NatLibFi/NDL-VuFind2)
