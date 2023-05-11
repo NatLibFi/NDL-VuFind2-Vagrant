@@ -102,6 +102,12 @@ _ubuntu_:
 - If you don't install Solr & RecordManager at `vagrant up` startup you can add them to the already started virtual machine later by first setting their install options to true in _ubuntu.conf_ and then running consecutively<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_solr.sh"`<br>`vagrant ssh -c "bash /vagrant/scripts/ubuntu_recman.sh"`
   - This is quicker than `vagrant destroy` + `vagrant up` if building the VM from the ground up is not needed or preferred.
 
+**Note**: If RSync is enabled and you are making developement changes run:
+* `vagrant rsync-auto`
+to let vagrant keep up with the made changes and sync them into the VM–you can use another tab or start a screen session for running the command in the backround.
+(Another way is to manually run `vagrant rsync`
+before testing the made changes but the previous command automizes this.)
+
 _alma_:
 - `vagrant up alma`
   - Again, this will take a few minutes...
