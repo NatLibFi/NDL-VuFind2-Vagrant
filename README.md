@@ -48,7 +48,7 @@ Also for _ubuntu_ VM:
 
 ### Installation
 
-See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more detailed information.
+See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific information when not using Virtualbox.
 
 ### Set-Up
 
