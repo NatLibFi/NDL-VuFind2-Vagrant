@@ -6,7 +6,7 @@ if !(File.exists?('VagrantConf.rb'))
   puts "VagrantConf.rb file DOES NOT EXIST!"
   puts "Copying from VagrantConf.rb.sample as default configuration..."
   File.write('VagrantConf.rb', File.open('VagrantConf.rb.sample').read())
-  puts "Please try running the command again!"
+  puts "See VagrantConf.rb for changing the defaults and/or try running the command again!"
   exit
 end
 require './VagrantConf.rb'
@@ -30,6 +30,9 @@ when nil, "ubuntu"
       puts "See " + conf + " for changing the defaults and/or try again!"
       exit
     end
+    if QemuSharing == 'rsync'
+      system("scripts/ubuntu_pre-rsync.sh")
+    end
   end
 when "alma"
   if ARGV[0] == "up"
@@ -47,24 +50,34 @@ else
   # do nothing
 end
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+# Please see the file VagrantConf.rb for user configurable options.
+# There should be no need to change Vagrantfile itself unless you know
+# what you are doing!
+
 Vagrant.configure(2) do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
 
   # Ubuntu config, (default) 'vagrant up'
   config.vm.define "ubuntu", primary: true do |ubuntu|
-    # Every Vagrant development environment requires a box. You can search for
-    # boxes at https://atlas.hashicorp.com/search.
-    ubuntu.vm.box = UbuntuBox
-    # An example to use instead if you repackage a local custom base box 
-    # ubuntu.vm.box = "ubuntu_vufind2 file:./ubuntu_vufind2.box"
+    # Use the correct Ubuntu box
+    case VMProvider
+    when "virtualbox"
+      ubuntu.vm.box = UbuntuBox
+    else
+      if VMProvider == "qemu" && QemuHostCPU == "arm"
+        ubuntu.vm.box = UbuntuBoxARM
+      else
+        ubuntu.vm.box = UbuntuBoxAlt
+      end
+    end
+    
+    # Network settings
+    if EnableNFS
+      ubuntu.vm.network "private_network", ip: NFSIP
+    else
+      ubuntu.vm.network "private_network", type: "dhcp"
+    end
 
-    # Create a forwarded port mapping
+    # Create the forwarded port mappings
     ubuntu.vm.network "forwarded_port", guest: 80, host: 8081,
     auto_correct: true
     ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983,
@@ -75,41 +88,110 @@ Vagrant.configure(2) do |config|
     auto_correct: true
     
     # Share additional folders to the guest VM.
-  if RUBY_PLATFORM =~ /darwin/ && EnableNFS
-    ubuntu.vm.network "private_network", type: "dhcp"
-    ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs"
-    if defined?(RMMountPath)
-      ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs"
-    end
-    if defined?(UICMountPath)
-      ubuntu.vm.synced_folder UICPath, UICMountPath, type: "nfs"
-    end
-  else
-    ubuntu.vm.synced_folder VufindPath, MountPath
-    if defined?(RMMountPath)
-      ubuntu.vm.synced_folder RMPath, RMMountPath
-    end
-    if defined?(UICMountPath)
-      ubuntu.vm.synced_folder UICPath, UICMountPath
-    end
-  end
+    case VMProvider
+    when "virtualbox", "libvirt"
+      # NFS sharing
+      if EnableNFS
+        if VMProvider == "libvirt"
+          ubuntu.vm.synced_folder ".", "/vagrant", type: "nfs",
+            nfs_version: NFSVersion, nfs_udp: NFSUDP
+        end
+        ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+        if Dir.exists?(RMPath)
+          ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+        end
+        if Dir.exists?(UICPath)
+          ubuntu.vm.synced_folder UICPath, UICMountPath, type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+        end
 
-    # Share the cache folder and allow guest machine write access
-  case VMProvider
-  when "virtualbox"
-    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
-      owner: "www-data", group: "www-data",
-      :mount_options => ["dmode=777","fmode=666"]
-  when "hyperv"
-    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
-      owner: "www-data", group: "www-data",
-      :mount_options => ["dir_mode=777","file_mode=666"]
-  when "vmware_desktop"
-    ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
-      owner: "www-data", group: "www-data",
-      # umask might not give all permissions needed for some directories
-      umask: "666"
-  end
+        # Share the cache folder and allow guest machine write access
+        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache", type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+      # VirtualBox sharing
+      else
+        if VMProvider == "libvirt"
+          puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
+          exit
+        end  
+        ubuntu.vm.synced_folder VufindPath, MountPath
+        if Dir.exists?(RMPath)
+          ubuntu.vm.synced_folder RMPath, RMMountPath
+        end
+        if Dir.exists?(UICPath)
+          ubuntu.vm.synced_folder UICPath, UICMountPath
+        end
+        # Share the cache folder and allow guest machine write access
+        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+          owner: "www-data", group: "www-data",
+          :mount_options => ["dmode=777","fmode=666"]
+      end
+    when "qemu"
+      case QemuSharing
+      # SMB Sharing
+      when "smb"
+        ubuntu.vm.synced_folder ".", "/vagrant",
+          type: "smb", smb_host: "10.0.2.2"
+        ubuntu.vm.synced_folder VufindPath, MountPath,
+          type: "smb", smb_host: "10.0.2.2"
+        if Dir.exists?(RMPath)
+          ubuntu.vm.synced_folder RMPath, RMMountPath,
+            type: "smb", smb_host: "10.0.2.2"
+        end
+        if Dir.exists?(UICPath)
+          ubuntu.vm.synced_folder UICPath, UICMountPath,
+            type: "smb", smb_host: "10.0.2.2"
+        end
+        # Share the cache folder and allow guest machine write access
+        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+          type: "smb", smb_host: "10.0.2.2",
+          owner: "www-data", group: "www-data"
+      # RSync sharing 
+      when "rsync"
+        ubuntu.vm.synced_folder ".", "/vagrant", type: "rsync"
+        ubuntu.vm.synced_folder VufindPath, MountPath, type: "rsync",
+          rsync__exclude: [
+            "/vendor",
+            "/local/cache",
+            "/local/languages/finna/fi-datasources.ini",
+            "/local/languages/finna/sv-datasources.ini",
+            "/local/languages/finna/en-gb-datasources.ini",
+            "/themes/finna2/css/finna.css"
+          ]
+        if Dir.exists?(RMPath)
+          ubuntu.vm.synced_folder RMPath, RMMountPath, type: "rsync"
+        end
+        if Dir.exists?(UICPath)
+          ubuntu.vm.synced_folder UICPath, UICMountPath, type: "rsync"
+        end
+      else
+        puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
+        exit
+      end
+    when "hyperv"
+      # SMBv1 needs to be enabled in Windows
+      ubuntu.vm.synced_folder ".", "/vagrant",
+        type: "smb", smb_host: "10.0.2.2"
+      ubuntu.vm.synced_folder VufindPath, MountPath,
+        type: "smb", smb_host: "10.0.2.2"
+      if Dir.exists?(RMPath)
+        ubuntu.vm.synced_folder RMPath, RMMountPath,
+          type: "smb", smb_host: "10.0.2.2"
+      end
+      if Dir.exists?(UICPath)
+        ubuntu.vm.synced_folder UICPath, UICMountPath,
+          type: "smb", smb_host: "10.0.2.2"
+      end
+      # Share the cache folder and allow guest machine write access
+      ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+        type: "smb", smb_host: "10.0.2.2",
+        owner: "www-data", group: "www-data"
+    else
+      puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
+      exit
+    end
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     ubuntu.vm.provision :shell, path: "scripts/ubuntu_bootstrap.sh"
@@ -119,9 +201,7 @@ Vagrant.configure(2) do |config|
   end
 
   # AlmaLinux config, 'vagrant up alma'
-  config.vm.define "alma", autostart: false do |alma|
-    # Every Vagrant development environment requires a box. You can search for
-    # boxes at https://atlas.hashicorp.com/search.
+  config.vm.define "alma", autostart: false do |alma|    
     alma.vm.box = AlmaBox
     # An example to use instead if you repackage a local custom base box 
     # alma.vm.box = "alma_vufind2 file:./alma_vufind2.box"
@@ -130,6 +210,42 @@ Vagrant.configure(2) do |config|
     alma.vm.network "forwarded_port", guest: 80, host: 8082
     alma.vm.network "forwarded_port", guest: 8983, host: 28983
 
+    # Share /vagrant folder to the guest VM.
+    case VMProvider
+    when "virtualbox"
+      # nothing to share, /vagrant is handled automatically
+      next
+    when "libvirt"
+      # NFS sharing
+      if EnableNFS
+        alma.vm.synced_folder ".", "/vagrant", type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+      else
+        puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
+        exit
+      end
+    when "qemu"
+      case QemuSharing
+      # SMB Sharing
+      when "smb"
+        alma.vm.synced_folder ".", "/vagrant",
+          type: "smb", smb_host: "10.0.2.2"
+      # RSync sharing 
+      when "rsync"
+        alma.vm.synced_folder ".", "/vagrant", type: "rsync"
+      else
+        puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
+        exit
+      end
+    when "hyperv"
+      # SMBv1 needs to be enabled in Windows
+      alma.vm.synced_folder ".", "/vagrant",
+        type: "smb", smb_host: "10.0.2.2"
+    else
+      puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
+      exit
+    end
+      
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
     alma.vm.provision :shell, path: "scripts/alma_bootstrap.sh"
 
@@ -149,61 +265,38 @@ To do both of the above:
     info: "All provisioning done! SYSTEM INFO:",
     run_remote: {inline: "neofetch"}
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8081
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
+  # Provider-specific configuration so you can fine-tune various.
+  # Any changes needed should be done in VagrantConf.rb
   #
   config.vm.provider VMProvider do |v|
-
     # Settings depending on the VM Provider    
-    if VMProvider == "hyperv"
+    case VMProvider
+    when "virtualbox"
       # Display the VM Provider GUI when booting the machine
       v.gui = VMProviderGUI
-    end
-    if VMProvider == "virtualbox"
       # Check for VirtualBox Guest Additions
       v.check_guest_additions = CheckGuestAdditions
+    when "qemu"
+      v.ssh_port = QemuSSHPort
+      v.cpu = QemuCPU
+      v.smp = QemuSmpArgs
+      case QemuHostCPU
+      when "intel"
+        v.arch = QemuArchIntel
+        v.machine = QemuMachineIntel
+        v.net_device = QemuNetDeviceIntel
+        v.qemu_dir = QemuDirIntel
+      when "arm"
+        v.arch = QemuArchARM
+        v.machine = QemuMachineARM
+        v.net_device = QemuNetDeviceARM
+        v.qemu_dir = QemuDirARM
+      end
     end
-    # Customize the amount of memory and cpus on the VM:
-    if VMProvider != "vmware_desktop"
-      v.memory = VirtualMemory
-      v.cpus = VirtualCPUs
-    else
-      v.vmx["memsize"] = VirtualMemory
-      v.vmx["numvcpus"] = VirtualCPUs
-    end
-    
+
+    # The amount of memory and cpus on the VM:
+    v.memory = VirtualMemory
+    v.cpus = VirtualCPUs
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
-  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
-  # such as FTP and Heroku are also available. See the documentation at
-  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  # config.push.define "atlas" do |push|
-  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
-  # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
 end

@@ -51,6 +51,12 @@ if [ ! -h /etc/apache2/conf-enabled/vufind2.conf ]; then
   sudo ln -s /etc/apache2/conf-available/httpd-vufind.conf /etc/apache2/conf-enabled/vufind2.conf
 fi
 
+# If rsyncing make sure the web server has cache with permissions
+if [ "$RSYNC" = true ]; then
+  sudo mkdir /vufind2/local/cache
+  sudo chown www-data:www-data /vufind2/local/cache
+fi
+
 # config file extensions
 CfgExt=( ini yaml json )
 
@@ -137,7 +143,7 @@ enabled = 1
 defaultOrganisation = "$DEFAULT_ORG"
 EOF
   else
-    sudo sed -E -i ',enabled.+,enabled = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
+    sudo sed -E -i 's,enabled.+,enabled = 1,' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
     sudo sed -E -i 's,defaultOrganisation.+,defaultOrganisation = "'$DEFAULT_ORG'",' $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini
   fi
 elif grep -Fxq -m 1 [General] $VUFIND2_MOUNT/local/config/vufind/OrganisationInfo.ini; then

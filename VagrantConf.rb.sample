@@ -1,62 +1,22 @@
 module VagrantConf 
 
-  # relative path to the cloned directory of NDL-VuFind2 files from Github
-  VufindPath = '../NDL-VuFind2'
+  ## Host Machine settings
 
+  # Relative path to the cloned directory of NDL-VuFind2 files from Github
+  VufindPath = '../NDL-VuFind2'
   # Make this match the VUFIND2_PATH in ubuntu.conf
   MountPath = '/vufind2'
 
   # relative path to the cloned directory of RecordManager-Finna from Github
   RMPath = '../RecordManager-Finna'
+  # Make this match the RECMAN_MOUNT in ubuntu.conf
+  RMMountPath = '/recordmanager'
   
   # relative path to the cloned directory of finna-ui-components from Github
   UICPath = '../finna-ui-components'
-  
-  if Dir.exists?(RMPath)
-    # Make this match the RECMAN_MOUNT in ubuntu.conf
-    RMMountPath = '/recordmanager'
-  end
-  if Dir.exists?(UICPath)
-    UICMountPath = '/finna-ui-components'
-  end
-  
-  # Enable NFS for synced folders on macOS
-  # default: false
-  EnableNFS = false
+  UICMountPath = '/finna-ui-components'
 
-  # Ubuntu Vagrant box. See https://app.vagrantup.com/ubuntu
-  # An example to use instead if you repackage a local custom base box:
-  # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
-  #
-  # VM Provider other than 'virtualbox' use:
-  # UbuntuBox = 'mrlesmithjr/jammy64'
-  #
-  # ARM CPU try:
-  # UbuntuBox = 'spox/ubuntu-arm'
-  # or
-  # UbuntuBox = 'bytesguy/ubuntu-server-20.04-arm64'
-  UbuntuBox = 'ubuntu/jammy64'
-  
-  # AlmaLinux Vagrant box. https://app.vagrantup.com/almalinux
-  # An example to use instead if you repackage a local custom base box 
-  # AlmaBox = 'alma_vufind2 file:./alma_vufind2.box'
-  AlmaBox = 'almalinux/9'
-  
-  # Provider for virtual machine: virtualbox | hyperv | vmware_desktop
-  # for 'hyperv', see:
-  # https://www.vagrantup.com/docs/providers/hyperv
-  # for 'vmware_desktop', see:
-  # https://www.vagrantup.com/docs/providers/vmware/installation
-  # default: virtualbox
-  VMProvider = 'virtualbox'
-
-  # Show VirtualBox GUI when booting the virtual machine
-  # default: false
-  VMProviderGUI = false
-
-  # Check for VirtualBox Guest additions
-  # default: false
-  CheckGuestAdditions = false
+  ## Virtual Machine settings
 
   # The amount of memory in megabytes used by each virtual machine
   # default: 2048
@@ -65,5 +25,83 @@ module VagrantConf
   # The amount of virtual CPUs
   # default: 1
   VirtualCPUs = 1
+
+  # Enable NFS for synced folders on macOS
+  # default: false
+  EnableNFS = false
+
+    # Guest IP when NFS enabled
+    # default: 192.168.0.2
+    NFSIP = '192.168.0.2'
+
+    # NFS version. You can try version 4 with Linux
+    # default: 3
+    NFSVersion = 3
+
+    # UDP transport
+    # default: false
+    NFSUDP = false
+
+  # Provider for virtual machine: virtualbox | qemu | hyperv 
+  # hyperv is untested, but SMBv1 needs to be enabled in Windows
+  # default: virtualbox
+  VMProvider = 'virtualbox'
+  
+  # Ubuntu Vagrant box.
+  # See https://app.vagrantup.com/ubuntu and https://app.vagrantup.com/search 
+  # 
+  # An example to use instead if you repackage a local custom base box:
+  # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
+  #
+  # When VMProvider is 'virtualbox':
+  UbuntuBox = 'ubuntu/jammy64'
+  # When VMProvider is other than 'virtualbox'
+  UbuntuBoxAlt = 'generic/ubuntu2204'
+  # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
+  UbuntuBoxARM = 'perk/ubuntu-2204-arm64'
+
+  # AlmaLinux Vagrant box. https://app.vagrantup.com/almalinux
+  #
+  # An example to use instead if you repackage a local custom base box 
+  # AlmaBox = 'alma_vufind2 file:./alma_vufind2.box'
+  #
+  AlmaBox = 'almalinux/9'
+
+  # VirtualBox specific settings
+      # Show VirtualBox GUI when booting the virtual machine
+      # default: false
+      VMProviderGUI = false
+
+      # Check for VirtualBox Guest additions
+      # default: false
+      CheckGuestAdditions = false
+
+  # QEmu specific settings
+      # Apple CPU Architecture, 'intel' or 'arm'
+      # default: intel
+      QemuHostCPU = 'intel'
+      
+      # Folder sharing, 'smb' or 'rsync'
+      # smb: will ask user permissions for sharing, if not working try rsync
+      # rsync: 'vagrant rsync-auto' should be run after provisioning done
+      # default: smb
+      QemuSharing = 'smb'
+
+      # Common settings
+      QemuSSHPort = '50022'
+      QemuCPU = 'host'
+      QemuSmpArgs = '2'
+
+      # Apple/Intel settings
+      QemuArchIntel = 'x86_64'
+      QemuMachineIntel = 'q35,accel=hvf'
+      QemuNetDeviceIntel = 'virtio-net-pci'
+      QemuDirIntel = '/usr/local/share/qemu'
+
+      # Apple/ARM settings
+      QemuArchARM = 'aarch64'
+      QemuMachineARM = 'virt,accel=hvf,highmem=on'
+      QemuNetDeviceARM = 'virtio-net-device'
+      QemuDirARM = '/opt/homebrew/share/qemu'
 
 end
