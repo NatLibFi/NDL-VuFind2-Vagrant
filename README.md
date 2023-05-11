@@ -2,6 +2,7 @@
 
 - [Overview](#overview)
 - [Requirements](#requirements)
+- [Installation](#installation)
 - [Set-Up](#set-up)
 - [Use](#use)
   * [Useful Commands](#useful-commands)
@@ -44,6 +45,10 @@ Also for _ubuntu_ VM:
 - <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL-VuFind2</a> (_fork it!_) cloned to the host computer (**mandatory**)
 - <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> also cloned to the host (**optional**)
 - <a href="https://github.com/NatLibFi/finna-ui-components">finna-ui-components</a> also cloned to the host (**optional**)
+
+### Installation
+
+See [Wiki] for more detailed information
 
 ### Set-Up
 
