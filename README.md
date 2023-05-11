@@ -88,7 +88,7 @@ Regarding the records data:
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
-See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options.
+If not using Virtualbox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration).
 
 ### Use
 
