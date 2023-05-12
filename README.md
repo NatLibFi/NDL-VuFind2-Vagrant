@@ -48,7 +48,7 @@ Also for _ubuntu_ VM:
 
 ### Installation
 
-See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific information when not using Virtualbox.
+See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific information when not using VirtualBox.
 
 ### Set-Up
 
@@ -88,7 +88,7 @@ Regarding the records data:
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the external URL to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
-If not using Virtualbox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration).
+If not using VirtualBox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration).
 
 ### Use
 
@@ -248,7 +248,7 @@ If this is not the case try VBoxManage:
   - Linux users, NFS must be used with libvirt provider. To avoid being asked for credentials at every `vagrant up` & `vagrant destroy` either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users may want to try [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd) as by default NFS synced folders are ignored by Vagrant - yet again, this is untested!
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
-- Apple M1/M2 CPU users should use QEMU provider, which is limited to SMB sharing or RSync. Virtualbox [developer preview](https://www.virtualbox.org/wiki/Downloads) for Apple silicon may work but is untested.
+- Apple M1/M2 CPU users should use QEMU provider, which is limited to SMB sharing or RSync. VirtualBox [developer preview](https://www.virtualbox.org/wiki/Downloads) for Apple silicon may work but is untested.
 - QEMU provider ignores high-level network configurations and causes a conflict with SSH port forwarding if _ubuntu_ & _alma_ VMs are tried to be run simultaneously. Other providers shouldn't have this limitation given the host has enough resources.
 - QEMU and libvirt providers may prompt to destroy both VMs at `vagrant destroy` even when the other one is not running. If this is confusing, target the wanted VM using `vagrant destroy ubuntu` or `vagrant destroy alma`.
 - SMB sharing will first ask sudo password and later user credentials at `vagrant up`. User credentials are also asked at `vagrant destroy`.
