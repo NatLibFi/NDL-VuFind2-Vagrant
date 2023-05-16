@@ -18,7 +18,7 @@
 
 Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2</a> with two separate guest virtual machines:
 - **ubuntu** (default)
-  - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> on the host's native filesystem.
+  - for development, uses NDL-VuFind2 files from the host's filesystem. An added development feature is the option to have also <a href="https://github.com/NatLibFi/RecordManager-Finna">RecordManager-Finna</a> on the host's native filesystem. _This is the one you will most likely be using_.
 - **alma**
   - a testbed to build a personal test server; SELinux enabled so could maybe even be a rough outline to set-up a production server, who knows. Clones the latest NDL-VuFind2 from GitHub inside the guest.
 
@@ -72,21 +72,21 @@ _alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)):
 
 _both/either_:
 
-The default is to run Solr/RecordManager locally, some configuration options still exist (see also [Without local database](#without-local-database)):
-* Install both inside the guest VM
+The default is to install & run [Finna Solr](https://github.com/NatLibFi/finna-solr) & [RecordManager-Finna](https://github.com/NatLibFi/RecordManager-Finna) locally inside the VM. Some configuration options still exist (see also [Without local database](#without-local-database)) e.g. for RecordManager development:
+* Install only Finna Solr inside the guest VM
   > INSTALL_SOLR=true ;default: true  
-  > INSTALL_RECMAN=true ;default: true
+  > INSTALL_RECMAN=false ;default: true
 
-* Use cloned RecordManager files on the host system (ubuntu.conf)
+* Use cloned RecordManager files on the host system instead of the guest VM ([ubuntu.conf](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/ubuntu.conf.sample#L75) only):
   > RECMAN_DEV=true ;default: false
 
 Regarding the records data:
-* default (but bare minimum for testing purposes): a sample data file exists in the _data/_ directory to be imported to the local Solr database via RecordManager during install
-* more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) OR set up harvesting sources after the provisioning/installing is done.
+* default (but bare minimum for testing purposes): a sample data file exists in the [_data/_](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/tree/master/data) directory to be imported to the local Solr database via RecordManager during install
+* more proper use: add your own data to the _data/_ directory before provisioning/installing **or** import your data manually from file(s) OR set up harvesting sources after the provisioning/installing is done. See [RecordManager & Importing Data](#importing-data).
 
 <span id="without-local-database">**Without local database**</span>: use a remote Solr server (like the _NDL development index_ - unfortunately, **limited users only**)
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
-* add the external URL to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
+* add the [external URL](https://github.com/NatLibFi/NDL-VuFind2/blob/dev/local/config/vufind/config.ini.sample#L15) to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
 If not using VirtualBox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration).
 
@@ -127,7 +127,7 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
   - _ubuntu_: <a href="http://localhost:18983/solr">http://localhost:18983/solr</a>
   - _alma_: <a href="http://localhost:28983/solr">http://localhost:28983/solr</a>
 
-**RecordManager & Importing Data**: As a default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu-/alma.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to _false_ and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager-Finna/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
+<span id="importing-data">**RecordManager & Importing Data**</span>: Set to default, the provisioning phase will install a sample dataset to the local index. It is recommended to use your own data. The easiest way is to add a data file and a proper datasources.ini file to the _data/_ directory + adjust the RECMAN_SOURCE, RECMAN_DATASOURCE & RECMAN_DATA variables in ubuntu-/alma.conf prior to the `vagrant up` command. It is also possible to change the RECMAN_IMPORT to _false_ and set up data harvesting after installation. For more details, see <a href="https://github.com/NatLibFi/RecordManager-Finna/blob/master/conf/datasources.ini.sample">datasources.ini.sample</a> and <a href="https://github.com/NatLibFi/RecordManager/wiki/Usage">RecordManager Usage</a>.
 - <a href="https://github.com/NatLibFi/RecordManager/wiki">RecordManager Wiki</a> for additional information.
 
 #### Useful Commands
