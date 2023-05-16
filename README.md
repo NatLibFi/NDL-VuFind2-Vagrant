@@ -70,7 +70,7 @@ _alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)):
 
 * Run `vagrant up alma` again or manually copy _alma.conf.sample_ to _alma.conf_ and see the file for possible install configuration changes prior to running the VM in full.
 
-_both_:
+_both/either_:
 
 The default is to run Solr/RecordManager locally, some configuration options still exist (see also [Without local database](#without-local-database)):
 * Install both inside the guest VM
