@@ -74,11 +74,11 @@ _both/either_:
 
 The default is to install & run [Finna Solr](https://github.com/NatLibFi/finna-solr) & [RecordManager-Finna](https://github.com/NatLibFi/RecordManager-Finna) locally inside the VM. Some configuration options still exist (see also [Without local database](#without-local-database)) e.g. for RecordManager development:
 * Install only Finna Solr inside the guest VM
-  > INSTALL_SOLR=true ;default: true  
-  > INSTALL_RECMAN=false ;default: true
+  > INSTALL_SOLR=true  
+  > INSTALL_RECMAN=false
 
-* Use cloned RecordManager files on the host system instead of the guest VM ([ubuntu.conf](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/ubuntu.conf.sample#L75) only):
-  > RECMAN_DEV=true ;default: false
+* Use cloned RecordManager files on the host system instead of the guest VM (ubuntu.conf only):
+  > [RECMAN_DEV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/ubuntu.conf.sample#L75)=true ;default: false
 
 Regarding the records data:
 * default (but bare minimum for testing purposes): a sample data file exists in the [_data/_](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/tree/master/data) directory to be imported to the local Solr database via RecordManager during install
@@ -171,7 +171,7 @@ When addressing the _alma_ machine, just add `alma` at the end of each command.
 Testing exists only in the _ubuntu_ VM.
 
 - ubuntu.conf:
-  >EMAIL_TEST_ENV=true
+  >[EMAIL_TEST_ENV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/ubuntu.conf.sample#L45)=true
 - add the settings below & adjust the [Mail] section accordingly - you need a working mail server - in _NDL-VuFind2/local/config/vufind/config.ini_
   ```
   [Site]
