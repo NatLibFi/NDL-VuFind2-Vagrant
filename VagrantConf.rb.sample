@@ -42,7 +42,7 @@ module VagrantConf
     # default: false
     NFSUDP = false
 
-  # Provider for virtual machine: virtualbox | qemu | hyperv 
+  # Provider for virtual machine: virtualbox | qemu | libvirt | hyperv 
   # hyperv is untested, but SMBv1 needs to be enabled in Windows
   # default: virtualbox
   VMProvider = 'virtualbox'
