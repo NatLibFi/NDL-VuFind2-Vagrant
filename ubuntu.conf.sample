@@ -22,7 +22,7 @@ SQL_USER_PW='vufind'
 EXTERNAL_SOLR_URL=''
 
 # PHP config
-PHP_VERSION=''                     # use '' for system default, 80 = 8.0 etc.
+PHP_VERSION=''                     # use '' for system default
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins

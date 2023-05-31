@@ -12,7 +12,7 @@ echo "==========================="
 #sudo apt-get install -y pkg-config libpcre3-dev phpunit
 
 # libgeos and PHP bindings 
-if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "81" ]; then
+if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "8.1" ]; then
   sudo apt-get install -y libgeos$LIBGEOS_VERSION libgeos-dev
   sudo apt-get install -y php-geos
   sudo phpenmod geos
