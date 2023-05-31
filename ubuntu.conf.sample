@@ -9,7 +9,7 @@ INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false               # Geocoding (use with RecordManager)
-                                   # installs only when PHP_VERSION='7.4'
+                                   # installs only when PHP_VERSION='81'
 INSTALL_IMGSERVICE=false           # FinnaImageService
 
 # MySQL
@@ -90,7 +90,7 @@ RECMAN_BRANCH='dev'                # used to be 'master'
 
 # GEOS config
 # https://packages.ubuntu.com/search?keywords=libgeos&searchon=names
-LIBGEOS_VERSION=3.8.0
+LIBGEOS_VERSION=3.10.2
 
 # IMGSERVICE config
 # https://github.com/NatLibFi/FinnaImageService

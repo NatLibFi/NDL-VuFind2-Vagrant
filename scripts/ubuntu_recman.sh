@@ -12,8 +12,8 @@ echo "==========================="
 #sudo apt-get install -y pkg-config libpcre3-dev phpunit
 
 # libgeos and PHP bindings 
-if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "7.4" ]; then
-  sudo apt-get install -y libgeos-$LIBGEOS_VERSION libgeos-dev
+if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "81" ]; then
+  sudo apt-get install -y libgeos$LIBGEOS_VERSION libgeos-dev
   sudo apt-get install -y php-geos
   sudo phpenmod geos
 fi
@@ -26,8 +26,10 @@ sudo service apache2 reload
 sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
 # MongoDB
-wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | sudo tee /etc/apt/trusted.gpg.d/mongodb-server-$MONGODB_VERSION.asc
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
+sudo apt-get install -y gnupg
+curl -fsSL https://pgp.mongodb.com/server-$MONGODB_VERSION.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-$MONGODB_VERSION.gpg --dearmor
+#wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | sudo tee /etc/apt/trusted.gpg.d/mongodb-server-$MONGODB_VERSION.asc
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-$MONGODB_VERSION.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 sudo systemctl start mongod
