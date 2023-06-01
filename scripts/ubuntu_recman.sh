@@ -15,7 +15,7 @@ echo "==========================="
 if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "8.1" ]; then
   sudo apt-get install -y libgeos$LIBGEOS_VERSION libgeos-dev
   sudo apt-get install -y php-geos
-  sudo phpenmod geos
+  sudo phpenmod -v $PHP_VERSION geos
 fi
 
 # MongoDB driver

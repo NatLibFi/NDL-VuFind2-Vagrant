@@ -32,9 +32,18 @@ sudo a2enmod headers
 
 # install PHP
 echo | sudo add-apt-repository ppa:ondrej/php
-sudo apt-get install -y php$PHP_VERSION libapache2-mod-php$PHP_VERSION php$PHP_VERSION-dev php-pear php$PHP_VERSION-json php$PHP_VERSION-mysql php$PHP_VERSION-xml php$PHP_VERSION-intl php$PHP_VERSION-gd php$PHP_VERSION-curl php$PHP_VERSION-mbstring php$PHP_VERSION-soap
+sudo apt-get install -y php$PHP_VERSION libapache2-mod-php$PHP_VERSION php$PHP_VERSION-dev php-pear php-json php$PHP_VERSION-mysql php$PHP_VERSION-xml php$PHP_VERSION-intl php$PHP_VERSION-gd php$PHP_VERSION-curl php$PHP_VERSION-mbstring php$PHP_VERSION-soap php$PHP_VERSION-common
 
-sudo phpenmod mbstring
+if [ -z "$PHP_VERSION" ]; then
+  sudo phpenmod mbstring
+else
+  sudo phpenmod -v $PHP_VERSION mbstring
+  sudo update-alternatives --set php /usr/bin/php$PHP_VERSION
+  sudo update-alternatives --set phar /usr/bin/phar$PHP_VERSION
+  sudo update-alternatives --set phar.phar /usr/bin/phar.phar$PHP_VERSION
+  sudo update-alternatives --set phpize /usr/bin/phpize$PHP_VERSION
+  sudo update-alternatives --set php-config /usr/bin/php-config$PHP_VERSION
+fi
 
 # configure php: display_errors = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php/???/apache2/php.ini
