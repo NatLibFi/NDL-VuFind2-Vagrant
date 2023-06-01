@@ -12,10 +12,15 @@ echo "==========================="
 #sudo apt-get install -y pkg-config libpcre3-dev phpunit
 
 # libgeos and PHP bindings 
-if [ "$INSTALL_GEOS" = true ] && [ "$PHP_VERSION" == "8.1" ]; then
+if [ "$INSTALL_GEOS" = true ]; then
   sudo apt-get install -y libgeos$LIBGEOS_VERSION libgeos-dev
+  sudo ldconfig
   sudo apt-get install -y php-geos
-  sudo phpenmod -v $PHP_VERSION geos
+  if [ ! -z "$PHP_VERSION" ]; then
+    sudo phpenmod -v $PHP_VERSION geos
+  else
+    sudo phpenmod geos
+  fi
 fi
 
 # MongoDB driver

@@ -9,7 +9,7 @@ INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false               # Geocoding (use with RecordManager)
-                                   # installs only when PHP_VERSION='8.1'
+                                   # if not working try with PHP_VERSION='8.1'
 INSTALL_IMGSERVICE=false           # FinnaImageService
 
 # MySQL

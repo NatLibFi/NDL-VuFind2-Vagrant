@@ -66,6 +66,9 @@ if [ "$INSTALL_VUFIND2" = true ]; then
 fi
 
 # restart Apache
+if [ ! -z "$PHP_VERSION" ]; then
+  sudo a2enmod php$PHP_VERSION
+fi
 sudo service apache2 reload
 
 # additional installs
