@@ -160,6 +160,8 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
     `vagrant box remove ubuntu/jammy64 --box-version 20221027.0.0`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
+* `vagrant plugin update`
+  - keep the installed plugins up to date
 * ( `vagrant package --output ubuntu_vufind2.box`
   - package the virtual machine as a new base box, roughly 700MB or more - the _VagrantConf.rb_ file needs to be edited to use the created box file. )
 
