@@ -48,7 +48,9 @@ Also for _ubuntu_ VM:
 
 ### Installation
 
-See [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific information when not using VirtualBox.
+Quick way: install Vagrant and VirtuaBox first and proceed to Set-Up.
+
+_Recommended way_: see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific installation options.
 
 ### Set-Up
 
@@ -88,7 +90,7 @@ Regarding the records data:
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
 * add the [external URL](https://github.com/NatLibFi/NDL-VuFind2/blob/dev/local/config/vufind/config.ini.sample#L15) to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
 
-If not using VirtualBox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration).
+If not using VirtualBox, see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) (macOS) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration) (Linux).
 
 ### Use
 
@@ -160,6 +162,8 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
     `vagrant box remove ubuntu/jammy64 --box-version 20221027.0.0`
 * `vagrant plugin install vagrant-vbguest`
   - for prolonged use, install <a href="https://github.com/dotless-de/vagrant-vbguest">vagrant-vbguest</a> plugin to keep the host machines's VirtualBox Guest Additions automatically updated
+* `vagrant plugin update`
+  - keep the installed plugins up to date
 * ( `vagrant package --output ubuntu_vufind2.box`
   - package the virtual machine as a new base box, roughly 700MB or more - the _VagrantConf.rb_ file needs to be edited to use the created box file. )
 
