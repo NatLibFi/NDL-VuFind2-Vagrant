@@ -121,12 +121,16 @@ fi
 
 # install node.js & less 2.7.1 + less-plugin-clean-css
 # https://github.com/nodesource/distributions
-curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
-#add key
+#curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
+# add key
+sudo update-crypto-policies --set DEFAULT:SHA1
 rpm --import https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
+# install node.js
+sudo yum install https://rpm.nodesource.com/pub_$NODE_VERSION.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 # see https://forums.fedoraforum.org/showthread.php?320926-failovemethod-option
-sudo sed -i -e '/^failovermethod=/d' /etc/yum.repos.d/*.repo
-sudo yum -y install nodejs
+#sudo sed -i -e '/^failovermethod=/d' /etc/yum.repos.d/*.repo
+#sudo yum -y install nodejs
 # do not run these with sudo
 npm install -g less@$LESS_VERSION
 npm install -g less-plugin-clean-css
