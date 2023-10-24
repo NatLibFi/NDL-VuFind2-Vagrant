@@ -34,9 +34,8 @@ PHP_MEMORY_LIMIT=128M              # default 128M
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
 
 # VuFind2 datasources
-DATASOURCE_FI_URL='https://www.finna-pre.fi/fi-datasources.ini'
-DATASOURCE_SV_URL='https://www.finna-pre.fi/sv-datasources.ini'
-DATASOURCE_EN_URL='https://www.finna-pre.fi/en-gb-datasources.ini'
+DATASOURCES=( fi sv en se )        # supported datasource language codes
+DATASOURCES_URL='https://www.finna-pre.fi'
 
 # Organisation info
 DEFAULT_ORGANISATION=''

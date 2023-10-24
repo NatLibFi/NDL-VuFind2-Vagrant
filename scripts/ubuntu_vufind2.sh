@@ -135,9 +135,9 @@ if [ "$LESS_RUN" = true ]; then
 fi
 
 # download datasources translation strings
-curl $DATASOURCE_FI_URL > $VUFIND2_MOUNT/local/languages/finna/fi-datasources.ini
-curl $DATASOURCE_SV_URL > $VUFIND2_MOUNT/local/languages/finna/sv-datasources.ini
-curl $DATASOURCE_EN_URL > $VUFIND2_MOUNT/local/languages/finna/en-gb-datasources.ini
+for i in "${DATASOURCES[@]}"; do
+  curl $DATASOURCES_URL/$i-datasources.ini > $VUFIND2_MOUNT/local/languages/finna/$i-datasources.ini
+done
 
 # organisation if set
 if [ ! -z "$DEFAULT_ORG" ]; then
