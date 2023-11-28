@@ -157,7 +157,8 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
 * `vagrant box update`
   - update the cached boxes if newer versions exist
 * `vagrant box list`
-  - show the cached box files, delete unnecessary ones with `vagrant box prune` or `vagrant box remove` (add `-h` for help) to target specific box files
+  - show the cached box files  
+    all unnecessary ones can be pruned at once or only specific box files be removed (add `-h` for help):
 
     `vagrant box prune` or e.g.  
     `vagrant box remove ubuntu/jammy64 --box-version 20221027.0.0`
