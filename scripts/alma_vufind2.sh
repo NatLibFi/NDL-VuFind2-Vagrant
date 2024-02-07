@@ -171,7 +171,7 @@ cd
 
 # download datasources translation strings
 for i in "${DATASOURCES[@]}"; do
-  curl $DATASOURCES_URL/$i-datasources.ini > $VUFIND2_MOUNT/local/languages/finna/$i-datasources.ini
+  curl $DATASOURCES_URL/$i-datasources.ini > $VUFIND2_PATH/local/languages/finna/$i-datasources.ini
 done
 
 #Organisation if set

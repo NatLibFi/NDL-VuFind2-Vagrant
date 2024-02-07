@@ -34,7 +34,7 @@ sudo systemctl reload httpd
 sudo tee -a /etc/yum.repos.d/mongodb-org-$MONGODB_VERSION.repo >/dev/null <<EOF
 [mongodb-org-$MONGODB_VERSION]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/$MONGODB_VERSION/x86_64/
+baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/$MONGODB_VERSION/`uname -m`/
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc
