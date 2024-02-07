@@ -64,7 +64,7 @@ _ubuntu_ ([jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)):
 
 * Run `vagrant up` again or manually copy _ubuntu.conf.sample_ to _ubuntu.conf_ and see the file for possible install configuration changes (e.g. using RecordManager on host or remote Solr server etc.) prior to running the VM in full.
 
-_alma_ ([almalinux9](https://app.vagrantup.com/almalinux/boxes/9)):
+_alma_ ([rockylinux9](https://app.vagrantup.com/rockylinux/boxes/9) due to AlmaLinux boxes not having correct arhitecture/provider combo for aarch64):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer **unless this is already done**. If only using _alma_, any directory with sufficent user permissions will do. If using both _ubuntu_ & _alma_, the same directory with _ubuntu_ is fine.
 
