@@ -60,12 +60,12 @@ module VagrantConf
   # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
   UbuntuBoxARM = 'perk/ubuntu-2204-arm64'
 
-  # AlmaLinux Vagrant box. https://app.vagrantup.com/almalinux
+  # Server Vagrant box. See https://app.vagrantup.com/rockylinux
   #
   # An example to use instead if you repackage a local custom base box 
-  # AlmaBox = 'alma_vufind2 file:./alma_vufind2.box'
+  # ServerBox = 'server_vufind2 file:./server_vufind2.box'
   #
-  AlmaBox = 'almalinux/9'
+  ServerBox = 'rockylinux/9'
 
   # VirtualBox specific settings
       # Show VirtualBox GUI when booting the virtual machine

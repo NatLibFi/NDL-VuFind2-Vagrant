@@ -2,7 +2,7 @@
 
 # if not set, then script called from command line and variables need to be set
 if [ -z "$INSTALL_RECMAN" ]; then
-  source /vagrant/alma.conf
+  source /vagrant/server.conf
 fi
 
 # RecordManager

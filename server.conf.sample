@@ -1,4 +1,4 @@
-##########################   A L M A  -  C O N F   ###########################
+#########################   S E R V E R  -  C O N F   #########################
 # Use single quotes instead of double to work with special-character passwords
 
 # VuFind2 install path in the guest machine

@@ -34,9 +34,9 @@ when nil, "ubuntu"
       system("scripts/ubuntu_pre-rsync.sh")
     end
   end
-when "alma"
+when "server"
   if ARGV[0] == "up"
-    conf = 'alma.conf'
+    conf = 'server.conf'
     sample = conf + '.sample' 
     if !(File.exists?(conf))
       puts conf + " file DOES NOT EXIST!"
@@ -200,15 +200,13 @@ Vagrant.configure(2) do |config|
     ubuntu.vm.post_up_message = "Virtual machine installation FINISHED!"
   end
 
-  # AlmaLinux config, 'vagrant up alma'
-  config.vm.define "alma", autostart: false do |alma|    
-    alma.vm.box = AlmaBox
-    # An example to use instead if you repackage a local custom base box 
-    # alma.vm.box = "alma_vufind2 file:./alma_vufind2.box"
+  # Server config, 'vagrant up server'
+  config.vm.define "server", autostart: false do |server|    
+    server.vm.box = ServerBox
 
     # Create a forwarded port mapping
-    alma.vm.network "forwarded_port", guest: 80, host: 8082
-    alma.vm.network "forwarded_port", guest: 8983, host: 28983
+    server.vm.network "forwarded_port", guest: 80, host: 8082
+    server.vm.network "forwarded_port", guest: 8983, host: 28983
 
     # Share /vagrant folder to the guest VM.
     case VMProvider
@@ -218,7 +216,7 @@ Vagrant.configure(2) do |config|
     when "libvirt"
       # NFS sharing
       if EnableNFS
-        alma.vm.synced_folder ".", "/vagrant", type: "nfs",
+        server.vm.synced_folder ".", "/vagrant", type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
       else
         puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
@@ -228,18 +226,18 @@ Vagrant.configure(2) do |config|
       case QemuSharing
       # SMB Sharing
       when "smb"
-        alma.vm.synced_folder ".", "/vagrant",
+        server.vm.synced_folder ".", "/vagrant",
           type: "smb", smb_host: "10.0.2.2"
       # RSync sharing 
       when "rsync"
-        alma.vm.synced_folder ".", "/vagrant", type: "rsync"
+        server.vm.synced_folder ".", "/vagrant", type: "rsync"
       else
         puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
         exit
       end
     when "hyperv"
       # SMBv1 needs to be enabled in Windows
-      alma.vm.synced_folder ".", "/vagrant",
+      server.vm.synced_folder ".", "/vagrant",
         type: "smb", smb_host: "10.0.2.2"
     else
       puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
@@ -247,17 +245,17 @@ Vagrant.configure(2) do |config|
     end
       
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    alma.vm.provision :shell, path: "scripts/alma_bootstrap.sh"
+    server.vm.provision :shell, path: "scripts/server_bootstrap.sh"
 
     # Message to show after provisioning
-    alma.vm.post_up_message = "
+    server.vm.post_up_message = "
 Virtual machine installation FINISHED!
 
 DO NOT FORGET to SET A PASSWORD for the MySQL/MariaDB root USER!
 Also, please remove 'anonymous' user & test databases.
 
 To do both of the above:
-- Access the virtual machine first: 'vagrant ssh alma'
+- Access the virtual machine first: 'vagrant ssh server'
 - Then run: '/usr/bin/mysql_secure_installation'"
   end
 
