@@ -48,7 +48,7 @@ Also for _dev_ VM:
 
 ### Installation
 
-Quick way: install Vagrant and VirtuaBox first and proceed to Set-Up.
+Quick way: install Vagrant and VirtualBox first and proceed to Set-Up.
 
 _Recommended way_: see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki) for more platform specific installation options.
 
