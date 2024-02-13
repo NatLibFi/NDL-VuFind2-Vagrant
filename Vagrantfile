@@ -14,9 +14,9 @@ include VagrantConf
 
 # check the forked NDL-VuFind2 folder exists + create conf file if missing
 case ARGV[1] 
-when nil, "ubuntu"
+when nil, "dev"
   if ARGV[0] == "up"
-    conf = 'ubuntu.conf'
+    conf = 'dev.conf'
     sample = conf + '.sample'
     if !(Dir.exists?(VufindPath))
       puts VufindPath + " directory DOES NOT EXIST!"
@@ -31,7 +31,7 @@ when nil, "ubuntu"
       exit
     end
     if QemuSharing == 'rsync'
-      system("scripts/ubuntu_pre-rsync.sh")
+      system("scripts/dev_pre-rsync.sh")
     end
   end
 when "server"
@@ -56,35 +56,35 @@ end
 
 Vagrant.configure(2) do |config|
 
-  # Ubuntu config, (default) 'vagrant up'
-  config.vm.define "ubuntu", primary: true do |ubuntu|
-    # Use the correct Ubuntu box
+  # Dev config, (default) 'vagrant up'
+  config.vm.define "dev", primary: true do |dev|
+    # Use the correct Dev box
     case VMProvider
     when "virtualbox"
-      ubuntu.vm.box = UbuntuBox
+      dev.vm.box = DevBox
     else
       if VMProvider == "qemu" && QemuHostCPU == "arm"
-        ubuntu.vm.box = UbuntuBoxARM
+        dev.vm.box = DevBoxARM
       else
-        ubuntu.vm.box = UbuntuBoxAlt
+        dev.vm.box = DevBoxAlt
       end
     end
     
     # Network settings
     if EnableNFS
-      ubuntu.vm.network "private_network", ip: NFSIP
+      dev.vm.network "private_network", ip: NFSIP
     else
-      ubuntu.vm.network "private_network", type: "dhcp"
+      dev.vm.network "private_network", type: "dhcp"
     end
 
     # Create the forwarded port mappings
-    ubuntu.vm.network "forwarded_port", guest: 80, host: 8081,
+    dev.vm.network "forwarded_port", guest: 80, host: 8081,
     auto_correct: true
-    ubuntu.vm.network "forwarded_port", guest: 8983, host: 18983,
+    dev.vm.network "forwarded_port", guest: 8983, host: 18983,
     auto_correct: true
-    ubuntu.vm.network "forwarded_port", guest: 3033, host: 3033,
+    dev.vm.network "forwarded_port", guest: 3033, host: 3033,
     auto_correct: true
-    ubuntu.vm.network "forwarded_port", guest: 36000, host: 36000,
+    dev.vm.network "forwarded_port", guest: 36000, host: 36000,
     auto_correct: true
     
     # Share additional folders to the guest VM.
@@ -93,22 +93,22 @@ Vagrant.configure(2) do |config|
       # NFS sharing
       if EnableNFS
         if VMProvider == "libvirt"
-          ubuntu.vm.synced_folder ".", "/vagrant", type: "nfs",
+          dev.vm.synced_folder ".", "/vagrant", type: "nfs",
             nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
-        ubuntu.vm.synced_folder VufindPath, MountPath, type: "nfs",
+        dev.vm.synced_folder VufindPath, MountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         if Dir.exists?(RMPath)
-          ubuntu.vm.synced_folder RMPath, RMMountPath, type: "nfs",
+          dev.vm.synced_folder RMPath, RMMountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
         if Dir.exists?(UICPath)
-          ubuntu.vm.synced_folder UICPath, UICMountPath, type: "nfs",
+          dev.vm.synced_folder UICPath, UICMountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
 
         # Share the cache folder and allow guest machine write access
-        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache", type: "nfs",
+        dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache", type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
       # VirtualBox sharing
       else
@@ -116,15 +116,15 @@ Vagrant.configure(2) do |config|
           puts "NFS needs to be enabled when using libvirt provider. Check your VagrantConf.rb file"
           exit
         end  
-        ubuntu.vm.synced_folder VufindPath, MountPath
+        dev.vm.synced_folder VufindPath, MountPath
         if Dir.exists?(RMPath)
-          ubuntu.vm.synced_folder RMPath, RMMountPath
+          dev.vm.synced_folder RMPath, RMMountPath
         end
         if Dir.exists?(UICPath)
-          ubuntu.vm.synced_folder UICPath, UICMountPath
+          dev.vm.synced_folder UICPath, UICMountPath
         end
         # Share the cache folder and allow guest machine write access
-        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+        dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
           owner: "www-data", group: "www-data",
           :mount_options => ["dmode=777","fmode=666"]
       end
@@ -132,26 +132,26 @@ Vagrant.configure(2) do |config|
       case QemuSharing
       # SMB Sharing
       when "smb"
-        ubuntu.vm.synced_folder ".", "/vagrant",
+        dev.vm.synced_folder ".", "/vagrant",
           type: "smb", smb_host: "10.0.2.2"
-        ubuntu.vm.synced_folder VufindPath, MountPath,
+        dev.vm.synced_folder VufindPath, MountPath,
           type: "smb", smb_host: "10.0.2.2"
         if Dir.exists?(RMPath)
-          ubuntu.vm.synced_folder RMPath, RMMountPath,
+          dev.vm.synced_folder RMPath, RMMountPath,
             type: "smb", smb_host: "10.0.2.2"
         end
         if Dir.exists?(UICPath)
-          ubuntu.vm.synced_folder UICPath, UICMountPath,
+          dev.vm.synced_folder UICPath, UICMountPath,
             type: "smb", smb_host: "10.0.2.2"
         end
         # Share the cache folder and allow guest machine write access
-        ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+        dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
           type: "smb", smb_host: "10.0.2.2",
           owner: "www-data", group: "www-data"
       # RSync sharing 
       when "rsync"
-        ubuntu.vm.synced_folder ".", "/vagrant", type: "rsync"
-        ubuntu.vm.synced_folder VufindPath, MountPath, type: "rsync",
+        dev.vm.synced_folder ".", "/vagrant", type: "rsync"
+        dev.vm.synced_folder VufindPath, MountPath, type: "rsync",
           rsync__exclude: [
             "/vendor",
             "/local/cache",
@@ -161,10 +161,10 @@ Vagrant.configure(2) do |config|
             "/themes/finna2/css/finna.css"
           ]
         if Dir.exists?(RMPath)
-          ubuntu.vm.synced_folder RMPath, RMMountPath, type: "rsync"
+          dev.vm.synced_folder RMPath, RMMountPath, type: "rsync"
         end
         if Dir.exists?(UICPath)
-          ubuntu.vm.synced_folder UICPath, UICMountPath, type: "rsync"
+          dev.vm.synced_folder UICPath, UICMountPath, type: "rsync"
         end
       else
         puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
@@ -172,20 +172,20 @@ Vagrant.configure(2) do |config|
       end
     when "hyperv"
       # SMBv1 needs to be enabled in Windows
-      ubuntu.vm.synced_folder ".", "/vagrant",
+      dev.vm.synced_folder ".", "/vagrant",
         type: "smb", smb_host: "10.0.2.2"
-      ubuntu.vm.synced_folder VufindPath, MountPath,
+      dev.vm.synced_folder VufindPath, MountPath,
         type: "smb", smb_host: "10.0.2.2"
       if Dir.exists?(RMPath)
-        ubuntu.vm.synced_folder RMPath, RMMountPath,
+        dev.vm.synced_folder RMPath, RMMountPath,
           type: "smb", smb_host: "10.0.2.2"
       end
       if Dir.exists?(UICPath)
-        ubuntu.vm.synced_folder UICPath, UICMountPath,
+        dev.vm.synced_folder UICPath, UICMountPath,
           type: "smb", smb_host: "10.0.2.2"
       end
       # Share the cache folder and allow guest machine write access
-      ubuntu.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+      dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
         type: "smb", smb_host: "10.0.2.2",
         owner: "www-data", group: "www-data"
     else
@@ -194,10 +194,10 @@ Vagrant.configure(2) do |config|
     end
 
     # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
-    ubuntu.vm.provision :shell, path: "scripts/ubuntu_bootstrap.sh"
+    dev.vm.provision :shell, path: "scripts/dev_bootstrap.sh"
 
     # Message to show after provisioning
-    ubuntu.vm.post_up_message = "Virtual machine installation FINISHED!"
+    dev.vm.post_up_message = "Virtual machine installation FINISHED!"
   end
 
   # Server config, 'vagrant up server'

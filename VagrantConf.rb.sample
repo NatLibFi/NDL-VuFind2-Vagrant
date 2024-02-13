@@ -4,12 +4,12 @@ module VagrantConf
 
   # Relative path to the cloned directory of NDL-VuFind2 files from Github
   VufindPath = '../NDL-VuFind2'
-  # Make this match the VUFIND2_PATH in ubuntu.conf
+  # Make this match the VUFIND2_PATH in dev.conf
   MountPath = '/vufind2'
 
   # relative path to the cloned directory of RecordManager-Finna from Github
   RMPath = '../RecordManager-Finna'
-  # Make this match the RECMAN_MOUNT in ubuntu.conf
+  # Make this match the RECMAN_MOUNT in dev.conf
   RMMountPath = '/recordmanager'
   
   # relative path to the cloned directory of finna-ui-components from Github
@@ -47,18 +47,18 @@ module VagrantConf
   # default: virtualbox
   VMProvider = 'virtualbox'
   
-  # Ubuntu Vagrant box.
+  # Dev Vagrant box.
   # See https://app.vagrantup.com/ubuntu and https://app.vagrantup.com/search 
   # 
   # An example to use instead if you repackage a local custom base box:
-  # UbuntuBox = 'ubuntu_vufind2 file:./ubuntu_vufind2.box'
+  # DevBox = 'dev_mybox file:./dev_mybox.box'
   #
   # When VMProvider is 'virtualbox':
-  UbuntuBox = 'ubuntu/jammy64'
+  DevBox = 'ubuntu/jammy64'
   # When VMProvider is other than 'virtualbox'
-  UbuntuBoxAlt = 'generic/ubuntu2204'
+  DevBoxAlt = 'generic/ubuntu2204'
   # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
-  UbuntuBoxARM = 'perk/ubuntu-2204-arm64'
+  DevBoxARM = 'perk/ubuntu-2204-arm64'
 
   # Server Vagrant box. See https://app.vagrantup.com/rockylinux
   #

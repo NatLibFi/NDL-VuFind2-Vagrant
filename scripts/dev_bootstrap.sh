@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #########################  C O N F I G U R A T I O N  #########################
-source /vagrant/ubuntu.conf
+source /vagrant/dev.conf
 ###############################################################################
 
 # remove unattended-upgrades
@@ -62,7 +62,7 @@ fi
 
 # install NDL-Vufind2
 if [ "$INSTALL_VUFIND2" = true ]; then
-  source /vagrant/scripts/ubuntu_vufind2.sh;
+  source /vagrant/scripts/dev_vufind2.sh;
 fi
 
 # restart Apache
@@ -73,11 +73,11 @@ sudo service apache2 reload
 
 # additional installs
 if [ "$INSTALL_IMGSERVICE" = true ]; then
-  source /vagrant/scripts/ubuntu_imgservice.sh
+  source /vagrant/scripts/dev_imgservice.sh
 fi
 if [ "$INSTALL_SOLR" = true ]; then
-  source /vagrant/scripts/ubuntu_solr.sh
+  source /vagrant/scripts/dev_solr.sh
 fi
 if [ "$INSTALL_RECMAN" = true ]; then
-  source /vagrant/scripts/ubuntu_recman.sh
+  source /vagrant/scripts/dev_recman.sh
 fi
