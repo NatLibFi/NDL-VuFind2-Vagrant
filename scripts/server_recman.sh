@@ -2,60 +2,62 @@
 
 # if not set, then script called from command line and variables need to be set
 if [ -z "$INSTALL_RECMAN" ]; then
-  source /vagrant/ubuntu.conf
+  source /vagrant/server.conf
 fi
 
 # RecordManager
-echo
 echo "Installing RecordManager..."
 echo "==========================="
-#sudo apt-get install -y pkg-config libpcre3-dev phpunit
+sudo yum -y install openssl-devel
 
-# libgeos and PHP bindings 
+# libgeos; with PHP7 https://git.osgeo.org/gogs/geos/php-geos + geos-devel might be required
+# patched php-geos from remi: https://github.com/libgeos/php-geos/pull/1
 if [ "$INSTALL_GEOS" = true ]; then
-  sudo apt-get install -y libgeos$LIBGEOS_VERSION libgeos-dev
-  sudo ldconfig
-  sudo apt-get install -y php-geos
-  if [ ! -z "$PHP_VERSION" ]; then
-    sudo phpenmod -v $PHP_VERSION geos
-  else
-    sudo phpenmod geos
-  fi
+  sudo yum -y install geos php-geos #geos-devel
+#  cd /tmp
+#  sudo git clone https://git.osgeo.org/gogs/geos/php-geos.git
+#  cd php-geos
+#  sudo ./autogen.sh
+#  sudo ./configure
+#  sudo make
+#  sudo make install
 fi
 
-# MongoDB driver
-sudo pecl channel-update pecl.php.net
-sudo sh -c 'echo no | sudo pecl install mongodb'
-sudo sh -c 'echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`'
-sudo service apache2 reload
 sudo pear channel-update pear.php.net
 sudo pear install HTTP_Request2
+
+#MongoDB driver
+sudo yum -y install php-pecl-mongodb
+#sudo sh -c 'printf "extension=mongodb.so\n" >> /etc/php.d/mongodb.ini'
+sudo systemctl reload httpd
 # MongoDB
-sudo apt-get install -y gnupg
-curl -fsSL https://pgp.mongodb.com/server-$MONGODB_VERSION.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-$MONGODB_VERSION.gpg --dearmor
-#wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | sudo tee /etc/apt/trusted.gpg.d/mongodb-server-$MONGODB_VERSION.asc
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-$MONGODB_VERSION.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/$MONGODB_VERSION multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$MONGODB_VERSION.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org
+sudo tee -a /etc/yum.repos.d/mongodb-org-$MONGODB_VERSION.repo >/dev/null <<EOF
+[mongodb-org-$MONGODB_VERSION]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/$MONGODB_VERSION/`uname -m`/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc
+EOF
+sudo rpm --import https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc
+sudo yum -y update
+sudo yum -y install mongodb-org
+sudo semanage port -a -t mongod_port_t -p tcp 27017
 sudo systemctl start mongod
 # start at boot
 sudo systemctl enable mongod
 
 # install RecordManager
-if [ "$RECMAN_DEV" = true ]; then
-  cd $RECMAN_MOUNT
+sudo mkdir -p $RECMAN_PATH
+cd $RECMAN_PATH
+if [[ "$RECMAN_BRANCH" == "master" ]]; then
+  sudo git clone $RECMAN_GIT $RECMAN_PATH
 else
-  sudo mkdir -p $RECMAN_PATH
-  cd $RECMAN_PATH
-  if [[ "$RECMAN_BRANCH" == "master" ]]; then
-    sudo git clone $RECMAN_GIT $RECMAN_PATH
-  else
-    sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
-  fi
+  sudo git clone $RECMAN_GIT --branch $RECMAN_BRANCH --single-branch $RECMAN_PATH
 fi
 # run Composer
 sudo /usr/local/bin/composer install --no-plugins --no-scripts
-# connect to MongoDB
+# create indexes
 mongosh recman dbscripts/mongo.js
 # copy some sample configurations
 sudo cp conf/abbreviations.lst.sample conf/abbreviations.lst

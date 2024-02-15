@@ -1,53 +1,50 @@
-#########################   U B U N T U  -  C O N F   #########################
+#########################   S E R V E R  -  C O N F   #########################
 # Use single quotes instead of double to work with special-character passwords
 
-# VuFind2 mount path/point of the guest machine's shared folder
-VUFIND2_MOUNT='/vufind2'
+# VuFind2 install path in the guest machine
+VUFIND2_PATH='/usr/local/vufind2'
 
 # installations
 INSTALL_VUFIND2=true               # NDL-VuFind2
 INSTALL_SOLR=true                  # Solr
 INSTALL_RECMAN=true                # RecordManager
-  INSTALL_GEOS=false               # Geocoding (use with RecordManager)
-                                   # if not working try with PHP_VERSION='8.1'
-INSTALL_IMGSERVICE=false           # FinnaImageService
+  INSTALL_GEOS=false               # Geocoding (only with RecordManager)
 
-# MySQL
-PASSWORD='root'                    # change this to your liking
+# VuFind2 GitHub config
+GITHUB_USER='NatLibFi'
+VUFIND2_GIT='https://github.com/'"$GITHUB_USER"'/NDL-VuFind2.git'
+VUFIND2_BRANCH='dev'               # used to be 'master'
+
+# MySQL/MariaDB
+SQL_ROOT_PW='root-10CHAR'          # min 10 chars + needs num/upper/special
 DATABASE='vufind2'
 SQL_USER='vufind'
-SQL_USER_PW='vufind'
+SQL_USER_PW='vufind-8CHAR'         # min 8 chars + needs num/upper/special
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
 
 # PHP config
-PHP_VERSION=''                     # use '' for system default
+# see: https://rpms.remirepo.net for working remirepo mirrors
+REMI_MIRROR='https://mirror.23m.com/remi'
+# PHP version, see: https://rpms.remirepo.net/enterprise/8/
+REMI_PHP_VERSION=8.1               # 8.1 = PHP8.1 etc.
 PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
-
-# VuFind2 cache
-LOCAL_CACHE_CLEAR=false            # clear files from /local/cache/ folders
-RSYNC=false                        # only set to 'true' when rsyncing with QEMU
 
 # VuFind2 datasources
 DATASOURCES=( fi sv en se )        # supported datasource language codes
 DATASOURCES_URL='https://www.finna-pre.fi'
 
 # Organisation info
-DEFAULT_ORG=''
+DEFAULT_ORGANISATION=''
 CONSORTIUM_INFO=false
-
-# environment for due date reminder and scheduled alert tests
-# use 127.0.0.1 instead of localhost in URL and add needed config changes
-EMAIL_TEST_ENV=false
 
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb
 NODE_VERSION=16
-ESLINT_VERSION=4                   # eslint version to install via npm
-LESS_VERSION=3.13.1                # less version to install via npm
+LESS_VERSION=3.13.1                # version to install via npm
 LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
 
@@ -70,32 +67,17 @@ SOLR_GIT='https://github.com/NatLibFi/finna-solr.git'
 SOLR_BRANCH='dev'                  # used to be 'master'
 
 # RecordManager config
-# true: use files in host, false: install RM inside guest
-RECMAN_DEV=false
-# RecordManager mount path/point of the host shared folder if RECMAN_DEV=true
-RECMAN_MOUNT='/recordmanager'
-# RecordManafer install path in the guest file system if RECMAN_DEV=false
-RECMAN_PATH='/usr/local/RecordManager'
+RECMAN_PATH='/usr/local/RecordManager-Finna'
 # MongoDB
-MONGODB_VERSION=6.0                # http://repo.mongodb.org/apt/ubuntu/dists/
-# RecordManaget dataset
+# https://repo.mongodb.org/yum/redhat/7/mongodb-org/
+MONGODB_VERSION=6.0
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
 RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
 RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
-# RecordManager GitHub config if RECMAN_DEV=false
+# RecordManager GithHub config
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager-Finna.git'
 RECMAN_BRANCH='dev'                # used to be 'master'
-
-# GEOS config
-# https://packages.ubuntu.com/search?keywords=libgeos&searchon=names
-LIBGEOS_VERSION=3.10.2
-
-# IMGSERVICE config
-# https://github.com/NatLibFi/FinnaImageService
-IMGSERVICE_PATH='/usr/local/FinnaImageService'
-IMGSERVICE_GIT='https://github.com/NatLibFi/FinnaImageService.git'
-IMGSERVICE_BRANCH='master'
 
 # timezone
 TIMEZONE='Europe/Helsinki'
