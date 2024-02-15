@@ -80,7 +80,7 @@ The default is to install & run [Finna Solr](https://github.com/NatLibFi/finna-s
   > INSTALL_RECMAN=false
 
 * Use cloned RecordManager files on the host system instead of the guest VM (dev.conf only):
-  > [RECMAN_DEV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/dev.conf.sample#L75)=true ;default: false
+  > [RECMAN_DEV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/dev.conf.sample#L74)=true ;default: false
 
 Regarding the records data:
 * default (but bare minimum for testing purposes): a sample data file exists in the [_data/_](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/tree/master/data) directory to be imported to the local Solr database via RecordManager during install
@@ -177,7 +177,7 @@ When addressing the _server_ machine, just add ` server` at the end of each comm
 Testing exists only in the _dev_ VM.
 
 - dev.conf:
-  >[EMAIL_TEST_ENV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/dev.conf.sample#L45)=true
+  >[EMAIL_TEST_ENV](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/dev.conf.sample#L44)=true
 - add the settings below & adjust the [Mail] section accordingly - you need a working mail server - in _NDL-VuFind2/local/config/vufind/config.ini_
   ```
   [Site]
