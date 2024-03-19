@@ -67,10 +67,10 @@ fi
 #sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 
 # install MySQL
-rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
 sudo wget https://repo.mysql.com/mysql80-community-release-el9.rpm
 sudo rpm -ivh mysql80-community-release-el9.rpm
-sudo yum -y install mysql-server
+sudo yum -y install mysql-community-server
 sudo systemctl start mysqld
 # change database root password
 mysqladmin --user=root --password=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $13}') password $SQL_ROOT_PW
@@ -90,7 +90,7 @@ SQL="${Q1}${Q2}${Q3}${Q4}${Q5}${Q6}${Q7}"
 $MYSQL -uroot -p$SQL_ROOT_PW -e "$SQL"
 
 # start MySQL at boot
-sudo systemctl enable mysqld
+sudo systemctl enable mysqld --now
 
 # set security settings for Apache
 #sudo chcon -R unconfined_u:object_r:httpd_sys_content_t:s0 /usr/local/vufind2/
