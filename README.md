@@ -147,9 +147,11 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
 
     `vagrant ssh -c "less2css"` to compile less to css, or
     
-    `vagrant ssh -c "eslint-finna"` to run eslint, or
-    
     `vagrant ssh -c "sudo service apache2 restart"` to restart Apache etc.
+
+    `vagrant ssh -c "phing ..."` to run phing tasks, e.g.
+     - `vagrant ssh -c "phing php-cs-fixer"` etc.
+
 * `vagrant ssh -c "neofetch"`
   - VM system info
 * `vagrant port`
