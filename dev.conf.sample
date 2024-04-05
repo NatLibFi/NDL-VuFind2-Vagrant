@@ -44,7 +44,7 @@ CONSORTIUM_INFO=false
 EMAIL_TEST_ENV=false
 
 # node & less config
-# see: https://github.com/nodesource/distributions/tree/master/deb
+# see: https://github.com/nodesource/distributions/tree/master/
 NODE_VERSION=18
 ESLINT_VERSION=latest                   # eslint version to install via npm
 LESS_VERSION=3.13.1                # less version to install via npm
