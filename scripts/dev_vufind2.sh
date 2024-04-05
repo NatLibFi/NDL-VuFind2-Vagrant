@@ -115,12 +115,12 @@ npm init -y
 npm i --package-lock-only
 npm audit
 # do not run this with sudo
-tee -a /usr/local/bin/eslint-finna >/dev/null <<EOF
-cd /vufind2
-/vufind2/vendor/phing/phing/bin/phing eslint-finna
-cd
+tee -a /usr/local/bin/phing >/dev/null <<EOF
+#!/usr/bin/env bash
+cd $VUFIND2_MOUNT
+vendor/phing/phing/bin/phing \$1
 EOF
-sudo chmod a+x /usr/local/bin/eslint-finna
+sudo chmod a+x /usr/local/bin/phing
 # do not run this with sudo
 tee -a /usr/local/bin/less2css >/dev/null <<EOF
 #!/usr/bin/env bash
