@@ -32,7 +32,7 @@ LOCAL_CACHE_CLEAR=false            # clear files from /local/cache/ folders
 RSYNC=false                        # only set to 'true' when rsyncing with QEMU
 
 # VuFind2 datasources
-DATASOURCES=( fi sv en se )        # supported datasource language codes
+DATASOURCES=( fi sv en-gb se )        # supported datasource language codes
 DATASOURCES_URL='https://www.finna-pre.fi'
 
 # Organisation info
