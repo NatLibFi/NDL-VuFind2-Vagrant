@@ -118,7 +118,7 @@ npm audit
 tee -a /usr/local/bin/phing >/dev/null <<EOF
 #!/usr/bin/env bash
 cd $VUFIND2_MOUNT
-vendor/phing/phing/bin/phing \$1
+vendor/phing/phing/bin/phing $PHING_VARS
 EOF
 sudo chmod a+x /usr/local/bin/phing
 # do not run this with sudo

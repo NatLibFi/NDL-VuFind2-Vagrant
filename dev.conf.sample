@@ -46,10 +46,11 @@ EMAIL_TEST_ENV=false
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/
 NODE_VERSION=18
-ESLINT_VERSION=latest                   # eslint version to install via npm
+ESLINT_VERSION=latest              # eslint version to install via npm
 LESS_VERSION=3.13.1                # less version to install via npm
 LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
 LESS_RUN=true                      # run lessc while provisioning
+PHING_VARS='$1'                    # add $2 $3 etc. if needed
 
 # Solr config                      # You will also need RecordManager!
 # Separately installing one without the other is only useful for debugging
