@@ -32,7 +32,7 @@ sudo a2enmod headers
 
 # install PHP
 echo | sudo add-apt-repository ppa:ondrej/php
-sudo apt-get install -y php$PHP_VERSION libapache2-mod-php$PHP_VERSION php$PHP_VERSION-dev php-pear php-json php$PHP_VERSION-mysql php$PHP_VERSION-xml php$PHP_VERSION-intl php$PHP_VERSION-gd php$PHP_VERSION-curl php$PHP_VERSION-mbstring php$PHP_VERSION-soap php$PHP_VERSION-common
+sudo apt-get install -y php$PHP_VERSION libapache2-mod-php$PHP_VERSION php$PHP_VERSION-dev php-pear php-json php$PHP_VERSION-mysql php$PHP_VERSION-xml php$PHP_VERSION-intl php$PHP_VERSION-gd php$PHP_VERSION-curl php$PHP_VERSION-mbstring php$PHP_VERSION-soap php$PHP_VERSION-common php$PHP_VERSION-ldap
 
 if [ -z "$PHP_VERSION" ]; then
   sudo phpenmod mbstring
@@ -80,4 +80,7 @@ if [ "$INSTALL_SOLR" = true ]; then
 fi
 if [ "$INSTALL_RECMAN" = true ]; then
   source /vagrant/scripts/dev_recman.sh
+fi
+if [ "$INSTALL_ADMINTERFACE" = true ]; then
+  source /vagrant/scripts/dev_adminterface.sh
 fi

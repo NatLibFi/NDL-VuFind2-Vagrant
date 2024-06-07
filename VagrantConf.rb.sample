@@ -16,6 +16,11 @@ module VagrantConf
   UICPath = '../finna-ui-components'
   UICMountPath = '/finna-ui-components'
 
+  # relative path to the cloned directory of admininterface3 from Github
+  AdmIntPath = '../admininterface3'
+  # Make this match the ADMIN_MOUNT in admin.conf
+  AdmIntMountPath = '/admininterface3'
+
   ## Virtual Machine settings
 
   # The amount of memory in megabytes used by each virtual machine

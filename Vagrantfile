@@ -106,6 +106,10 @@ Vagrant.configure(2) do |config|
           dev.vm.synced_folder UICPath, UICMountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
+        if Dir.exists?(AdmIntPath)
+          dev.vm.synced_folder AdmIntPath, AdmIntMountPath, type: "nfs",
+          nfs_version: NFSVersion, nfs_udp: NFSUDP
+        end
 
         # Share the cache folder and allow guest machine write access
         dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache", type: "nfs",
@@ -122,6 +126,9 @@ Vagrant.configure(2) do |config|
         end
         if Dir.exists?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath
+        end
+        if Dir.exists?(AdmIntPath)
+          dev.vm.synced_folder AdmIntPath, AdmIntMountPath
         end
         # Share the cache folder and allow guest machine write access
         dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
@@ -142,6 +149,10 @@ Vagrant.configure(2) do |config|
         end
         if Dir.exists?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath,
+            type: "smb", smb_host: "10.0.2.2"
+        end
+        if Dir.exists?(AdmIntPath)
+          dev.vm.synced_folder AdmIntPath, AdmIntMountPath,
             type: "smb", smb_host: "10.0.2.2"
         end
         # Share the cache folder and allow guest machine write access
@@ -166,6 +177,9 @@ Vagrant.configure(2) do |config|
         if Dir.exists?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath, type: "rsync"
         end
+        if Dir.exists?(AdmIntPath)
+          dev.vm.synced_folder AdmIntPath, AdmIntMountPath, type: "rsync"
+        end
       else
         puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
         exit
@@ -182,6 +196,10 @@ Vagrant.configure(2) do |config|
       end
       if Dir.exists?(UICPath)
         dev.vm.synced_folder UICPath, UICMountPath,
+          type: "smb", smb_host: "10.0.2.2"
+      end
+      if Dir.exists?(AdmIntPath)
+        dev.vm.synced_folder AdmIntPath, AdmIntMountPath,
           type: "smb", smb_host: "10.0.2.2"
       end
       # Share the cache folder and allow guest machine write access

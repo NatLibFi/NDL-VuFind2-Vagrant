@@ -11,12 +11,17 @@ INSTALL_RECMAN=true                # RecordManager
   INSTALL_GEOS=false               # Geocoding (use with RecordManager)
                                    # if not working try with PHP_VERSION='8.1'
 INSTALL_IMGSERVICE=false           # FinnaImageService
+INSTALL_ADMINTERFACE=false         # Admin Interface development
 
 # MySQL
 PASSWORD='root'                    # change this to your liking
 DATABASE='vufind2'
 SQL_USER='vufind'
 SQL_USER_PW='vufind'
+# AdminInterface
+ADMINT_DATABASE='admininterface3'
+ADMINT_SQL_USER='admininterface3'
+ADMINT_SQL_USER_PW='secret'
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
@@ -97,6 +102,12 @@ LIBGEOS_VERSION=3.10.2
 IMGSERVICE_PATH='/usr/local/FinnaImageService'
 IMGSERVICE_GIT='https://github.com/NatLibFi/FinnaImageService.git'
 IMGSERVICE_BRANCH='master'
+
+# AdminInterface config
+# AdminInterface mount path/point of the host shared folder
+ADMINTERFACE_MOUNT='/admininterface3'
+ADMINTERFACE_DEFAULT_PATH='/data/admininterface3'
+ADMINTERFACE_LOG_PATH='/var/log/admininterface3'
 
 # timezone
 TIMEZONE='Europe/Helsinki'
