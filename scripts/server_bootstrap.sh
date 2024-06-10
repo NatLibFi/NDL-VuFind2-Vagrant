@@ -30,7 +30,7 @@ sudo yum -y install httpd unzip wget
 # install php
 sudo dnf module reset php
 sudo dnf module enable php:remi-$REMI_PHP_VERSION -y
-sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap
+sudo yum -y install php php-devel php-intl php-mysql php-xml php-gd php-mbstring php-curl php-pear php-soap php-zip
 
 # configure php: display_errors = On, short_open_tag = On, opcache.enable=0
 sudo sed -i -e 's/display_errors = Off/display_errors = On/g' /etc/php.ini
