@@ -31,7 +31,7 @@ sudo a2enmod rewrite
 sudo a2enmod headers
 
 # install PHP
-echo | sudo add-apt-repository ppa:ondrej/php
+echo | sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 sudo apt-get install -y php$PHP_VERSION libapache2-mod-php$PHP_VERSION php$PHP_VERSION-dev php-pear php-json php$PHP_VERSION-mysql php$PHP_VERSION-xml php$PHP_VERSION-intl php$PHP_VERSION-gd php$PHP_VERSION-curl php$PHP_VERSION-mbstring php$PHP_VERSION-soap php$PHP_VERSION-common php$PHP_VERSION-ldap php$PHP_VERSION-zip
 
 if [ -z "$PHP_VERSION" ]; then

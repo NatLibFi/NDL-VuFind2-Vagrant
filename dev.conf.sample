@@ -13,15 +13,17 @@ INSTALL_RECMAN=true                # RecordManager
 INSTALL_IMGSERVICE=false           # FinnaImageService
 INSTALL_ADMINTERFACE=false         # Admin Interface development
 
-# MySQL
+# Database
 PASSWORD='root'                    # change this to your liking
 DATABASE='vufind2'
 SQL_USER='vufind'
 SQL_USER_PW='vufind'
-# AdminInterface
 ADMINT_DATABASE='admininterface3'
 ADMINT_SQL_USER='admininterface3'
 ADMINT_SQL_USER_PW='secret'
+MATOMO_DATABASE='piwik'
+MATOMO_SQL_USER='piwik'
+MATOMO_SQL_USER_PW='secret'
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
@@ -108,6 +110,11 @@ IMGSERVICE_BRANCH='master'
 ADMINTERFACE_MOUNT='/admininterface3'
 ADMINTERFACE_DEFAULT_PATH='/data/admininterface3'
 ADMINTERFACE_LOG_PATH='/var/log/admininterface3'
+
+# Matomo
+MATOMO_PATH='/data/matomo'
+MATOMO_VERSION='latest'            # https://builds.matomo.org
+MATOMO_PLUGIN_VERSION=5.0.2        # https://plugins.matomo.org/CustomVariables
 
 # timezone
 TIMEZONE='Europe/Helsinki'
