@@ -180,6 +180,11 @@ Vagrant.configure(2) do |config|
         if Dir.exists?(AdmIntPath)
           dev.vm.synced_folder AdmIntPath, AdmIntMountPath, type: "rsync"
         end
+        if Vagrant.has_plugin?("vagrant-gatling-rsync")
+          dev.vm.gatling.rsync_on_startup = RsyncGatlingAuto
+          dev.vm.gatling.latency = RsyncGatlingLatency
+          dev.vm.gatling.time_format = RsyncGatlingTimeFormat
+        end
       else
         puts "QEMU provider only supports SMB sharing or RSync. Check your VagrantConf.rb file"
         exit

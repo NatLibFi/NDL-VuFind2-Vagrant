@@ -47,6 +47,20 @@ module VagrantConf
     # default: false
     NFSUDP = false
 
+  # Gatling Rsync plugin autostart if installed
+  # See https://github.com/smerrill/vagrant-gatling-rsync
+  # default: true
+  RsyncGatlingAuto = true
+
+    # Gatling Rsync threshold latency in seconds
+    # default: 1.5
+    RsyncGatlingLatency = 1.5
+
+    # Gatling Rsync time format
+    # See https://ruby-doc.org/core-2.0.0/Time.html#method-i-strftime
+    # default:  "%I:%M:%S %p"
+    RsyncGatlingTimeFormat = "%H:%M:%S"
+
   # Provider for virtual machine: virtualbox | qemu | libvirt | hyperv 
   # hyperv is untested, but SMBv1 needs to be enabled in Windows
   # default: virtualbox
