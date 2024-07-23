@@ -113,8 +113,14 @@ ADMINTERFACE_LOG_PATH='/var/log/admininterface3'
 
 # Matomo
 MATOMO_PATH='/data/matomo'
-MATOMO_VERSION='latest'            # https://builds.matomo.org
-MATOMO_PLUGIN_VERSION=5.0.2        # https://plugins.matomo.org/CustomVariables
+MATOMO_VERSION=4.11.0              # https://builds.matomo.org
+MATOMO_PLUGIN_VERSION=4.1.1        # https://plugins.matomo.org/CustomVariables
+# NOTE: you can use value 'latest' with either/both above with single quotes
+
+# Analytics
+ANALYTICS_USER_TOKEN=replace-this-with-your-own-token
+ANALYTICS_ADMIN_TOKEN=replace-this-with-your-own-token
+ANALYTICS_URL=http://analytics.finna.local/
 
 # timezone
 TIMEZONE='Europe/Helsinki'

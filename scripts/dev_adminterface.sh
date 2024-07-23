@@ -88,6 +88,24 @@ sudo cp $ADMINTERFACE_MOUNT/config/piwik/config.ini.php $MATOMO_PATH/config/
 sudo ln -s $ADMINTERFACE_MOUNT/config/apache/analytics.conf /etc/apache2/conf-enabled/analytics.conf
 sudo chown -R www-data:www-data /data/matomo/config /data/matomo/tmp
 
+#fix Vufind config
+if [ "$INSTALL_VUFIND2" = true ]; then
+  sed -i -e 's,url = https://analytics.jotain.jossain/,url = '$ANALYTICS_URL',' $VUFIND2_MOUNT/local/config/finna/config.ini
+  # config file extension(s)
+  FileExt=( ini )
+  # copy sample configs to ini files
+  cd $ADMINTERFACE_MOUNT/local/config/vufind
+  for i in "${FileExt[@]}"; do
+    for x in *.$i.sample; do
+      t=${x%.$i.sample}.$i
+      if [[ -f $x ]] && [[ ! -f $t ]]; then
+        cp $x $t
+      fi
+    done
+  done
+  sudo sed -E -i 's,database.+= mysql://vufind2:secret@localhost/vufind2,database = mysql://'$SQL_USER':'$SQL_USER_PW'@localhost/'$DATABASE',' $ADMINTERFACE_MOUNT/local/config/vufind/config.ini
+fi
+
 if [ "$INSTALL_VUFIND2" = false ]; then
   # install MariaDB and give password to installer
   sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
@@ -119,8 +137,8 @@ $ADMINTERFACE_MOUNT/console doctrine-module data-fixture:import institutions
 $ADMINTERFACE_MOUNT/console doctrine-module data-fixture:import users
 
 # fix curated materials URLs
-sudo sed -i -u 's,entry_url.+, entry_url = http://aineistopaketit.finna.local:8081/admininterface3/entry,' $ADMINTERFACE_MOUNT/config/vufind/curatedMaterials.ini
-sudo sed -i -u 's,logout_url.+, logout_url = http://aineistopaketit.finna.local:8081/admininterface3/entry,' $ADMINTERFACE_MOUNT/config/vufind/curatedMaterials.ini
+sudo sed -E -i 's,entry_url.+,entry_url = http://aineistopaketit.finna.local/admininterface3/entry,' $ADMINTERFACE_MOUNT/config/vufind/curatedMaterials.ini
+sudo sed -E -i 's,logout_url.+,logout_url = http://aineistopaketit.finna.local/admininterface3/logout,' $ADMINTERFACE_MOUNT/config/vufind/curatedMaterials.ini
 
 # Crontab
 crontab $ADMINTERFACE_MOUNT/config/crontab/admininterface

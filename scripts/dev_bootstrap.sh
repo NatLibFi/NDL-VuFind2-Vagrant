@@ -65,11 +65,10 @@ if [ "$INSTALL_VUFIND2" = true ]; then
   source /vagrant/scripts/dev_vufind2.sh;
 fi
 
-# restart Apache
+# Apache PHP
 if [ ! -z "$PHP_VERSION" ]; then
   sudo a2enmod php$PHP_VERSION
 fi
-sudo service apache2 reload
 
 # additional installs
 if [ "$INSTALL_IMGSERVICE" = true ]; then
@@ -84,3 +83,6 @@ fi
 if [ "$INSTALL_ADMINTERFACE" = true ]; then
   source /vagrant/scripts/dev_adminterface.sh
 fi
+
+# Restart Apache
+sudo service apache2 reload
