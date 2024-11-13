@@ -33,7 +33,7 @@ Vagrant setup for <a href="https://github.com/NatLibFi/NDL-VuFind2">NDL VuFind2<
 
   OR
 - [QEMU](https://www.qemu.org/download/#macos) (macOS only)  
-  Note: For Apple M1/M2 CPUs this is the only tested option
+  Note: For Apple Silicon CPUs this is the only tested option
  
   OR 
 - [libvirt](https://libvirt.org/index.html) (Linux only)
@@ -256,7 +256,7 @@ If this is not the case try VBoxManage:
   - Linux users, NFS must be used with libvirt provider. To avoid being asked for credentials at every `vagrant up` & `vagrant destroy` either manually modify sudoers or run `sudo scripts/nfs-sudoers_ubuntu.sh` or `sudo scripts/nfs-sudoers_fedora.sh` based on your platform. Please see <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> for details.
   - Windows users may want to try [Vagrant WinNFSd](https://github.com/winnfsd/vagrant-winnfsd) as by default NFS synced folders are ignored by Vagrant - yet again, this is untested!
 - On macOS, VirtualBox v6.1.x is known also to have some permission issues on occasion. Make sure you have given full disk access to Terminal in _System Prefences > Security & Privacy > Privacy_ (also check for relevant programs if using e.g. iTerm2 or integrated terminal in VSCode etc.).
-- Apple M1/M2 CPU users should use QEMU provider, which is limited to SMB sharing or RSync. VirtualBox [developer preview](https://www.virtualbox.org/wiki/Downloads) for Apple silicon may work but is untested.
+- Apple Silicon CPU users should use QEMU provider, which is limited to SMB sharing or RSync. VirtualBox [developer preview](https://www.virtualbox.org/wiki/Downloads) for Apple silicon may work but is untested.
 - QEMU provider ignores high-level network configurations and causes a conflict with SSH port forwarding if _dev_ & _server_ VMs are tried to be run simultaneously. Other providers shouldn't have this limitation given the host has enough resources.
 - QEMU and libvirt providers may prompt to destroy both VMs at `vagrant destroy` even when the other one is not running. If this is confusing, target the wanted VM using `vagrant destroy dev` or `vagrant destroy server`.
 - SMB sharing will first ask sudo password and later user credentials at `vagrant up`. User credentials are also asked at `vagrant destroy`.
