@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 # make sure the VagrantConf.rb exists
-if !(File.exists?('VagrantConf.rb'))
+if !(File.exist?('VagrantConf.rb'))
   puts "VagrantConf.rb file DOES NOT EXIST!"
   puts "Copying from VagrantConf.rb.sample as default configuration..."
   File.write('VagrantConf.rb', File.open('VagrantConf.rb.sample').read())
@@ -18,12 +18,12 @@ when nil, "dev"
   if ARGV[0] == "up"
     conf = 'dev.conf'
     sample = conf + '.sample'
-    if !(Dir.exists?(VufindPath))
+    if !(Dir.exist?(VufindPath))
       puts VufindPath + " directory DOES NOT EXIST!"
       puts "Clone/copy the NDL-VuFind2 files & check the path in VagrantConf.rb"
       exit
     end
-    if !(File.exists?(conf))
+    if !(File.exist?(conf))
       puts conf + " file DOES NOT EXIST!"
       puts "Copying from " + sample + "..."
       File.write(conf, File.open(sample).read())
@@ -38,7 +38,7 @@ when "server"
   if ARGV[0] == "up"
     conf = 'server.conf'
     sample = conf + '.sample' 
-    if !(File.exists?(conf))
+    if !(File.exist?(conf))
       puts conf + " file DOES NOT EXIST!"
       puts "Copying from " + sample + "..."
       File.write(conf, File.open(sample).read())
@@ -98,11 +98,11 @@ Vagrant.configure(2) do |config|
         end
         dev.vm.synced_folder VufindPath, MountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
-        if Dir.exists?(RMPath)
+        if Dir.exist?(RMPath)
           dev.vm.synced_folder RMPath, RMMountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
-        if Dir.exists?(UICPath)
+        if Dir.exist?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath, type: "nfs",
           nfs_version: NFSVersion, nfs_udp: NFSUDP
         end
@@ -117,10 +117,10 @@ Vagrant.configure(2) do |config|
           exit
         end  
         dev.vm.synced_folder VufindPath, MountPath
-        if Dir.exists?(RMPath)
+        if Dir.exist?(RMPath)
           dev.vm.synced_folder RMPath, RMMountPath
         end
-        if Dir.exists?(UICPath)
+        if Dir.exist?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath
         end
         # Share the cache folder and allow guest machine write access
@@ -136,11 +136,11 @@ Vagrant.configure(2) do |config|
           type: "smb", smb_host: "10.0.2.2"
         dev.vm.synced_folder VufindPath, MountPath,
           type: "smb", smb_host: "10.0.2.2"
-        if Dir.exists?(RMPath)
+        if Dir.exist?(RMPath)
           dev.vm.synced_folder RMPath, RMMountPath,
             type: "smb", smb_host: "10.0.2.2"
         end
-        if Dir.exists?(UICPath)
+        if Dir.exist?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath,
             type: "smb", smb_host: "10.0.2.2"
         end
@@ -160,10 +160,10 @@ Vagrant.configure(2) do |config|
             "/local/languages/finna/en-gb-datasources.ini",
             "/themes/finna2/css/finna.css"
           ]
-        if Dir.exists?(RMPath)
+        if Dir.exist?(RMPath)
           dev.vm.synced_folder RMPath, RMMountPath, type: "rsync"
         end
-        if Dir.exists?(UICPath)
+        if Dir.exist?(UICPath)
           dev.vm.synced_folder UICPath, UICMountPath, type: "rsync"
         end
       else
@@ -176,11 +176,11 @@ Vagrant.configure(2) do |config|
         type: "smb", smb_host: "10.0.2.2"
       dev.vm.synced_folder VufindPath, MountPath,
         type: "smb", smb_host: "10.0.2.2"
-      if Dir.exists?(RMPath)
+      if Dir.exist?(RMPath)
         dev.vm.synced_folder RMPath, RMMountPath,
           type: "smb", smb_host: "10.0.2.2"
       end
-      if Dir.exists?(UICPath)
+      if Dir.exist?(UICPath)
         dev.vm.synced_folder UICPath, UICMountPath,
           type: "smb", smb_host: "10.0.2.2"
       end
