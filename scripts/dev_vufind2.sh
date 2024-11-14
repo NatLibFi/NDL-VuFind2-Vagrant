@@ -95,7 +95,6 @@ sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /
 sudo chmod a+x /usr/local/bin/composer
 cd $VUFIND2_MOUNT
 sudo su vagrant -c '/usr/local/bin/composer install --no-plugins --no-scripts'
-cd
 
 # create log file and change owner
 sudo touch /var/log/vufind2.log
@@ -107,12 +106,13 @@ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg 
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 sudo apt-get update
 sudo apt-get install -y nodejs
+# needed for less
 sudo npm install -g less@$LESS_VERSION
 sudo npm install -g less-plugin-clean-css
-sudo npm install -g eslint@$ESLINT_VERSION
+#sudo npm install -g eslint@$ESLINT_VERSION
+# do not run this with sudo
+npm install
 #check npm vulnerabilities
-npm init -y
-npm i --package-lock-only
 npm audit
 # do not run this with sudo
 tee -a /usr/local/bin/phing >/dev/null <<EOF
@@ -132,6 +132,17 @@ EOF
 sudo chmod a+x /usr/local/bin/less2css
 if [ "$LESS_RUN" = true ]; then
   /usr/local/bin/less2css
+fi
+# do not run this with sudo
+tee -a /usr/local/bin/less2sass >/dev/null <<EOF
+#!/usr/bin/env bash
+cd $VUFIND2_MOUNT
+npm run finna:lessToSass
+cd
+EOF
+sudo chmod a+x /usr/local/bin/less2sass
+if [ "$SASS_RUN" = true ]; then
+  /usr/local/bin/less2sass
 fi
 
 # download datasources translation strings
