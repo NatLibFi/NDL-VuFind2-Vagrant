@@ -146,7 +146,13 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
   - use option `-c` to run commands in guest via ssh e.g.
 
     `vagrant ssh -c "less2css"` to compile less to css, or
-    
+
+    `vagrant ssh -c "less2sass"` to update scss from less, or
+
+    `vagrant ssh -c "check-scss"` to check for problems in scss, or
+
+    `vagrant ssh -c "build-scss"` to build scss, or
+
     `vagrant ssh -c "sudo service apache2 restart"` to restart Apache etc.
 
     `vagrant ssh -c "phing ..."` to run phing tasks, e.g.
