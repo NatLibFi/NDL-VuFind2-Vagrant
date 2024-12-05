@@ -145,10 +145,6 @@ Both machines can be run simultaneously provided the host has enough oomph–exc
   - login to the running virtual machine (vagrant:vagrant) e.g. to restart Apache `sudo service apache2 restart` or to check Apache logs `sudo tail -f /var/log/apache2/error.log`, `sudo tail -f /var/log/apache2/access.log`
   - use option `-c` to run commands in guest via ssh e.g.
 
-    `vagrant ssh -c "less2css"` to compile less to css, or
-
-    `vagrant ssh -c "less2sass"` to update scss from less, or
-
     `vagrant ssh -c "check-scss"` to check for problems in scss, or
 
     `vagrant ssh -c "build-scss"` to build scss, or
