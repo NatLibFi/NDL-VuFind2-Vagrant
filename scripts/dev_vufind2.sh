@@ -106,10 +106,6 @@ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg 
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 sudo apt-get update
 sudo apt-get install -y nodejs
-# needed for less
-sudo npm install -g less@$LESS_VERSION
-sudo npm install -g less-plugin-clean-css
-#sudo npm install -g eslint@$ESLINT_VERSION
 # do not run this with sudo
 npm install
 #check npm vulnerabilities
@@ -122,37 +118,7 @@ cd $VUFIND2_MOUNT
 vendor/phing/phing/bin/phing $PHING_VARS
 EOF
 sudo chmod a+x /usr/local/bin/phing
-# less2css: do not run this with sudo
-tee -a /usr/local/bin/less2css >/dev/null <<EOF
-#!/usr/bin/env bash
-lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_MOUNT/themes/finna2/less/finna.less > $VUFIND2_MOUNT/themes/finna2/css/finna.css
-if [ -f $VUFIND_MOUNT/themes/custom/less/finna.less ]; then
-  lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_MOUNT/themes/custom/less/finna.less > $VUFIND2_MOUNT/themes/custom/css/finna.css
-fi
-EOF
-sudo chmod a+x /usr/local/bin/less2css
-if [ "$LESS_RUN" = true ]; then
-  /usr/local/bin/less2css
-fi
-# less2sass: do not run this with sudo
-tee -a /usr/local/bin/less2sass >/dev/null <<EOF
-#!/usr/bin/env bash
-cd $VUFIND2_MOUNT
-npm run finna:lessToSass
-cd
-EOF
-sudo chmod a+x /usr/local/bin/less2sass
-if [ "$SASS_RUN" = true ]; then
-  /usr/local/bin/less2sass
-fi
-# check-scss: do not run this with sudo
-tee -a /usr/local/bin/check-scss >/dev/null <<EOF
-#!/usr/bin/env bash
-cd $VUFIND2_MOUNT
-npm run finna:check:scss
-cd
-EOF
-sudo chmod a+x /usr/local/bin/check-scss
+
 # build-css: do not run this with sudo
 tee -a /usr/local/bin/build-scss >/dev/null <<EOF
 #!/usr/bin/env bash
@@ -161,6 +127,9 @@ npm run finna:build:scss
 cd
 EOF
 sudo chmod a+x /usr/local/bin/build-scss
+if [ "$SCSS_BUILD" = true ]; then
+  /usr/local/bin/build-scss
+fi
 
 # download datasources translation strings
 for i in "${DATASOURCES[@]}"; do
