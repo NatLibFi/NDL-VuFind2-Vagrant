@@ -11,6 +11,7 @@ echo "========================="
 # install git & clone repository
 sudo yum -y install git
 sudo mkdir -p $VUFIND2_PATH
+git config --global --add safe.directory $VUFIND2_PATH
 if [[ "$VUFIND2_BRANCH" == "dev" ]]; then
   sudo git clone $VUFIND2_GIT $VUFIND2_PATH
   # if you want to be prompted for password, use the line below instead
@@ -68,8 +69,8 @@ fi
 
 # install MySQL
 sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
-sudo wget https://repo.mysql.com/mysql80-community-release-el9.rpm
-sudo rpm -ivh mysql80-community-release-el9.rpm
+sudo wget https://repo.mysql.com/mysql80-community-release-el9-5.noarch.rpm
+sudo rpm -ivh mysql80-community-release-el9-5.noarch.rpm
 sudo yum -y install mysql-community-server
 sudo systemctl start mysqld
 # change database root password
@@ -119,32 +120,9 @@ if [ ! -h /etc/httpd/conf.d/vufind2.conf ]; then
   sudo sed -i -e 's/php_value short_open_tag On/#php_value short_open_tag On/g' /usr/local/vufind2/local/httpd-vufind.conf
 fi
 
-# install node.js & less 2.7.1 + less-plugin-clean-css
-# https://github.com/nodesource/distributions
-#curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | sudo bash -
-# add key
-sudo update-crypto-policies --set DEFAULT:SHA1
-rpm --import https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
-# install node.js
-sudo yum install https://rpm.nodesource.com/pub_$NODE_VERSION.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
-sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
-# see https://forums.fedoraforum.org/showthread.php?320926-failovemethod-option
-#sudo sed -i -e '/^failovermethod=/d' /etc/yum.repos.d/*.repo
-#sudo yum -y install nodejs
-# do not run these with sudo
-npm install -g less@$LESS_VERSION
-npm install -g less-plugin-clean-css
-tee -a /usr/local/bin/less2css >/dev/null <<EOF
-#!/usr/bin/env bash
-sudo su -c 'lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/finna2/less/finna.less > $VUFIND2_PATH/themes/finna2/css/finna.css'
-if [ -f $VUFIND_PATH/themes/custom/less/finna.less ]; then
-  sudo su -c 'lessc --clean-css="$LESS_CLEAN_CSS_OPTIONS" $VUFIND2_PATH/themes/custom/less/finna.less > $VUFIND2_PATH/themes/custom/css/finna.css'
-fi
-EOF
-sudo chmod a+x /usr/local/bin/less2css
-if [ "$LESS_RUN" = true ]; then  
-  /usr/local/bin/less2css
-fi
+# see https://cloudspinx.com/how-to-install-node-js-on-rocky-linux/
+sudo dnf module reset nodejs -y
+sudo dnf module install -y nodejs:$NODE_VERSION
 
 # give Apache permissions to use the cache and config
 sudo chown -R apache:apache /usr/local/vufind2/local/cache/
@@ -166,8 +144,24 @@ sudo su -c 'source /etc/profile.d/vufind.sh'
 cd $VUFIND2_PATH
 sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /usr/local/bin/composer
 sudo chmod a+x /usr/local/bin/composer
-sudo /usr/local/bin/composer install --no-plugins --no-scripts
+export COMPOSER_ALLOW_SUPERUSER=1 
+/usr/local/bin/composer update
+/usr/local/bin/composer install --no-plugins --no-scripts
+/usr/local/bin/composer install-build-deps
+/usr/local/bin/composer dump-autoload
 cd
+
+# build-css: do not run this with sudo
+tee -a /usr/local/bin/build-scss >/dev/null <<EOF
+#!/usr/bin/env bash
+cd $VUFIND2_MOUNT
+npm run finna:build:scss
+cd
+EOF
+sudo chmod a+x /usr/local/bin/build-scss
+if [ "$SCSS_BUILD" = true ]; then
+  /usr/local/bin/build-scss
+fi
 
 # download datasources translation strings
 for i in "${DATASOURCES[@]}"; do

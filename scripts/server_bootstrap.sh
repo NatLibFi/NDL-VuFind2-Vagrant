@@ -15,6 +15,7 @@ sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 # Add Epel & Remi repos for php & update yum
+sudo dnf config-manager --set-enabled crb
 sudo dnf install -y epel-release
 sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
 sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-9.rpm

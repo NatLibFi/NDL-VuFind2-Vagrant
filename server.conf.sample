@@ -43,10 +43,8 @@ CONSORTIUM_INFO=false
 
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb
-NODE_VERSION=16
-LESS_VERSION=3.13.1                # version to install via npm
-LESS_CLEAN_CSS_OPTIONS='--s0 --advanced --compatibility=ie8'
-LESS_RUN=true                      # run lessc while provisioning
+NODE_VERSION=20
+SCSS_BUILD=false                   # build SCSS files while provisioning
 
 # Solr config                      # You will also need RecordManager!
 # Separately installing one without the other is only useful for debugging

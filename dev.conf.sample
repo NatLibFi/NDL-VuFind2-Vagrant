@@ -45,8 +45,8 @@ EMAIL_TEST_ENV=false
 
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/
-NODE_VERSION=18
-SCSS_BUILD=true                    # build SCSS files while provisioning
+NODE_VERSION=20
+SCSS_BUILD=false                   # build SCSS files while provisioning
 PHING_VARS='$1'                    # add $2 $3 etc. if needed
 
 # Solr config                      # You will also need RecordManager!
