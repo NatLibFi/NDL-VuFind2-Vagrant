@@ -76,6 +76,7 @@ RECMAN_MOUNT='/recordmanager'
 RECMAN_PATH='/usr/local/RecordManager'
 # MongoDB
 MONGODB_VERSION=6.0                # http://repo.mongodb.org/apt/ubuntu/dists/
+MONGODB_PHP_DRIVER=1.21.0          # https://github.com/mongodb/mongo-php-driver/releases
 # RecordManaget dataset
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 

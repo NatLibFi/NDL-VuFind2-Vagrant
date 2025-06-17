@@ -25,7 +25,7 @@ fi
 
 # MongoDB driver
 sudo pecl channel-update pecl.php.net
-sudo sh -c 'echo no | sudo pecl install mongodb'
+sudo sh -c "echo no | sudo pecl install mongodb-$MONGODB_PHP_DRIVER"
 sudo sh -c 'echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`'
 sudo service apache2 reload
 sudo pear channel-update pear.php.net
