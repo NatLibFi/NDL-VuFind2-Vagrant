@@ -103,6 +103,15 @@ npm install
 #check npm vulnerabilities
 npm audit
 
+# clear VuFind2 vendor directory
+if [ "$VENDOR_CLEAR" = true ]; then
+  echo
+  echo "Clearing VuFind2 vendor directory files..."
+  find $VUFIND2_MOUNT/vendor/ \( ! -regex '.*/\..*' \) -name "*" -type f -delete
+  echo "...done!"
+fi
+
+sleep 10
 # install Composer (globally) - see: https://github.com/Varying-Vagrant-Vagrants/VVV/issues/986
 sudo curl -sS https://getcomposer.org/composer-$COMPOSER_VERSION.phar --output /usr/local/bin/composer
 sudo chmod a+x /usr/local/bin/composer
@@ -212,7 +221,7 @@ fi
 # see: https://askubuntu.com/questions/266179/how-to-exclude-ignore-hidden-files-and-directories-in-a-wildcard-embedded-find
 if [ "$LOCAL_CACHE_CLEAR" = true ]; then
   echo "Clearing VuFind2 local cache..."
-  find $VUFIND2_MOUNT/local/cache/ \( ! -regex '.*/\..*' \) -type f -name "*" -delete
+  find $VUFIND2_MOUNT/local/cache/ \( ! -regex '.*/\..*' \) -name "*" -type f -delete
   echo "...done!"
 fi
 

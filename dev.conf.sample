@@ -12,7 +12,7 @@ INSTALL_RECMAN=true                # RecordManager
                                    # if not working try with PHP_VERSION='8.1'
 INSTALL_IMGSERVICE=false           # FinnaImageService
 
-# MySQL
+# Database
 PASSWORD='root'                    # change this to your liking
 DATABASE='vufind2'
 SQL_USER='vufind'
@@ -27,8 +27,9 @@ PHP_MEMORY_LIMIT=128M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
 
-# VuFind2 cache
-LOCAL_CACHE_CLEAR=false            # clear files from /local/cache/ folders
+# VuFind2
+LOCAL_CACHE_CLEAR=false            # clear files from local/cache/ folders
+VENDOR_CLEAR=false                 # clear files from vendor/ before running composer
 RSYNC=false                        # only set to 'true' when rsyncing with QEMU
 
 # VuFind2 datasources
@@ -80,8 +81,8 @@ MONGODB_PHP_DRIVER=1.21.0          # https://github.com/mongodb/mongo-php-driver
 # RecordManaget dataset
 RECMAN_IMPORT=true
 RECMAN_SOURCE='sample'             # if 'sample', the next two default to: 
-RECMAN_DATASOURCE=''               # /vagrant/data/sample_datasources.ini
-RECMAN_DATA=''                     # /vagrant/data/sample_data.xml
+RECMAN_DATASOURCE=''               # default: /vagrant/data/sample_datasources.ini
+RECMAN_DATA=''                     # default: /vagrant/data/sample_data.xml
 # RecordManager GitHub config if RECMAN_DEV=false
 RECMAN_GIT='https://github.com/NatLibFi/RecordManager-Finna.git'
 RECMAN_BRANCH='dev'                # used to be 'master'
