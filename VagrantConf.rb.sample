@@ -45,20 +45,22 @@ module VagrantConf
   # Provider for virtual machine: virtualbox | qemu | libvirt | hyperv 
   # hyperv is untested, but SMBv1 needs to be enabled in Windows
   # default: virtualbox
-  VMProvider = 'virtualbox'
-  
+  VMProvider = 'hyperv'
+    
   # Dev Vagrant box.
   # See https://app.vagrantup.com/ubuntu and https://app.vagrantup.com/search 
   # 
   # An example to use instead if you repackage a local custom base box:
-  # DevBox = 'dev_mybox file:./dev_mybox.box'
+  # DevBox = 'dev_vufind2 file:./dev_vufind2.box'
   #
   # When VMProvider is 'virtualbox':
   DevBox = 'ubuntu/jammy64'
-  # When VMProvider is other than 'virtualbox'
-  DevBoxAlt = 'generic/ubuntu2204'
+  # When VMProvider is other than 'virtualbox' or 'hyperv'
+  DevBoxAlt = 'generic-x64/ubuntu2204'
   # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
   DevBoxARM = 'perk/ubuntu-2204-arm64'
+  # When VMPRovider is 'hyperv'
+  DevBoxHV = 'sture/ubuntu2204'
 
   # Server Vagrant box. See https://app.vagrantup.com/rockylinux
   #
@@ -79,7 +81,7 @@ module VagrantConf
   # QEmu specific settings
       # Apple CPU Architecture, 'intel' or 'arm'
       # default: intel
-      QemuHostCPU = 'intel'
+      QemuHostCPU = 'arm'
       
       # Folder sharing, 'smb' or 'rsync'
       # smb: will ask user permissions for sharing, if not working try rsync
@@ -103,5 +105,15 @@ module VagrantConf
       QemuMachineARM = 'virt,accel=hvf,highmem=on'
       QemuNetDeviceARM = 'virtio-net-device'
       QemuDirARM = '/opt/homebrew/share/qemu'
+
+  # Hyper-V specific settings
+      # Folder sharing, 'smb' or 'rsync'
+      # smb: SMBv1 needs to be enabled in Windows
+      # default: rsync
+      HVSharing = 'rsync'
+      # nested virtualization
+      HVVirt_Ext = 'true'
+      # speed up virtual hard drive
+      HVDiff_Disk = 'true'
 
 end

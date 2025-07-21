@@ -62,6 +62,8 @@ Vagrant.configure(2) do |config|
     case VMProvider
     when "virtualbox"
       dev.vm.box = DevBox
+    when "hyperv"
+      dev.vm.box = DevBoxHV
     else
       if VMProvider == "qemu" && QemuHostCPU == "arm"
         dev.vm.box = DevBoxARM
@@ -171,23 +173,42 @@ Vagrant.configure(2) do |config|
         exit
       end
     when "hyperv"
-      # SMBv1 needs to be enabled in Windows
-      dev.vm.synced_folder ".", "/vagrant",
-        type: "smb", smb_host: "10.0.2.2"
-      dev.vm.synced_folder VufindPath, MountPath,
-        type: "smb", smb_host: "10.0.2.2"
-      if Dir.exist?(RMPath)
-        dev.vm.synced_folder RMPath, RMMountPath,
+      if HVSharing == "rsync"
+        dev.vm.synced_folder ".", "/vagrant", type: "rsync"
+        dev.vm.synced_folder VufindPath, MountPath, type: "rsync",
+          rsync__exclude: [
+            "/vendor",
+            "/local/cache",
+            "/local/languages/finna/fi-datasources.ini",
+            "/local/languages/finna/sv-datasources.ini",
+            "/local/languages/finna/en-gb-datasources.ini",
+            "/themes/finna2/css/finna.css"
+            ]
+        if Dir.exist?(RMPath)
+          dev.vm.synced_folder RMPath, RMMountPath, type: "rsync"
+        end
+        if Dir.exist?(UICPath)
+          dev.vm.synced_folder UICPath, UICMountPath, type: "rsync"
+        end
+      else
+        # SMBv1 needs to be enabled in Windows
+        dev.vm.synced_folder ".", "/vagrant",
           type: "smb", smb_host: "10.0.2.2"
-      end
-      if Dir.exist?(UICPath)
-        dev.vm.synced_folder UICPath, UICMountPath,
+        dev.vm.synced_folder VufindPath, MountPath,
           type: "smb", smb_host: "10.0.2.2"
+        if Dir.exist?(RMPath)
+          dev.vm.synced_folder RMPath, RMMountPath,
+            type: "smb", smb_host: "10.0.2.2"
+        end
+        if Dir.exist?(UICPath)
+          dev.vm.synced_folder UICPath, UICMountPath,
+            type: "smb", smb_host: "10.0.2.2"
+        end
+        # Share the cache folder and allow guest machine write access
+        dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
+          type: "smb", smb_host: "10.0.2.2",
+          owner: "www-data", group: "www-data"
       end
-      # Share the cache folder and allow guest machine write access
-      dev.vm.synced_folder VufindPath + "/local/cache", MountPath + "/local/cache",
-        type: "smb", smb_host: "10.0.2.2",
-        owner: "www-data", group: "www-data"
     else
       puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
       exit
@@ -236,9 +257,13 @@ Vagrant.configure(2) do |config|
         exit
       end
     when "hyperv"
-      # SMBv1 needs to be enabled in Windows
-      server.vm.synced_folder ".", "/vagrant",
-        type: "smb", smb_host: "10.0.2.2"
+      if HVSharing == 'smb'
+        # SMBv1 needs to be enabled in Windows
+        server.vm.synced_folder ".", "/vagrant",
+          type: "smb", smb_host: "10.0.2.2"
+      else
+        server.vm.synced_folder ".", "/vagrant", disabled: true
+      end
     else
       puts "Unknown provider. Check your VMProvider in VagrantConf.rb file"
       exit
@@ -290,6 +315,9 @@ To do both of the above:
         v.net_device = QemuNetDeviceARM
         v.qemu_dir = QemuDirARM
       end
+    when "hyperv"
+        v.enable_virtualization_extensions = HVVirt_Ext
+        v.differencing_disk = HVDiff_Disk
     end
 
     # The amount of memory and cpus on the VM:
