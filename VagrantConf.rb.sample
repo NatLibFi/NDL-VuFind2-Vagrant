@@ -114,6 +114,6 @@ module VagrantConf
       # nested virtualization
       HVVirtExt = 'true'
       # speed up virtual hard drive
-      HVEnableClone = 'true'
+      HVLinkedClone = 'true'
 
 end

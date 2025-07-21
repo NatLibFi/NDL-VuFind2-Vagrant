@@ -317,7 +317,7 @@ To do both of the above:
       end
     when "hyperv"
         v.enable_virtualization_extensions = HVVirtExt
-        v.differencing_disk = HVEnableClone
+        v.linked_clone = HVLinkedClone
     end
 
     # The amount of memory and cpus on the VM:
