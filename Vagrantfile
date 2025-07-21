@@ -316,8 +316,8 @@ To do both of the above:
         v.qemu_dir = QemuDirARM
       end
     when "hyperv"
-        v.enable_virtualization_extensions = HVVirt_Ext
-        v.differencing_disk = HVDiff_Disk
+        v.enable_virtualization_extensions = HVVirtExt
+        v.differencing_disk = HVEnableClone
     end
 
     # The amount of memory and cpus on the VM:

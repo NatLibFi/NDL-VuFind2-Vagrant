@@ -112,8 +112,8 @@ module VagrantConf
       # default: rsync
       HVSharing = 'rsync'
       # nested virtualization
-      HVVirt_Ext = 'true'
+      HVVirtExt = 'true'
       # speed up virtual hard drive
-      HVDiff_Disk = 'true'
+      HVEnableClone = 'true'
 
 end
