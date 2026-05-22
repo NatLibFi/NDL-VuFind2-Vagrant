@@ -68,7 +68,7 @@ fi
 #sudo sed -i -e 's,timestamp NOT NULL,datetime NOT NULL,' $VUFIND2_PATH/module/Finna/sql/mysql.sql
 
 # install MySQL
-sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
+sudo rpm --import https://repo.mysql.com/$SQL_RPM_GPG_KEY
 sudo wget https://repo.mysql.com/mysql80-community-release-el9-5.noarch.rpm
 sudo rpm -ivh mysql80-community-release-el9-5.noarch.rpm
 sudo yum -y install mysql-community-server
@@ -154,7 +154,7 @@ cd
 # build-css: do not run this with sudo
 tee -a /usr/local/bin/build-scss >/dev/null <<EOF
 #!/usr/bin/env bash
-cd $VUFIND2_MOUNT
+cd $VUFIND2_PATH
 npm run finna:build:scss
 cd
 EOF

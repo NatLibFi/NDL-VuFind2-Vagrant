@@ -20,16 +20,19 @@ SQL_ROOT_PW='root-10CHAR'          # min 10 chars + needs num/upper/special
 DATABASE='vufind2'
 SQL_USER='vufind'
 SQL_USER_PW='vufind-8CHAR'         # min 8 chars + needs num/upper/special
+SQL_RPM_GPG_KEY='RPM-GPG-KEY-mysql-2025'
 
 # external index URL if not installing Solr + RecordManager locally.
 EXTERNAL_SOLR_URL=''
 
 # PHP config
 # see: https://rpms.remirepo.net for working remirepo mirrors
-REMI_MIRROR='https://mirror.23m.com/remi'
-# PHP version, see: https://rpms.remirepo.net/enterprise/8/
-REMI_PHP_VERSION=8.1               # 8.1 = PHP8.1 etc.
-PHP_MEMORY_LIMIT=128M              # default 128M
+REMI_MIRROR='https://mirror.fjordos.com/remi/'
+REMI_RELEASE=9
+REMI_KEY='https://rpms.remirepo.net/enterprise/'"$REMI_RELEASE"'/RPM-GPG-KEY-remi'
+# PHP version, see: https://rpms.remirepo.net/enterprise/9/
+REMI_PHP_VERSION=8.3               # 8.1 = PHP8.1 etc.
+PHP_MEMORY_LIMIT=256M              # default 128M
 # Composer
 COMPOSER_VERSION=2                 # v2 is now suitable for all used plugins
 
@@ -44,7 +47,7 @@ CONSORTIUM_INFO=false
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb
 NODE_VERSION=20
-SCSS_BUILD=false                   # build SCSS files while provisioning
+SCSS_BUILD=true                    # build SCSS files while provisioning
 
 # Solr config                      # You will also need RecordManager!
 # Separately installing one without the other is only useful for debugging

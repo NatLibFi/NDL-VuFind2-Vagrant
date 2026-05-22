@@ -14,11 +14,13 @@ sudo sed -i -e 's/SELINUX=disabled/SELINUX=enforcing/' /etc/sysconfig/selinux
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
+sudo yum -y update
+
 # Add Epel & Remi repos for php & update yum
 sudo dnf config-manager --set-enabled crb
 sudo dnf install -y epel-release
-sudo rpm --import https://rpms.remirepo.net/RPM-GPG-KEY-remi
-sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-9.rpm
+sudo rpm --import $REMI_KEY
+sudo rpm -Uvh $REMI_MIRROR/enterprise/remi-release-$REMI_RELEASE.rpm
 # if a new history file should be needed for yum, quite optional
 #sudo yum history new
 sudo yum -y update
