@@ -58,7 +58,7 @@ module VagrantConf
   # When VMProvider is other than 'virtualbox'
   DevBoxAlt = 'generic/ubuntu2204'
   # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
-  DevBoxARM = 'perk/ubuntu-2204-arm64'
+  DevBoxARM = 'perk/ubuntu-24.04-arm64'
 
   # Server Vagrant box. See https://app.vagrantup.com/rockylinux
   #
