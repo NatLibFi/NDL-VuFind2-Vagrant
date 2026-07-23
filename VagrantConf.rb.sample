@@ -54,11 +54,11 @@ module VagrantConf
   # DevBox = 'dev_mybox file:./dev_mybox.box'
   #
   # When VMProvider is 'virtualbox':
-  DevBox = 'ubuntu/jammy64'
+  DevBox = 'cloud-image/ubuntu-24.04'
   # When VMProvider is other than 'virtualbox'
-  DevBoxAlt = 'generic/ubuntu2204'
+  DevBoxAlt = 'cloud-image/ubuntu-24.04'
   # When VMPRovider is 'qemu' and QemuHostCPU is 'arm'
-  DevBoxARM = 'perk/ubuntu-24.04-arm64'
+  DevBoxARM = 'cloud-image/ubuntu-24.04'
 
   # Server Vagrant box. See https://app.vagrantup.com/rockylinux
   #
