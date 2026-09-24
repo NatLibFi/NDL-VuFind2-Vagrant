@@ -46,7 +46,7 @@ CONSORTIUM_INFO=false
 
 # node & less config
 # see: https://github.com/nodesource/distributions/tree/master/deb
-NODE_VERSION=20
+NODE_VERSION=24
 SCSS_BUILD=true                    # build SCSS files while provisioning
 
 # Solr config                      # You will also need RecordManager!
