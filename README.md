@@ -108,7 +108,7 @@ _dev_:
 
 **Note**: If RSync is enabled and you are making developement changes run:
 * `vagrant rsync-auto`
-to let vagrant keep up with the made changes and sync them into the VM–you can use another tab or start a screen session for running the command in the backround.
+to let vagrant keep up with the made changes and sync them into the VM–you can use another tab or start a screen session for running the command in the backround. See [rsync-auto](https://developer.hashicorp.com/vagrant/docs/cli/rsync-auto) for details.
 (Another way is to manually run `vagrant rsync`
 before testing the made changes but the previous command automizes this.)
 
