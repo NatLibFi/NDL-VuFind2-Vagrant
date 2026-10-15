@@ -247,6 +247,20 @@ If this is not the case try VBoxManage:
 - Try reinstalling Vagrant:  
 `brew reinstall --cask vagrant`
 
+6. Virtual machine not working despite `vagrant global-status` shows it is running.  
+- Remove VM:  
+`vagrant destroy`  
+- Provision again:
+`vagrant up`
+
+NOTE! Virtual machines DO NOT SURVIVE host reboot/shutdown.  
+- VirtualBox:  
+`vagrant suspend` before reboot/shutdown  
+`vagrant resume` after host has booted  
+- QEMU: suspend/resume is not supported, only way is to destroy & provision again  
+`vagrant destroy` before reboot/shutdown  
+`vagrant up` after host has booted
+
 ### Known Issues
 - If running Solr, [VirtualMemory](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L23) needs to be at least around 2048, which should work. Add more if/when needed considering the host has what to spare.
 - Antiquated software versions have issues e.g. Vagrant v1.8.7 (_curl_ issues), VirtualBox v5.0.28 & v5.1.8 (_Composer_ issues), maybe others. Use current versions!
