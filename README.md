@@ -54,7 +54,7 @@ _Recommended way_: see [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wi
 
 ### Set-Up
 
-_dev_ ([jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)):
+_dev_ ([ubuntu-24.04](https://app.vagrantup.com/cloud-image/ubuntu-24.04)):
 
 * Clone the NDL-VuFind2-Vagrant files to the host computer, preferably (but this is not an absolute must) into a directory parallel to the NDL-VuFind2 working directory e.g. _path-to/NDL-VuFind2_ & _same-path-to/NDL-VuFind2-Vagrant_. The directory names can also be different than those presented here. All the same applies also to RecordManager files if using it on the host.
 
