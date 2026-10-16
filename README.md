@@ -257,9 +257,10 @@ NOTE! Virtual machines DO NOT SURVIVE host reboot/shutdown.
 - VirtualBox:  
 `vagrant suspend` before reboot/shutdown  
 `vagrant resume` after host has booted  
-- QEMU: suspend/resume is not supported, only way is to destroy & provision again  
-`vagrant destroy` before reboot/shutdown  
-`vagrant up` after host has booted
+- QEMU: suspend/resume is not supported, use instead:  
+`vagrant halt` before reboot/shutdown  
+`vagrant up --no-provision` after host has booted  
+(this is quicker than `vagrant destroy` and `vagrant up` for destroying & re-provisioning the VM again from the start)
 
 ### Known Issues
 - If running Solr, [VirtualMemory](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/blob/master/VagrantConf.rb.sample#L23) needs to be at least around 2048, which should work. Add more if/when needed considering the host has what to spare.
@@ -277,7 +278,7 @@ NOTE! Virtual machines DO NOT SURVIVE host reboot/shutdown.
 - QEMU and libvirt providers may prompt to destroy both VMs at `vagrant destroy` even when the other one is not running. If this is confusing, target the wanted VM using `vagrant destroy dev` or `vagrant destroy server`.
 - SMB sharing will first ask sudo password and later user credentials at `vagrant up`. User credentials are also asked at `vagrant destroy`.
 - Running on Linux has been tested to work with Linux Mint so Ubuntu(/Debian) based distros should likely work, others are unknown.
-- For those about to use Windows, we salute you! And best of luck–you tread the unwalked path.
+- For those about to use Windows, we salute you! And the best of luck–you tread the unwalked path.
 
 ### Resources
 - [NDL-VuFind2](https://github.com/NatLibFi/NDL-VuFind2)
