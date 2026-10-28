@@ -66,7 +66,7 @@ for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
     if [[ -f $x ]] && [[ ! -f $t ]]; then
-      cp $x $t
+      sudo su vagrant -c "cp $x $t"
     fi
   done
 done
@@ -76,7 +76,7 @@ for i in "${CfgExt[@]}"; do
   for x in *.$i.sample; do
     t=${x%.$i.sample}.$i
     if [[ -f $x ]] && [[ ! -f $t ]]; then
-      cp $x $t
+      sudo su vagrant -c "cp $x $t"
     fi
   done
 done
@@ -98,13 +98,13 @@ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg 
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 sudo apt-get update
 sudo apt-get install -y nodejs
-# do not run this with sudo
-npm install
+# do not run 'npm install' as root or with sudo
+sudo su vagrant -c 'npm install'
 #check npm vulnerabilities
-npm audit
+sudo su vagrant -c 'npm audit'
 
 # clear VuFind2 vendor directory
-if [ "$VENDOR_CLEAR" = true ]; then
+if [ "$VENDOR_CLEAR" = true ] && [ "$RSYNC" = false ]; then
   echo
   echo "Clearing VuFind2 vendor directory files..."
   find $VUFIND2_MOUNT/vendor/ \( ! -regex '.*/\..*' \) -name "*" -type f -delete
@@ -136,7 +136,7 @@ sudo chmod a+x /usr/local/bin/phing
 tee -a /usr/local/bin/build-scss >/dev/null <<EOF
 #!/usr/bin/env bash
 cd $VUFIND2_MOUNT
-npm run finna:build:scss
+sudo su vagrant -c 'npm run finna:build:scss'
 cd
 EOF
 sudo chmod a+x /usr/local/bin/build-scss
@@ -186,9 +186,11 @@ tee -a /home/vagrant/phing.sh >/dev/null <<EOF
 #!/bin/sh
 $VUFIND2_MOUNT/vendor/bin/phing -Dmysqlrootpass=$PASSWORD \$*
 EOF
+sudo chown vagrant:vagrant /home/vagrant/phing.sh
 sudo chmod a+x /home/vagrant/phing.sh
 cp $VUFIND2_MOUNT/build.xml /home/vagrant/
 sudo sed -i -e 's,basedir=".",basedir="/vufind2",' /home/vagrant/build.xml
+sudo chown vagrant:vagrant /home/vagrant/build.xml
 
 # set up email test environment
 if [ "$EMAIL_TEST_ENV" = true ]; then
@@ -219,7 +221,7 @@ fi
 
 # clear VuFind2 local cache files
 # see: https://askubuntu.com/questions/266179/how-to-exclude-ignore-hidden-files-and-directories-in-a-wildcard-embedded-find
-if [ "$LOCAL_CACHE_CLEAR" = true ]; then
+if [ "$LOCAL_CACHE_CLEAR" = true ] && [ "$RSYNC" = false ]; then
   echo "Clearing VuFind2 local cache..."
   find $VUFIND2_MOUNT/local/cache/ \( ! -regex '.*/\..*' \) -name "*" -type f -delete
   echo "...done!"

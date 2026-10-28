@@ -154,6 +154,7 @@ Vagrant.configure(2) do |config|
         dev.vm.synced_folder VufindPath, MountPath, type: "rsync",
           rsync__exclude: [
             "/vendor",
+            "/node_modules",
             "/local/cache",
             "/local/languages/finna/fi-datasources.ini",
             "/local/languages/finna/sv-datasources.ini",
