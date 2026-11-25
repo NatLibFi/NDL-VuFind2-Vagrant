@@ -88,7 +88,8 @@ Regarding the records data:
 
 <span id="without-local-database">**Without local database**</span>: use a remote Solr server (like the _NDL development index_ - unfortunately, **limited users only**)
 * either set the EXTERNAL_SOLR_URL in the conf files (also set INSTALL_SOLR + INSTALL_RECMAN to _false_ as they are not needed), or
-* add the [external URL](https://github.com/NatLibFi/NDL-VuFind2/blob/dev/local/config/vufind/config.ini.sample#L15) to the _NDL-VuFind2/local/config/vufind/config.ini_ file after install.
+* add the [external URL](https://github.com/NatLibFi/NDL-VuFind2/blob/dev/local/config/vufind/config.ini.sample#L15) to the _NDL-VuFind2/local/config/vufind/config.ini_ file before or after install.  
+  **Note**: With RSync this is the only useful option since syncing happens only from host to guest VM.
 
 If not using VirtualBox, see the platform and provider specific configuration options for [QEMU](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/macOS#qemu-configuration) (macOS) and [libvirt](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki/Linux#libvirt-configuration) (Linux) in the [Wiki](https://github.com/NatLibFi/NDL-VuFind2-Vagrant/wiki).
 
