@@ -124,6 +124,9 @@ sudo su vagrant -c '/usr/local/bin/composer install-build-deps'
 sudo touch /var/log/vufind2.log
 sudo chown www-data:www-data /var/log/vufind2.log
 
+# certifacates fix
+sudo ln -s /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-bundle.crt
+
 # phing: do not run this with sudo
 tee -a /usr/local/bin/phing >/dev/null <<EOF
 #!/usr/bin/env bash
