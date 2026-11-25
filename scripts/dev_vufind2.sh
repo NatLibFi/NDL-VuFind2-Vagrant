@@ -141,7 +141,7 @@ cd
 EOF
 sudo chmod a+x /usr/local/bin/build-scss
 if [ "$SCSS_BUILD" = true ]; then
-  /usr/local/bin/build-scss
+  sudo su vagrant -c '/usr/local/bin/build-scss'
 fi
 
 # download datasources translation strings
